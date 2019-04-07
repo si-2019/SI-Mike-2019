@@ -12,7 +12,7 @@
 
 ## Opis modula
 
-Kolaboracija predstavlja modul koji omogućava asistentima i studentima bolju organizaciju prilikom izvedbi projekata. Studenti i asistenti mogu definisati projektne zadatke, editovati i pratiti progres istog projekta. Studenti i asistenti imaju mogućnost dodavanja i brisanja članova projekata i ažuriranje podataka vezanih za projekte. Također asistent ima mogućnost bodovanja projekta i ostavljanja komentara na pojedinačne projekte, te i generisanje samih projektnih grupa. (Detaljnije karakteristike se mogu naći pod `./user-stories-kolaboracija.pdf`)
+Kolaboracija predstavlja modul koji omogućava asistentima i studentima bolju organizaciju prilikom izvedbi projekata. Studenti i asistenti mogu definisati projektne zadatke, editovati i pratiti progres istog projekta. Studenti i asistenti imaju mogućnost dodavanja i brisanja članova projekata i ažuriranje podataka vezanih za projekte. Također asistent ima mogućnost bodovanja projekta i ostavljanja komentara na pojedinačne projekte, te i generisanje samih projektnih grupa.
 
 ## Akteri
 
