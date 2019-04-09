@@ -28,10 +28,7 @@ Kolaboracija predstavlja modul koji omogućava asistentima i studentima bolju or
 - Mogućnost bodovanja projekata,
 - Mogućnost pregleda rada na projektima.
 
-## Port klasifikacija
-3000 : React frontend app
+## Port klasifikacija & Runtime/Testing
 3001 : Rest api node
-
-## Runtime/Testing
-`npm start` u oba folder backenda/frontenda
-`npm test` u bekend folderu za rest api testove
+`npm start` u backend folderu za pokreteanje servisa
+`npm test` u backend folderu za rest api testove
