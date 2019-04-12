@@ -24,7 +24,7 @@ workRouter.post('/', (req, res) => {
         if(postBody['komentar_asistenta']) komentar_a = postBody['komentar_asistenta'];
 
         // provjera regex od kad i do kad parametara
-        let regexDatumFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])) ((0[1-9]|1[0-9]|2[1-3])\:([0-6][0-9])\:(([0-6][0-9])))/;
+        let regexDatumFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])) ((0[0-9]|1[0-9]|2[0-3])\:([0-5][0-9])\:(([0-5][0-9])))/;
         if(!postBody['od_kad'].match(regexDatumFormat) || !postBody['do_kad'].match(regexDatumFormat)){
             res.send(JSON.stringify({ message: 'Datumi nisu u formatu [yyyy-mm-dd hh:mm:ss]!' }));
             return;
