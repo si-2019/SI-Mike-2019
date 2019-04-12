@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
   
 // definisanje REST API calls / ruta
 
-const projectRouter = require('./routes/student/workRoute')
+const projectRouter = require('./routes/students/workRoute')
 
 // postavljanje CORS-a za naš drugi server
 // da samo on može kupiti podatke
