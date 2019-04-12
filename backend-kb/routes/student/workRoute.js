@@ -14,7 +14,7 @@ workRouter.post('/', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     
     let bool = workUtils.provjeraParametaraPostPZ(postBody); 
-    if (!bool) res.send(JSON.stringify({ message: 'Body parametri nisu specifirani [id_projekta, prioritet, od_kad, do_kad]' }));
+    if (!bool) res.send(JSON.stringify({ message: 'Body parametri nisu specifirani [id_projekta, od_kad, do_kad]' }));
     else {
         let opis = "";
         let zavrsen = false;
@@ -23,8 +23,18 @@ workRouter.post('/', (req, res) => {
         if(postBody['zavrsen']) zavrsen = postBody['zavrsen'];
         if(postBody['komentar_asistenta']) komentar_a = postBody['komentar_asistenta'];
 
-        let objekat = workUtils.upisNovogPZuBazu(postBody, opis, zavrsen, komentar_a);
-        res.send(JSON.stringify(objekat));
+        // provjera regex od kad i do kad parametara
+        let regexDatumFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])) ((0[1-9]|1[0-9]|2[1-3])\:([0-6][0-9])\:(([0-6][0-9])))/;
+        if(!postBody['od_kad'].match(regexDatumFormat) || !postBody['do_kad'].match(regexDatumFormat)){
+            res.send(JSON.stringify({ message: 'Datumi nisu u formatu [yyyy-mm-dd hh:mm:ss]!' }));
+            return;
+        }
+
+        // ukoliko je sve zadovoljeno piše se u bazu
+        workUtils.upisNovogPZuBazu(postBody, opis, zavrsen, komentar_a, (err, objekat) => {
+            if(err) res.send(JSON.stringify({ message: 'Poslani [id_projekta] ne postoji u bazi ili je doslo do greske sa bazom!' }));
+            else res.send(JSON.stringify(objekat));
+        });
     }
 });
 

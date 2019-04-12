@@ -47,8 +47,10 @@ app.use('/api/work', projectRouter);
 // definisanje ruta za dio "Pregled projekata"
 // app.use('/group', projectRouter);
 
+// konektovanje na bazu
+const konekt = require('./db');
+konekt.konektuj();
+
 app.listen(PORT, () => {
     console.log(`Rest-api service started on ${PORT} port!`);
 });
-
-module.exports = app;
