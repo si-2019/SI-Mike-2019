@@ -28,9 +28,5 @@ Kolaboracija predstavlja modul koji omogućava asistentima i studentima bolju or
 - Mogućnost bodovanja projekata,
 - Mogućnost pregleda rada na projektima.
 
-## Port klasifikacija & Runtime/Testing & envoirment upute
-- `npm install` uraditi unutar backend foldera
-- 3001 : Rest api node
-- `npm start` u backend folderu za pokreteanje servisa
-- `npm test` u backend folderu za rest api testove
-- pogledati env fajl
+
+#### Pogledati backend/readme za dodatne info!
