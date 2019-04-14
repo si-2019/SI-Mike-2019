@@ -35,6 +35,7 @@ workRouter.post('/', (req, res) => {
             if(err) res.send(JSON.stringify({ message: 'Poslani [id_projekta] ne postoji u bazi ili je doslo do greske sa bazom!' }));
             else res.send(JSON.stringify(objekat));
         });
+        
     }
 });
 
