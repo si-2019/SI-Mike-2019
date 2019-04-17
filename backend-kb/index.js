@@ -39,7 +39,7 @@ app.use('/api/work', projectRouter);
 // definisanje 4 rutera, za definisanje api calls za asistenta
 
 // definisanje ruta za dio "Kreiranje projekata na nivou predmeta"
-// app.use('/group', projectRouter); 
+app.use('/api/projects', projectRouter); 
 // definisanje ruta za dio "Generisanje projektnih grupa"
 // app.use('/group', projectRouter); 
 // definisanje ruta za dio "Bodovanje projekata"
