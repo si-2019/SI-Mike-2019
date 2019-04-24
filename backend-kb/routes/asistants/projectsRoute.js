@@ -26,4 +26,19 @@ projectsRouter.post('/newp', (req, res) => {
     }
 });
 
+projectsRouter.post('/setdeadline', (req, res) => {
+    let postBody = req.body;
+    res.setHeader('Content-Type', 'application/json');
+
+    let ret = projectUtils.provjeraParametaraRokProjekta(postBody);
+
+    if (!ret.ispravno) res.send(JSON.stringify({ message: ret.poruka }));
+    else {
+        projectUtils.upisRokaIzradeProjekta(postBody, (err) => {
+            if (err) res.send(JSON.stringify({ message: 'Poslani id predmeta ne postoji u bazi ili je doslo do greske sa bazom!' }));
+            else res.send(JSON.stringify({ message: 'Uspjesno dodan rok izrade projekta.' }));
+        });
+    }
+});
+
 module.exports = projectsRouter;

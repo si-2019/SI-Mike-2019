@@ -40,5 +40,51 @@ const upisNovogProjektaUBazu = (postBody, prog, callback) => {
     });
 }
 
+const provjeraParametaraRokProjekta = (postBody) => {
+    let ret = {
+        ispravno: true,
+        poruka: ''
+    };
+
+    rok_projekta = postBody['rok_projekta'];
+
+    if (!rok_projekta || !postBody['id_projekta']) {
+        ret.poruka = 'Body parametri nisu specifirani [id_projekta, rok_projekta]';
+        ret.ispravno = false;
+    }
+    else
+    {
+        let regexDatumFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])) ((0[0-9]|1[0-9]|2[0-3])\:([0-5][0-9])\:(([0-5][0-9])))/;
+        if (!rok_projekta.match(regexDatumFormat)) {
+            ret.poruka = 'Datumi nisu u formatu [yyyy-mm-dd hh:mm:ss]!';
+            ret.ispravno = false;
+        }
+    }
+
+    return ret;
+}
+
+const upisRokaIzradeProjekta = (postBody, callback) => {
+    let deadline = postBody['rok_projekta'];
+    let id_projekta = postBody['id_projekta']
+    
+    // provjeravanje da li postoji id_projekta
+    connection.query(`SELECT * FROM Projekat WHERE id=${postBody['id_projekta']}`, (error, results1, fields) => {
+        if (error) callback(true);
+        let podaci = JSON.parse(JSON.stringify(results1));
+        if (podaci.length !== 1) callback(true);
+        else {
+            let poziv = `UPDATE Projekat SET rok_projekta=${deadline} WHERE id_projekta=${id_projekta}`
+            // dodajemo rok projekta
+            connection.query(poziv, (err) => {
+                if (err) callback(err);
+                else callback(null);
+            });
+        }
+    });
+}
+
 module.exports.upisNovogProjektaUBazu = upisNovogProjektaUBazu;
 module.exports.provjeraParametaraPostPZ = provjeraParametaraPostPZ;
+module.exports.provjeraParametaraRokProjekta = provjeraParametaraRokProjekta;
+module.exports.upisRokaIzradeProjekta = upisRokaIzradeProjekta;
