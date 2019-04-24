@@ -46,16 +46,16 @@ const provjeraParametaraRokProjekta = (postBody) => {
         poruka: ''
     };
 
-    rok_projekta = postBody['rok_projekta'];
+    rokProjekta = postBody['rokProjekta'];
 
-    if (!rok_projekta || !postBody['id_projekta']) {
-        ret.poruka = 'Body parametri nisu specifirani [id_projekta, rok_projekta]';
+    if (!rokProjekta || !postBody['idProjekat']) {
+        ret.poruka = 'Body parametri nisu specifirani [idProjekat, rokProjekta]';
         ret.ispravno = false;
     }
     else
     {
         let regexDatumFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])) ((0[0-9]|1[0-9]|2[0-3])\:([0-5][0-9])\:(([0-5][0-9])))/;
-        if (!rok_projekta.match(regexDatumFormat)) {
+        if (!rokProjekta.match(regexDatumFormat)) {
             ret.poruka = 'Datum nije u formatu [yyyy-mm-dd hh:mm:ss]!';
             ret.ispravno = false;
         }
@@ -65,16 +65,16 @@ const provjeraParametaraRokProjekta = (postBody) => {
 }
 
 const upisRokaIzradeProjekta = (postBody, callback) => {
-    let deadline = postBody['rok_projekta'];
-    let id_projekta = postBody['id_projekta']
+    let deadline = postBody['rokProjekta'];
+    let idProjekat = postBody['idProjekat']
     
-    // provjeravanje da li postoji id_projekta
-    connection.query(`SELECT * FROM Projekat WHERE id=${postBody['id_projekta']}`, (error, results1, fields) => {
+    // provjeravanje da li postoji idProjekat
+    connection.query(`SELECT * FROM Projekat WHERE idProjekat=${postBody['idProjekat']}`, (error, results1, fields) => {
         if (error) callback(true);
         let podaci = JSON.parse(JSON.stringify(results1));
         if (podaci.length !== 1) callback(true);
         else {
-            let poziv = `UPDATE Projekat SET rok_projekta=${deadline} WHERE id_projekta=${id_projekta}`
+            let poziv = `UPDATE Projekat SET rokProjekta='${deadline}' WHERE idProjekat=${idProjekat}`;
             // dodajemo rok projekta
             connection.query(poziv, (err) => {
                 if (err) callback(err);
