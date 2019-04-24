@@ -56,7 +56,7 @@ const provjeraParametaraRokProjekta = (postBody) => {
     {
         let regexDatumFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])) ((0[0-9]|1[0-9]|2[0-3])\:([0-5][0-9])\:(([0-5][0-9])))/;
         if (!rok_projekta.match(regexDatumFormat)) {
-            ret.poruka = 'Datumi nisu u formatu [yyyy-mm-dd hh:mm:ss]!';
+            ret.poruka = 'Datum nije u formatu [yyyy-mm-dd hh:mm:ss]!';
             ret.ispravno = false;
         }
     }
