@@ -71,7 +71,7 @@ describe('Testiranje post metode base/api/work', () => {
     });
 
     
-    it('Treba da unese u bazu novi projektni zadatak pod id_projektom 3', (done) => {  
+    it('Treba da unese u bazu novi projektni zadatak pod id_projektom 3 i ujedno upise u bazu', (done) => {  
         let random = uuidv4();    
         request.post({
             headers: {
