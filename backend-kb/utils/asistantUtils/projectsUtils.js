@@ -6,14 +6,15 @@ const provjeraParametaraPostPZ = (postBody) => {
     else return true;
 }
 
-const upisNovogProjektaUBazu = (postBody, prog, callback) => {
+const upisNovogProjektaUBazu = (postBody, prog, rokProjekta, callback) => {
     let novi = {
         naziv_projekta : postBody['naziv_projekta'],
         id_predmeta: postBody['id_predmeta'],
         id_asistenta: postBody['id_asistenta'],
         opis_projekta: postBody['opis_projekta'],
         moguci_bodovi: postBody['moguci_bodovi'],
-        progress: prog
+        progress: prog,
+        rok_projekta : rokProjekta ? rokProjekta : ''
     }
     // bude li igdje drugo >3 callbacka -> promises
     // provjeravanje da li postoji id_predmeta
@@ -28,7 +29,8 @@ const upisNovogProjektaUBazu = (postBody, prog, callback) => {
                 let podaci2 = JSON.parse(JSON.stringify(results2));
                 if (podaci2.length !== 1) callback(true);
                 else {
-                    let poziv = `INSERT INTO Projekat (nazivProjekta, idKorisnik, idPredmet, progress, opisProjekta, moguciBodovi) VALUES ('${novi.naziv_projekta}', ${novi.id_asistenta}, ${novi.id_predmeta}, '${novi.progress}', '${novi.opis_projekta}', ${novi.moguci_bodovi});`
+                    if(!rokProjekta) rokProjekta = '';
+                    let poziv = `INSERT INTO Projekat (nazivProjekta, idKorisnik, idPredmet, progress, opisProjekta, moguciBodovi, rokProjekta) VALUES ('${novi.naziv_projekta}', ${novi.id_asistenta}, ${novi.id_predmeta}, '${novi.progress}', '${novi.opis_projekta}', ${novi.moguci_bodovi}, '${rokProjekta}');`
                     // ukoliko sve postoji dodajemo projekat
                     connection.query(poziv, (err) => {
                         if (err) callback(err);
