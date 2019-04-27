@@ -1,4 +1,4 @@
-import db from '../../models/db';
+const db = require('../../models/db');
 
 const provjeraParametaraPostPZ = (postBody) => {
     if (!postBody['id_projekta'] || !postBody['od_kad'] || !postBody['do_kad']) return false;
@@ -31,7 +31,5 @@ const upisNovogPZuBazu = (postBody, opis, zavrsen, komentar_a, callback) => {
     });
 }
 
-export default {
-    provjeraParametaraPostPZ,
-    upisNovogPZuBazu
-}
+module.exports.provjeraParametaraPostPZ = provjeraParametaraPostPZ;
+module.exports.upisNovogPZuBazu = upisNovogPZuBazu;

@@ -1,14 +1,11 @@
-import express from 'express'
-import bodyParser from 'body-parser';
-import 'dotenv/config'; // definisanje env varijabli
-import db from './models/db.js';
-
-// definisanje rutera
-import workRouter from './routes/students/workRoute'
-import projectsRouter from './routes/asistants/projectsRoute'
+const express = require('express');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv'); // definisanje env varijabli
+dotenv.config(); // postavljanje configa 
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const db = require('./models/db.js');
 
 // povezivanje sa bazom
 db.sequelize.sync()
@@ -19,7 +16,12 @@ db.sequelize.sync()
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
-})); 
+}));
+
+// definisanje REST API calls / ruta
+
+const workRouter = require('./routes/students/workRoute')
+const projectsRouter = require('./routes/asistants/projectsRoute');
 
 // postavljanje CORS-a za naš drugi server
 // da samo on može kupiti podatke
@@ -55,5 +57,3 @@ app.use('/api/projects', projectsRouter);
 app.listen(PORT, () => {
     console.log(`Rest-api service started on ${PORT} port!`);
 });
-
-export default app;

@@ -4,9 +4,9 @@
   "description": "backend api servis za modul kolaboracije",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node ./index.js",
-    "test-students": "mocha --timeout 3000 ./tests/students/*.js --exit ",
-    "test-asistants": "mocha --timeout 3000 ./tests/asistants/*.js --exit ",
+    "start": "nodemon index.js",
+    "test-students": "mocha ./tests/students/*.js --exit",
+    "test-asistants": "mocha ./tests/asistants/*.js --exit",
     "generate": "sequelize-auto -o \"./models\" -d TYQcLL35gV -h 37.59.55.185 -u TYQcLL35gV -x BLysSj9ZrP -e mysql -t Projekat,ProjektniFile,ProjektniZadatak,GrupaProjekta,ClanGrupe,Korisnik,Predmet,projektniZadatak_clanGrupe"
   },
   "author": "Team Mike",
@@ -20,9 +20,6 @@
     "sequelize": "^5.7.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/node": "^7.2.2",
-    "@babel/preset-env": "^7.4.4",
     "chai": "^4.2.0",
     "mocha": "^6.1.4",
     "nodemon": "^1.18.11",

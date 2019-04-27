@@ -1,7 +1,7 @@
-import express from 'express';
-import projectUtils from '../../utils/asistantUtils/projectsUtils';
-
+const express = require('express');
 const projectsRouter = express.Router();
+
+const projectUtils = require('../../utils/asistantUtils/projectsUtils');
 
 // POST base/api/projects/ 
 // [id_predmeta, id_asistenta, opis_projekta, moguci_bodovi] obavezni parametar u bodiju posta
@@ -50,4 +50,4 @@ projectsRouter.post('/setdeadline', (req, res) => {
     }
 });
 
-export default projectsRouter;
+module.exports = projectsRouter;
