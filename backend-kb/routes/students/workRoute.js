@@ -1,7 +1,7 @@
-const express = require('express');
-const workRouter = express.Router();
+import express from 'express';
+import workUtils from '../../utils/studentUtils/workUtils';
 
-const workUtils = require('../../utils/studentUtils/workUtils');
+const workRouter = express.Router();
 
 // POST base/api/work/ 
 // [id_projekta, prioritet, od_kad, do_kad] obavezni parametar u bodiju posta
@@ -39,4 +39,4 @@ workRouter.post('/', (req, res) => {
     }
 });
 
-module.exports = workRouter;
+export default workRouter; 

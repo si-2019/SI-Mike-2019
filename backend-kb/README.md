@@ -12,5 +12,5 @@
 ## Generisanje modela
 - unutar foldera models su generisani svi potrebni modeli za nas servis!
 - PRIJE GENERISANJA: IMATI GLOBALNO INSTALIRANO: MYSQL, SEQULIZE-AUTO
-- ukoliko je potrebno generisati nove modele kucari `npm run generate`
-- DODATI OBAVEZNO `autoIncrement: true` u primary key atribute KAD SE KREIRA, jer sam sequlize-auto ne doda (radi auto increment opcije)!
+- AKKO UKOLIKO je potrebno generisati nove modele kucati `npm run generate`
+- PRI TOM dodati OBAVEZNO `autoIncrement: true` u primary key atribute KAD SE KREIRA, jer sam sequlize-auto ne doda (radi auto increment opcije)!

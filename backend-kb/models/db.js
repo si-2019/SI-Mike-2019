@@ -1,4 +1,5 @@
-const Sequelize = require("sequelize");
+import Sequelize from "sequelize";
+
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
     host: process.env.DB_HOST_IP,
     dialect: "mysql",
@@ -22,4 +23,4 @@ db.ProjekniFile = sequelize.import(__dirname + '/ProjektniFile.js');
 db.ProjektniZadatak_ClanGrupe = sequelize.import(__dirname + '/projektniZadatak_clanGrupe.js');
 db.ProjektniZadatak = sequelize.import(__dirname + '/ProjektniZadatak.js');
 
-module.exports = db;
+export default db;

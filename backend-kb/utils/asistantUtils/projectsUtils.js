@@ -1,4 +1,4 @@
-const db = require('../../models/db');
+import db from '../../models/db';
 
 const provjeraParametaraPostPZ = (postBody) => {
     if (!postBody['naziv_projekta'] || !postBody['id_predmeta'] || !postBody['id_asistenta'] ||
@@ -50,7 +50,7 @@ const provjeraParametaraRokProjekta = (postBody) => {
         poruka: ''
     };
 
-    rokProjekta = postBody['rokProjekta'];
+    let rokProjekta = postBody['rokProjekta'];
 
     if (!rokProjekta || !postBody['idProjekat']) {
         ret.poruka = 'Body parametri nisu specifirani [idProjekat, rokProjekta]';
@@ -94,7 +94,9 @@ const upisRokaIzradeProjekta = (postBody, callback) => {
         });
 }
 
-module.exports.upisNovogProjektaUBazu = upisNovogProjektaUBazu;
-module.exports.provjeraParametaraPostPZ = provjeraParametaraPostPZ;
-module.exports.provjeraParametaraRokProjekta = provjeraParametaraRokProjekta;
-module.exports.upisRokaIzradeProjekta = upisRokaIzradeProjekta;
+export default {
+    upisNovogProjektaUBazu,
+    provjeraParametaraPostPZ,
+    provjeraParametaraRokProjekta,
+    upisRokaIzradeProjekta
+};
