@@ -1,5 +1,4 @@
 const db = require('../../models/db');
-const uuid = require('uuid');
 
 const provjeraParametaraPostPZ = (postBody) => {
     if (!postBody['id_projekta'] || !postBody['od_kad'] || !postBody['do_kad']) return false;
@@ -21,12 +20,10 @@ const upisNovogPZuBazu = (postBody, opis, zavrsen, komentar_a, callback) => {
             idProjekat: postBody['id_projekta']
         }
     }).then((projekat) => {
-        console.log(projekat);
         if (!projekat) callback(true);
         else {
             db.ProjektniZadatak.create(novi)
                 .then((kreiran) => {
-                    console.log( kreiran);
                     if (!kreiran) callback(err);
                     else callback(null, kreiran);
                 })
