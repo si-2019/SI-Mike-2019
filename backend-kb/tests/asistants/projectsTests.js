@@ -4,7 +4,7 @@ const dotenv = require('dotenv'); // definisanje env varijabli
 dotenv.config(); // postavljanje configa 
 
 const uuidv4 = require('uuid/v4');
-const connection = require('../../db').connection;
+const db = require('../../models/db');
 
 describe('Testiranje post metode base/api/projects/newp', () => {
     
@@ -64,16 +64,19 @@ describe('Testiranje post metode base/api/projects/newp', () => {
             body:    encodeURI(`id_predmeta=3&id_asistenta=2&opis_projekta=hahah&moguci_bodovi=1337&naziv_projekta=${random}`)
         }, function (error, response, body) {
             let novi = body ? JSON.parse(body) : null;
-            connection.query(`SELECT * FROM Projekat WHERE nazivProjekta='${random}'`, (error, results1, fields) => {
-                expect(novi.id_predmeta).to.equal('3');
-                expect(novi.id_asistenta).to.equal('2');
-                expect(novi.opis_projekta).to.equal('hahah');
-                expect(novi.moguci_bodovi).to.equal('1337');
+            db.Projekat.findOne({
+                where : {
+                    nazivProjekta : random
+                }
+            }).then((rez) => {
+                expect(novi.idPredmet).to.equal('3');
+                expect(novi.idKorisnik).to.equal('2');
+                expect(novi.opisProjekta).to.equal('hahah');
+                expect(novi.moguciBodovi).to.equal('1337');
 
-                let provjeraBaze = JSON.parse(JSON.stringify(results1));
-                expect(provjeraBaze.length).to.equal(1);
-                expect(provjeraBaze[0].nazivProjekta).to.equal(random);
-
+                // provjera sa bazom
+                expect(rez.nazivProjekta).to.equal(random);
+            
                 done();
             });
         }); 

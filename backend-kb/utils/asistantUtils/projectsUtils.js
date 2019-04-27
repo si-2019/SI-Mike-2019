@@ -1,45 +1,47 @@
-const connection = require('../../db').connection;
+const db = require('../../models/db');
 
 const provjeraParametaraPostPZ = (postBody) => {
-    if (!postBody['naziv_projekta'] || !postBody['id_predmeta'] || !postBody['id_asistenta'] 
-    || !postBody['opis_projekta'] || !postBody['moguci_bodovi']) return false;
+    if (!postBody['naziv_projekta'] || !postBody['id_predmeta'] || !postBody['id_asistenta'] ||
+        !postBody['opis_projekta'] || !postBody['moguci_bodovi']) return false;
     else return true;
 }
 
 const upisNovogProjektaUBazu = (postBody, prog, rokProjekta, callback) => {
     let novi = {
-        naziv_projekta : postBody['naziv_projekta'],
-        id_predmeta: postBody['id_predmeta'],
-        id_asistenta: postBody['id_asistenta'],
-        opis_projekta: postBody['opis_projekta'],
-        moguci_bodovi: postBody['moguci_bodovi'],
+        nazivProjekta: postBody['naziv_projekta'],
+        idPredmet: postBody['id_predmeta'],
+        idKorisnik: postBody['id_asistenta'],
+        opisProjekta: postBody['opis_projekta'],
+        moguciBodovi: postBody['moguci_bodovi'],
         progress: prog,
-        rok_projekta : rokProjekta ? rokProjekta : ''
+        rokProjekta: rokProjekta ? rokProjekta : ''
     }
-    // bude li igdje drugo >3 callbacka -> promises
     // provjeravanje da li postoji id_predmeta
-    connection.query(`SELECT * FROM Predmet WHERE id=${postBody['id_predmeta']}`, (error, results1, fields) => {
-        if (error) callback(true);
-        let podaci = JSON.parse(JSON.stringify(results1));
-        if (podaci.length !== 1) callback(true);
-        else {
-            // provjeravanje da li postoji id_asistenta
-            connection.query(`SELECT * FROM Korisnik WHERE id=${postBody['id_asistenta']}`, (error2, results2, fields) => {
-                if (error2) callback(true);
-                let podaci2 = JSON.parse(JSON.stringify(results2));
-                if (podaci2.length !== 1) callback(true);
-                else {
-                    if(!rokProjekta) rokProjekta = '';
-                    let poziv = `INSERT INTO Projekat (nazivProjekta, idKorisnik, idPredmet, progress, opisProjekta, moguciBodovi, rokProjekta) VALUES ('${novi.naziv_projekta}', ${novi.id_asistenta}, ${novi.id_predmeta}, '${novi.progress}', '${novi.opis_projekta}', ${novi.moguci_bodovi}, '${rokProjekta}');`
-                    // ukoliko sve postoji dodajemo projekat
-                    connection.query(poziv, (err) => {
-                        if (err) callback(err);
-                        else callback(null, novi);
-                    });
-                }
-            });
-        }
-    });
+    db.Predmet.findOne({
+            where: {
+                id: postBody['id_predmeta']
+            }
+        })
+        .then((predmet) => {
+            if (!predmet) callback(true);
+            else {
+                // provjeravanje da li postoji id_asistenta
+                db.Korisnik.findOne({
+                    where: {
+                        id: postBody['id_asistenta']
+                    }
+                }).then((asistent) => {
+                    if (!asistent) callback(true);
+                    else {
+                        db.Projekat.create(novi)
+                            .then((projekat) => {
+                                if (!projekat) callback(true);
+                                else callback(null, projekat);
+                            })
+                    }
+                });
+            }
+        })
 }
 
 const provjeraParametaraRokProjekta = (postBody) => {
@@ -53,9 +55,7 @@ const provjeraParametaraRokProjekta = (postBody) => {
     if (!rokProjekta || !postBody['idProjekat']) {
         ret.poruka = 'Body parametri nisu specifirani [idProjekat, rokProjekta]';
         ret.ispravno = false;
-    }
-    else
-    {
+    } else {
         let regexDatumFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])) ((0[0-9]|1[0-9]|2[0-3])\:([0-5][0-9])\:(([0-5][0-9])))/;
         if (!rokProjekta.match(regexDatumFormat)) {
             ret.poruka = 'Datum nije u formatu [yyyy-mm-dd hh:mm:ss]!';
@@ -69,21 +69,29 @@ const provjeraParametaraRokProjekta = (postBody) => {
 const upisRokaIzradeProjekta = (postBody, callback) => {
     let deadline = postBody['rokProjekta'];
     let idProjekat = postBody['idProjekat']
-    
+
     // provjeravanje da li postoji idProjekat
-    connection.query(`SELECT * FROM Projekat WHERE idProjekat=${postBody['idProjekat']}`, (error, results1, fields) => {
-        if (error) callback(true);
-        let podaci = JSON.parse(JSON.stringify(results1));
-        if (podaci.length !== 1) callback(true);
-        else {
-            let poziv = `UPDATE Projekat SET rokProjekta='${deadline}' WHERE idProjekat=${idProjekat}`;
-            // dodajemo rok projekta
-            connection.query(poziv, (err) => {
-                if (err) callback(err);
-                else callback(null);
-            });
-        }
-    });
+    db.Projekat.findOne({
+            where: {
+                idProjekat
+            }
+        })
+        .then((projekat) => {
+            if (!projekat) callback(true);
+            else {
+                db.Projekat.update({
+                        rokProjekta: deadline
+                    }, {
+                        where: {
+                            idProjekat
+                        }
+                    })
+                    .then((rez) => {
+                        if (!rez) callback(true);
+                        else callback(null);
+                    })
+            }
+        });
 }
 
 module.exports.upisNovogProjektaUBazu = upisNovogProjektaUBazu;
