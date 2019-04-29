@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     idOdsjek: {
       type: DataTypes.INTEGER(10),
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'Odsjek',
         key: 'idodsjek'
@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     idUloga: {
       type: DataTypes.INTEGER(10),
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'Uloga',
         key: 'iduloga'

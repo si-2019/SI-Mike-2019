@@ -20,6 +20,14 @@ module.exports = function(sequelize, DataTypes) {
       type: "BLOB",
       allowNull: true
     },
+    file_size: {
+      type: DataTypes.INTEGER(100),
+      allowNull: true
+    },
+    file_type: {
+      type: DataTypes.STRING(10),
+      allowNull: true
+    },
     nazivFile: {
       type: DataTypes.STRING(255),
       allowNull: true
