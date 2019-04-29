@@ -53,7 +53,7 @@ const upisNovihMemberaUBazu = (niz, callback) => {
     .then((sviClanovi) => {
             for (let i = 0; i < sviClanovi.length; ++i) {
                 for (let j = 0; j < filtriraniNiz.length; ++j) {
-                    if (sviClanovi[i].idStudent == filtriraniNiz[j].idStudent && sviClanovi[i].idGrupaProjekta == filtriraniNiz[j].idGrupaProjekta) {
+                    if (sviClanovi[i].idStudent === filtriraniNiz[j].idStudent && sviClanovi[i].idGrupaProjekta === filtriraniNiz[j].idGrupaProjekta) {
                         filtriraniNiz = filtriraniNiz.splice(j, 1);
                         filtriraniNiz.length--;
                     }

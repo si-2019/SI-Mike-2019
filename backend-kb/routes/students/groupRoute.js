@@ -27,14 +27,13 @@ groupRouter.post('/', (req, res) => {
 });
 
 // POST base/api/group/addmembers 
-// [idStudent, idGrupaProjekta] obavezni parametari u json nizu unutar body posta
+// [idStudent, idGrupaProjekta] obavezni parametari u json nizu ZA SVAKOG MEMBERA unutar body posta
 // [kreator] nije obavezan, ali ukoliko se pošalje smatra se da je ta osoba vođa grupe
 // salje se kao json format, a kao rezultat vraca json sa uspjesnom porukom
-// a ako nije json sa parametrom message koji govori šta nije bilo uspješno
+// a ako nije json sa parametrom message koji govori šta nije bilo uspjesno
 
 groupRouter.post('/addmembers', (req, res) => {
-    let nizNovihMembera = req.body;
-
+    let nizNovihMembera = req.body.payload;
     if (!groupUtils.provjeraNovihMembera(nizNovihMembera)) res.send(JSON.stringify({
         message: 'Svaki member u JSON body-u ne sadrži [idStudent, idGrupaProjekta]!'
     }));
