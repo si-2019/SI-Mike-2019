@@ -4,7 +4,7 @@ const dotenv = require('dotenv'); // definisanje env varijabli
 dotenv.config(); // postavljanje configa 
 
 const uuidv4 = require('uuid/v4');
-const connection = require('../../db').connection;
+const db = require('../../models/db');
 
 describe('Testiranje post metode base/api/work', () => {
     
@@ -38,7 +38,7 @@ describe('Testiranje post metode base/api/work', () => {
         });
     });
     
-    it('Treba da vraca isti body koji je poslan, jer je zadovoljeno sve', (done) => {
+    it('Treba da vrati gresku jer id_projekta nije zadovoljen', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
@@ -54,46 +54,47 @@ describe('Testiranje post metode base/api/work', () => {
     });
 
     
-    it('Treba da vrati gresku jer id_projekta nije zaodovljen', (done) => {
+    it('Treba da vraca isti body koji je poslan, jer je zadovoljeno sve', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
             url: `${process.env.FULL_NAME}/api/work`,
-            body:    encodeURI("id_projekta=3&od_kad=2019-11-03 23:00:00&do_kad=2019-12-03 23:00:00") // u bazi je dummy 3
+            body:    encodeURI("id_projekta=29&od_kad=2019-11-03 23:00:00&do_kad=2019-12-03 23:00:00") // u bazi je dummy 29
         }, function (error, response, body) {
             let novi = JSON.parse(body);
-            expect(novi.id_projekta).to.equal('3');
-            expect(novi.od_kad).to.equal('2019-11-03 23:00:00');
-            expect(novi.do_kad).to.equal('2019-12-03 23:00:00');
+            expect(novi.idProjekta).to.equal('29');
+            expect(novi.otkad).to.equal('2019-11-03 23:00:00');
+            expect(novi.dokad).to.equal('2019-12-03 23:00:00');
             done();
         });
     });
 
     
-    it('Treba da unese u bazu novi projektni zadatak pod id_projektom 3', (done) => {  
+    it('Treba da unese u bazu novi projektni zadatak pod id_projektom 3 i ujedno upise u bazu', (done) => {  
         let random = uuidv4();    
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
             url: `${process.env.FULL_NAME}/api/work`,
-            body:    encodeURI(`id_projekta=3&od_kad=2019-11-03 23:00:00&do_kad=2019-12-03 23:00:00&opis=${random}`) 
+            body:    encodeURI(`id_projekta=29&od_kad=2019-11-03 23:00:00&do_kad=2019-12-03 23:00:00&opis=${random}`) // dummy 29
             // u bazi je dummy 3
         }, function (error, response, body) {
             let novi = JSON.parse(body);
 
-            connection.query(`SELECT * FROM ProjektniZadatak WHERE opis='${random}'`, (error, results1, fields) => {
-                expect(novi.id_projekta).to.equal('3');
-                expect(novi.od_kad).to.equal('2019-11-03 23:00:00');
-                expect(novi.do_kad).to.equal('2019-12-03 23:00:00');
-
-                let provjeraBaze = JSON.parse(JSON.stringify(results1));
-                expect(provjeraBaze.length).to.equal(1);
-                expect(provjeraBaze[0].opis).to.equal(random);
+            db.ProjektniZadatak.findOne({
+                where : {
+                    opis : random
+                }
+            }).then((pz) => {
+                expect(novi.idProjekta).to.equal('29');
+                expect(novi.otkad).to.equal('2019-11-03 23:00:00');
+                expect(novi.dokad).to.equal('2019-12-03 23:00:00');
+                expect(pz.opis).to.equal(random);
                 done();
-            });
+            }); 
         });
-    }); 
+    });     
 
 });
