@@ -3,11 +3,11 @@ const projectsRouter = express.Router();
 
 const projectUtils = require('../../utils/asistantUtils/projectsUtils');
 
-// POST base/api/projects/ 
+// POST base/api/projects/newp 
 // [id_predmeta, id_asistenta, opis_projekta, moguci_bodovi] obavezni parametar u bodiju posta
 // [progress, rok_projekta] se ne mora, a i može poslati, ako se ne pošalje smatra se default 0
-// salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspiješno dodan
-// a ako nije json sa parametrom message koji govori da nije uspiješno dodan projektni zadatak za projekat
+// salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodan
+// a ako nije json sa parametrom message koji govori da nije uspješno dodan projekat
 
 projectsRouter.post('/newp', (req, res) => {
     let postBody = req.body;
