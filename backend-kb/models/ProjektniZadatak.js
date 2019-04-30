@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('ProjektniZadatak', {
     idProjektnogZadatka: {
       type: DataTypes.INTEGER(10),
-      allowNull : false,
+      allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },

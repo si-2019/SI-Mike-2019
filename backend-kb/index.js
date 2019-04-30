@@ -9,8 +9,8 @@ const db = require ('./models/db.js');
 
 // povezivanje sa bazom
 db.sequelize.sync()
-    .then(() => console.log("Uspjesno povezano sa peca bazom!"))
-    .catch((err) => console.log("Nije uspjesno povezano sa peca bazom!", err));
+    .then(() => console.log("MIKE REST API: Uspjesno povezano sa peca bazom!"))
+    .catch((err) => console.log("MIKE REST API: Nije uspjesno povezano sa peca bazom!", err));
 
 
 // default parametars za rad sa slanjem podataka
@@ -28,7 +28,7 @@ const groupRouter = require('./routes/students/groupRoute');
 // postavljanje CORS-a za naš drugi server
 // da samo on može kupiti podatke
 app.use('/*', (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Origin', process.env.FRONTEND);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
@@ -55,10 +55,6 @@ app.use('/api/projects', projectsRouter);
 // app.use('/group', projectRouter); 
 // definisanje ruta za dio "Pregled projekata"
 // app.use('/group', projectRouter);
-
-// konektovanje na bazu
-const konekt = require('./db');
-konekt.konektuj();
 
 app.listen(PORT, () => {
     console.log(`Rest-api service started on ${PORT} port!`);

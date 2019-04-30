@@ -19,3 +19,5 @@ groupRouter.post('/', (req, res) => {
         });
     }
 });
+
+module.exports = groupRouter;
