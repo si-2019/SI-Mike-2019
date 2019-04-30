@@ -1,4 +1,5 @@
 # Team - Mike (CLANOVI -> BACKEND/README!)
+Urađeni sprint taskovi se mogu vidjeti ovdje: https://github.com/si-2019/mike-kolaboracija/pulls?q=is%3Apr+is%3Aclosed
 ### Tema: Kolaboracija
 
 ### Članovi tima:
