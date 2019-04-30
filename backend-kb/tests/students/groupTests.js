@@ -4,6 +4,7 @@ const dotenv = require('dotenv'); // definisanje env varijabli
 dotenv.config(); // postavljanje configa 
 
 const uuidv4 = require('uuid/v4');
+const db = require('../../models/db');
 
 describe('Testiranje post metode base/api/group', () => {
     
@@ -13,12 +14,13 @@ describe('Testiranje post metode base/api/group', () => {
                 'content-type': 'application/x-www-form-urlencoded'
             },
             url: `${process.env.FULL_NAME}/api/group`,
-            body:    encodeURI("idProjekat=56") // u bazi je dummy 3
+            body:    encodeURI("idGrupaProjekta=5&idProjekat=56&nazivGrupe=Najbolja&ostvareniBodovi=555&komentarAsistenta=sjajno") 
         }, function (error, response, body) {
             let projekat = JSON.parse(body);
             expect(projekat.idProjekat).to.equal('56');
-            done();
+            
         });
+        done();
     });
 
     it('Treba da unese novu grupu i provjeri u bazi da li je unesena', (done) => {  
@@ -27,7 +29,7 @@ describe('Testiranje post metode base/api/group', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/newp`,
+            url: `${process.env.FULL_NAME}/api/group`,
             body:    encodeURI(`idGrupaProjekta=5&idProjekat=3&nazivGrupe=Najbolja&ostvareniBodovi=555&komentarAsistenta=sjajno${random}`)
         }, function (error, response, body) {
             let novi = body ? JSON.parse(body) : null;
@@ -41,9 +43,11 @@ describe('Testiranje post metode base/api/group', () => {
                 expect(novi.nazivGrupe).to.equal('Najbolja');
                 expect(novi.ostvareniBodovi).to.equal('555');
                 expect(novi.komentarAsistenta).to.equal('sjajno');
-                done();
+                
             });
+            
         }); 
+        done();
     }); 
 
 });
