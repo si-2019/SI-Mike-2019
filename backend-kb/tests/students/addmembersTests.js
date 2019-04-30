@@ -57,10 +57,10 @@ describe('Testiranje post metode base/api/group/addmembers', () => {
             },
             url: `${process.env.FULL_NAME}/api/group/addmembers`,
             body: {"payload" : [{
-                "idStudent" : "8",
+                "idStudent" : "1",
                 "idGrupaProjekta" : "1"
             }, {
-                "idStudent" : "9",
+                "idStudent" : "2",
                 "idGrupaProjekta" : "1"
             }]},
             json : true
