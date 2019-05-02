@@ -13,7 +13,7 @@ const upisNovogProjektaUBazu = (postBody, prog, rokProjekta, callback) => {
         idKorisnik: postBody['id_asistenta'],
         opisProjekta: postBody['opis_projekta'],
         moguciBodovi: postBody['moguci_bodovi'],
-        progress: prog,
+        progress: prog ? prog : 0.000,
         rokProjekta: rokProjekta ? rokProjekta : ''
     }
     // provjeravanje da li postoji id_predmeta
@@ -24,24 +24,21 @@ const upisNovogProjektaUBazu = (postBody, prog, rokProjekta, callback) => {
         })
         .then((predmet) => {
             if (!predmet) callback(true);
-            else {
-                // provjeravanje da li postoji id_asistenta
-                db.Korisnik.findOne({
-                    where: {
-                        id: postBody['id_asistenta']
-                    }
-                }).then((asistent) => {
-                    if (!asistent) callback(true);
-                    else {
-                        db.Projekat.create(novi)
-                            .then((projekat) => {
-                                if (!projekat) callback(true);
-                                else callback(null, projekat);
-                            })
-                    }
-                });
-            }
+            // provjeravanje da li postoji id_asistenta
+            else return db.Korisnik.findOne({
+                where: {
+                    id: postBody['id_asistenta']
+                }
+            })
         })
+        .then((asistent) => {
+            if (!asistent) callback(true);
+            else return db.Projekat.create(novi)
+        })
+        .then((projekat) => {
+            if (!projekat) callback(true);
+            else callback(null, projekat);
+        });
 }
 
 const provjeraParametaraRokProjekta = (postBody) => {

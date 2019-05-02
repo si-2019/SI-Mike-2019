@@ -18,7 +18,6 @@ projectsRouter.post('/newp', (req, res) => {
     // ukoliko je sve zadovoljeno piše se u bazu novi projekat
     else {
         let progress = postBody['progress'];
-        if(!progress) progress = 0.000;
         let rokProjekta = postBody['rok_projekta'];
         if(rokProjekta){
             let regexDatumFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])) ((0[0-9]|1[0-9]|2[0-3])\:([0-5][0-9])\:(([0-5][0-9])))/;
