@@ -19,27 +19,27 @@ const upisNovogProjektaUBazu = (postBody, prog, rokProjekta) => {
     // provjeravanje da li postoji id_predmeta
     return new Promise((resolve, reject) => {
         db.Predmet.findOne({
-            where: {
-                id: postBody['id_predmeta']
-            }
-        })
-        .then((predmet) => {
-            if (!predmet) reject(true); 
-            // provjeravanje da li postoji id_asistenta
-            else return db.Korisnik.findOne({
                 where: {
-                    id: postBody['id_asistenta']
+                    id: postBody['id_predmeta']
                 }
             })
-        })
-        .then((asistent) => {
-            if (!asistent) reject(true)
-            else return db.Projekat.create(novi)
-        })
-        .then((projekat) => {
-            if (!projekat) reject(true);
-            else resolve(projekat);
-        });
+            .then((predmet) => {
+                if (!predmet) reject(true);
+                // provjeravanje da li postoji id_asistenta
+                else db.Korisnik.findOne({
+                        where: {
+                            id: postBody['id_asistenta']
+                        }
+                    })
+                    .then((asistent) => {
+                        if (!asistent) reject(true);
+                        else db.Projekat.create(novi)
+                            .then((projekat) => {
+                                if (!projekat) reject(true);
+                                else resolve(projekat);
+                            });
+                    })
+            })
     })
 }
 
