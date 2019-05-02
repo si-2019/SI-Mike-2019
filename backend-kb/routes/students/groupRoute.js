@@ -28,6 +28,7 @@ groupRouter.post('/', (req, res) => {
 
 // POST base/api/group/addmembers 
 // [idStudent, idGrupaProjekta] obavezni parametari u json nizu ZA SVAKOG MEMBERA unutar body posta
+// a obavezan je json koji se šalje kao npr: {"payload" : [{"idStudent" : 1, "idGrupaProjekta" : 2},{"idStudent" : 2, "idGrupaProjekta" : 2}]}
 // [kreator] nije obavezan, ali ukoliko se pošalje smatra se da je ta osoba vođa grupe
 // salje se kao json format, a kao rezultat vraca json sa uspjesnom porukom
 // a ako nije json sa parametrom message koji govori šta nije bilo uspjesno
