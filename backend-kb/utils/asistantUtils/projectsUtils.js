@@ -6,7 +6,7 @@ const provjeraParametaraPostPZ = (postBody) => {
     else return true;
 }
 
-const upisNovogProjektaUBazu = (postBody, prog, rokProjekta, callback) => {
+const upisNovogProjektaUBazu = (postBody, prog, rokProjekta) => {
     let novi = {
         nazivProjekta: postBody['naziv_projekta'],
         idPredmet: postBody['id_predmeta'],
@@ -17,13 +17,14 @@ const upisNovogProjektaUBazu = (postBody, prog, rokProjekta, callback) => {
         rokProjekta: rokProjekta ? rokProjekta : ''
     }
     // provjeravanje da li postoji id_predmeta
-    db.Predmet.findOne({
+    return new Promise((resolve, reject) => {
+        db.Predmet.findOne({
             where: {
                 id: postBody['id_predmeta']
             }
         })
         .then((predmet) => {
-            if (!predmet) callback(true);
+            if (!predmet) reject(true); 
             // provjeravanje da li postoji id_asistenta
             else return db.Korisnik.findOne({
                 where: {
@@ -32,13 +33,14 @@ const upisNovogProjektaUBazu = (postBody, prog, rokProjekta, callback) => {
             })
         })
         .then((asistent) => {
-            if (!asistent) callback(true);
+            if (!asistent) reject(true)
             else return db.Projekat.create(novi)
         })
         .then((projekat) => {
-            if (!projekat) callback(true);
-            else callback(null, projekat);
+            if (!projekat) reject(true);
+            else resolve(projekat);
         });
+    })
 }
 
 const provjeraParametaraRokProjekta = (postBody) => {
