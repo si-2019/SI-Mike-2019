@@ -57,4 +57,31 @@ projectsRouter.post('/setdeadline', (req, res) => {
     }
 });
 
+projectsRouter.post('/bodovanje', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+
+    projectUtils.provjeraParametaraBodovanjeProjekta(req.body, (cb) => {
+        if(cb.ispravno) {
+            projectUtils.upisBodovaProjekta(req.body, (err) => {
+                if(err) {
+                    res.send(JSON.stringify({
+                        message: 'Doslo je do greske sa bazom.'
+                    }));
+                }
+                else {
+                    res.send(JSON.stringify({
+                        message: 'Uspjesno bodovan projekat.'
+                    }));
+                }
+            })
+        }
+        else
+        {
+            res.send(JSON.stringify({
+                message: cb.poruka
+            }));
+        }
+    });
+});
+
 module.exports = projectsRouter;
