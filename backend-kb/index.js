@@ -20,11 +20,16 @@ app.use(bodyParser.urlencoded({
 }));
   
 // definisanje REST API calls / ruta
-
-const workRouter = require('./routes/students/workRoute');
+// asistenti rute
 const projectsRouter = require('./routes/asistants/projectsRoute');
-const groupRouter = require('./routes/students/groupRoute');
 const bodovanjeRouter  = require('./routes/asistants/bodovanjeRoute');
+const viewARouter  = require('./routes/asistants/viewARoute');
+const generateRouter  = require('./routes/asistants/generateRoute');
+// studenti rute
+const groupRouter = require('./routes/students/groupRoute');
+const workRouter = require('./routes/students/workRoute');
+const viewSRouter = require('./routes/students/viewSRoute');
+const progressRouter = require('./routes/students/progressRoute');
 
 // postavljanje CORS-a za naš drugi server
 // da samo on može kupiti podatke
@@ -35,27 +40,26 @@ app.use('/*', (req, res, next) => {
     next();
 });
 
-// definisanje 4 rutera, za definisanje api calls za studenta
-
+// definisanje 4 rutera, za definisanje api calls za STUDENTA
 // definisanje ruta za dio "Kreiranje projektne grupe"
 app.use('/api/group', groupRouter); 
 // definisanje ruta za dio "Pregled projekata"
-// app.use('/view', projectRouter);
+app.use('/api/viewS', viewSRouter);
 // definisanje ruta za dio "Rad na projektu"
 app.use('/api/work', workRouter);
 // definisanje ruta za dio "Praćenje progresa projekta"
-// app.use('/progress', projectRouter);
+app.use('/api/progress', progressRouter);
 
-// definisanje 4 rutera, za definisanje api calls za asistenta
 
+// definisanje 4 rutera, za definisanje api calls za ASISTENTA
 // definisanje ruta za dio "Kreiranje projekata na nivou predmeta"
 app.use('/api/projects', projectsRouter); 
 // definisanje ruta za dio "Generisanje projektnih grupa"
-// app.use('/group', projectRouter); 
+app.use('/api/generate', generateRouter); 
 // definisanje ruta za dio "Bodovanje projekata"
 app.use('/api/bodovanjeprojekata', bodovanjeRouter); 
 // definisanje ruta za dio "Pregled projekata"
-// app.use('/group', projectRouter);
+app.use('/api/viewA', viewARouter);
 
 app.listen(PORT, () => {
     console.log(`Rest-api service started on ${PORT} port!`);

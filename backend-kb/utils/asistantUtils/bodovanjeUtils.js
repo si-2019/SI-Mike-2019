@@ -32,6 +32,7 @@ const provjeraParametaraBodovanjeProjektneGrupe = (postBody, callback) => {
                             ispravno: false,
                             poruka: 'Projekat ne postoji u bazi - doslo je do greske.'
                         });
+                        return;
                     }
                     max_bodova = projekat.moguciBodovi;
 
