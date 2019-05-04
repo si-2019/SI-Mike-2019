@@ -6,8 +6,8 @@ const workUtils = require('../../utils/studentUtils/workUtils');
 // POST base/api/work/ 
 // [id_projekta, prioritet, od_kad, do_kad] obavezni parametar u bodiju posta
 // [opis, zavrsen, komentar_asistenta] nisu obavezni parametri za ovaj post
-// salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspiješno dodan
-// a ako nije json sa parametrom message koji govori da nije uspiješno dodan projektni zadatak za projekat
+// salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodan
+// a ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat
 
 workRouter.post('/', (req, res) => {    
     let postBody = req.body;
