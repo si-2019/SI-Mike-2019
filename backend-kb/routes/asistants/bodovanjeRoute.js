@@ -3,7 +3,7 @@ const bodovanjeRouter = express.Router();
 
 const bodovanjeUtils = require('../../utils/asistantUtils/bodovanjeUtils');
 
-bodovanjeRouter.post('/', (req, res) => {
+bodovanjeRouter.post('/unified', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
 
     bodovanjeUtils.provjeraParametaraBodovanjeProjektneGrupe(req.body, (cb) => {
