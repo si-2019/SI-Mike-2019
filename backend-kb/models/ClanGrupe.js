@@ -24,6 +24,10 @@ module.exports = function(sequelize, DataTypes) {
         key: 'idgrupaprojekta'
       }
     },
+    ostvareniBodovi: {
+      type: DataTypes.INTEGER(10),
+      allowNull: true
+    },
     kreator: {
       type: DataTypes.BOOLEAN,
       allowNull: true
