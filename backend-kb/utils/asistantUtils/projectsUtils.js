@@ -109,19 +109,18 @@ const provjeraParametaraBodovanjeProjektneGrupe = (postBody, callback) => {
                 idGrupaProjekta: idGrupaProjekta
             }
         }).then((grupa) => {
-            if(!grupa) {
+            if (!grupa) {
                 callback({
                     ispravno: false,
                     poruka: 'Pogresan ID grupe.'
                 });
-            }
-            else {
+            } else {
                 db.Projekat.findOne({
                     where: {
                         idProjekat: grupa.idProjekat
                     }
                 }).then((projekat) => {
-                    if(!projekat) {
+                    if (!projekat) {
                         callback({
                             ispravno: false,
                             poruka: 'Projekat ne postoji u bazi - doslo je do greske.'
@@ -130,13 +129,12 @@ const provjeraParametaraBodovanjeProjektneGrupe = (postBody, callback) => {
                     max_bodova = projekat.moguciBodovi;
 
                     // bodovi moraju biti u intervalu [0, max]
-                    if(bodovi < 0 || max_bodova && bodovi > max_bodova) {
+                    if (bodovi < 0 || max_bodova && bodovi > max_bodova) {
                         callback({
                             ispravno: false,
                             poruka: 'Bodovi moraju biti u intervalu [0, max].'
                         });
-                    }
-                    else {
+                    } else {
                         callback({
                             ispravno: true
                         })
@@ -152,24 +150,25 @@ const upisBodovaProjektneGrupe = (postBody, callback) => {
     bodovi = postBody['bodovi'];
 
     db.ClanGrupe.update({
-        ostvareniBodovi: bodovi
-    },
-    {
-        where: {
-            idGrupaProjekta: idGrupaProjekta
-        }
-    }).then((rez) => {
-        if (!rez) callback(true);
-        else callback(null);
-    })
-    .catch(err => {
-        if(err) callback(true);
-    });
+            ostvareniBodovi: bodovi
+        }, {
+            where: {
+                idGrupaProjekta: idGrupaProjekta
+            }
+        }).then((rez) => {
+            if (!rez) callback(true);
+            else callback(null);
+        })
+        .catch(err => {
+            if (err) callback(true);
+        });
 };
 
-module.exports.upisNovogProjektaUBazu = upisNovogProjektaUBazu;
-module.exports.provjeraParametaraPostPZ = provjeraParametaraPostPZ;
-module.exports.provjeraParametaraRokProjekta = provjeraParametaraRokProjekta;
-module.exports.upisRokaIzradeProjekta = upisRokaIzradeProjekta;
-module.exports.provjeraParametaraBodovanjeProjektneGrupe = provjeraParametaraBodovanjeProjektneGrupe;
-module.exports.upisBodovaProjektneGrupe = upisBodovaProjektneGrupe;
+module.exports = {
+    upisNovogProjektaUBazu,
+    provjeraParametaraPostPZ,
+    provjeraParametaraRokProjekta,
+    upisRokaIzradeProjekta,
+    provjeraParametaraBodovanjeProjektneGrupe,
+    upisBodovaProjektneGrupe
+}
