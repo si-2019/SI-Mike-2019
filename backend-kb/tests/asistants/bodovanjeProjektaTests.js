@@ -12,7 +12,7 @@ describe('Testiranje post metode base/api/projects/bodovanjeGrupe', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/bodovanjeGrupe`
+            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata`
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
                 message: 'Body parametri nisu specifirani [idGrupaProjekta, bodovi]'
@@ -26,7 +26,7 @@ describe('Testiranje post metode base/api/projects/bodovanjeGrupe', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/bodovanjeGrupe`,
+            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata`,
             body: encodeURI("idGrupaProjekta=15678&bodovi=10")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -41,7 +41,7 @@ describe('Testiranje post metode base/api/projects/bodovanjeGrupe', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/bodovanjeGrupe`,
+            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata`,
             body: encodeURI("idGrupaProjekta=1&bodovi=-1")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -56,7 +56,7 @@ describe('Testiranje post metode base/api/projects/bodovanjeGrupe', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/bodovanjeGrupe`,
+            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata`,
             body: encodeURI("idGrupaProjekta=2&bodovi=10000")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -71,7 +71,7 @@ describe('Testiranje post metode base/api/projects/bodovanjeGrupe', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/bodovanjeGrupe`,
+            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata`,
             body: encodeURI("idGrupaProjekta=1&bodovi=8")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({

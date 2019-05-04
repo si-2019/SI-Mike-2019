@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({
 const workRouter = require('./routes/students/workRoute');
 const projectsRouter = require('./routes/asistants/projectsRoute');
 const groupRouter = require('./routes/students/groupRoute');
+const bodovanjeRouter  = require('./routes/asistants/bodovanjeRoute');
 
 // postavljanje CORS-a za naš drugi server
 // da samo on može kupiti podatke
@@ -52,7 +53,7 @@ app.use('/api/projects', projectsRouter);
 // definisanje ruta za dio "Generisanje projektnih grupa"
 // app.use('/group', projectRouter); 
 // definisanje ruta za dio "Bodovanje projekata"
-// app.use('/group', projectRouter); 
+app.use('/api/bodovanjeprojekata', bodovanjeRouter); 
 // definisanje ruta za dio "Pregled projekata"
 // app.use('/group', projectRouter);
 
