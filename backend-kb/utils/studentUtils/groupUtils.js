@@ -50,7 +50,7 @@ const upisNovihMemberaUBazu = (niz, callback) => {
     // ukoliko postoji taj se korisnik remova iz filtriranog niza
 
     db.ClanGrupe.findAll()
-    .then((sviClanovi) => {
+        .then((sviClanovi) => {
             for (let i = 0; i < sviClanovi.length; ++i) {
                 for (let j = 0; j < filtriraniNiz.length; ++j) {
                     if (sviClanovi[i].idStudent === filtriraniNiz[j].idStudent && sviClanovi[i].idGrupaProjekta === filtriraniNiz[j].idGrupaProjekta) {
@@ -59,16 +59,20 @@ const upisNovihMemberaUBazu = (niz, callback) => {
                     }
                 }
             }
-            db.ClanGrupe.bulkCreate(filtriraniNiz, { validate: true})
-            .then((rez) => {
+            db.ClanGrupe.bulkCreate(filtriraniNiz, {
+                    validate: true
+                })
+                .then((rez) => {
                     if (!rez) callback(true);
                     else callback(null);
                 })
-            .catch((err) => callback(err))
-    })
+                .catch((err) => callback(err))
+        })
 }
 
-module.exports.provjeraParametaraPostG = provjeraParametaraPostG;
-module.exports.upisNoveGrupeUBazu = upisNoveGrupeUBazu;
-module.exports.provjeraNovihMembera = provjeraNovihMembera;
-module.exports.upisNovihMemberaUBazu = upisNovihMemberaUBazu;
+module.exports = {
+    provjeraParametaraPostG,
+    upisNoveGrupeUBazu,
+    provjeraNovihMembera,
+    upisNovihMemberaUBazu
+}

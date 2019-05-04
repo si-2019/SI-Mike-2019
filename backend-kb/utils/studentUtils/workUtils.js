@@ -31,5 +31,7 @@ const upisNovogPZuBazu = (postBody, opis, zavrsen, komentar_a, callback) => {
     });
 }
 
-module.exports.provjeraParametaraPostPZ = provjeraParametaraPostPZ;
-module.exports.upisNovogPZuBazu = upisNovogPZuBazu;
+module.exports = {
+    provjeraParametaraPostPZ,
+    upisNovogPZuBazu
+}
