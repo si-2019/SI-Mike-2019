@@ -93,7 +93,7 @@ const upisRokaIzradeProjekta = (postBody, callback) => {
         });
 }
 
-const provjeraParametaraBodovanjeProjekta = (postBody, callback) => {
+const provjeraParametaraBodovanjeProjektneGrupe = (postBody, callback) => {
     idGrupaProjekta = postBody['idGrupaProjekta'];
     bodovi = postBody['bodovi'];
 
@@ -147,16 +147,12 @@ const provjeraParametaraBodovanjeProjekta = (postBody, callback) => {
     }
 }
 
-const upisBodovaProjekta = (postBody, callback) => {
+const upisBodovaProjektneGrupe = (postBody, callback) => {
     idGrupaProjekta = postBody['idGrupaProjekta'];
     bodovi = postBody['bodovi'];
-    komentar = postBody['komentar'];
 
-    if(!komentar) komentar = '';
-
-    db.GrupaProjekta.update({
-        ostvareniBodovi: bodovi,
-        komentarAsistenta: komentar
+    db.ClanGrupe.update({
+        ostvareniBodovi: bodovi
     },
     {
         where: {
@@ -175,5 +171,5 @@ module.exports.upisNovogProjektaUBazu = upisNovogProjektaUBazu;
 module.exports.provjeraParametaraPostPZ = provjeraParametaraPostPZ;
 module.exports.provjeraParametaraRokProjekta = provjeraParametaraRokProjekta;
 module.exports.upisRokaIzradeProjekta = upisRokaIzradeProjekta;
-module.exports.provjeraParametaraBodovanjeProjekta = provjeraParametaraBodovanjeProjekta;
-module.exports.upisBodovaProjekta = upisBodovaProjekta;
+module.exports.provjeraParametaraBodovanjeProjektneGrupe = provjeraParametaraBodovanjeProjektneGrupe;
+module.exports.upisBodovaProjektneGrupe = upisBodovaProjektneGrupe;

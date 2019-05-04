@@ -57,12 +57,12 @@ projectsRouter.post('/setdeadline', (req, res) => {
     }
 });
 
-projectsRouter.post('/bodovanje', (req, res) => {
+projectsRouter.post('/bodovanjeGrupe', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
 
-    projectUtils.provjeraParametaraBodovanjeProjekta(req.body, (cb) => {
+    projectUtils.provjeraParametaraBodovanjeProjektneGrupe(req.body, (cb) => {
         if(cb.ispravno) {
-            projectUtils.upisBodovaProjekta(req.body, (err) => {
+            projectUtils.upisBodovaProjektneGrupe(req.body, (err) => {
                 if(err) {
                     res.send(JSON.stringify({
                         message: 'Doslo je do greske sa bazom.'

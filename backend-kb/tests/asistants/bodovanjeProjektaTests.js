@@ -5,14 +5,14 @@ dotenv.config();
 
 const db = require('../../models/db');
 
-describe('Testiranje post metode base/api/projects/bodovanje', () => {
+describe('Testiranje post metode base/api/projects/bodovanjeGrupe', () => {
 
     it('Treba da vraca gresku jer nije zadovoljen body', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/bodovanje`
+            url: `${process.env.FULL_NAME}/api/projects/bodovanjeGrupe`
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
                 message: 'Body parametri nisu specifirani [idGrupaProjekta, bodovi]'
@@ -26,7 +26,7 @@ describe('Testiranje post metode base/api/projects/bodovanje', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/bodovanje`,
+            url: `${process.env.FULL_NAME}/api/projects/bodovanjeGrupe`,
             body: encodeURI("idGrupaProjekta=15678&bodovi=10")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -41,7 +41,7 @@ describe('Testiranje post metode base/api/projects/bodovanje', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/bodovanje`,
+            url: `${process.env.FULL_NAME}/api/projects/bodovanjeGrupe`,
             body: encodeURI("idGrupaProjekta=1&bodovi=-1")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -56,7 +56,7 @@ describe('Testiranje post metode base/api/projects/bodovanje', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/bodovanje`,
+            url: `${process.env.FULL_NAME}/api/projects/bodovanjeGrupe`,
             body: encodeURI("idGrupaProjekta=2&bodovi=10000")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -66,25 +66,27 @@ describe('Testiranje post metode base/api/projects/bodovanje', () => {
         });
     });
 
-    it('Treba da ispravno izvrsi upis bodova projekta i komentara asistenta u bazu', (done) => {
+    it('Treba da ispravno izvrsi upis bodova projekta u bazu za sve clanove', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/bodovanje`,
-            body: encodeURI("idGrupaProjekta=1&bodovi=8&komentar=prvi_komentar")
+            url: `${process.env.FULL_NAME}/api/projects/bodovanjeGrupe`,
+            body: encodeURI("idGrupaProjekta=1&bodovi=8")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
                 message: 'Uspjesno bodovan projekat.'
             }));
 
-            db.GrupaProjekta.findOne({
+            db.ClanGrupe.findAll({
                 where: {
                     idGrupaProjekta: 1
                 }
-            }).then((rez) => {
-                expect(rez.ostvareniBodovi).to.equal(8);
-                expect(rez.komentarAsistenta).to.equal('prvi_komentar');
+            }).then((clanovi) => {
+                console.log(JSON.stringify(clanovi));
+                for(let i = 0; i < clanovi.length; i++) {
+                    expect(clanovi[i].ostvareniBodovi).to.equal(8);
+                }
                 done();
             })
         });

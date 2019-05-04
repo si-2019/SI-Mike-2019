@@ -5,7 +5,6 @@ module.exports = function(sequelize, DataTypes) {
     idClanGrupe: {
       type: DataTypes.INTEGER(10),
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true
     },
     idStudent: {
@@ -23,6 +22,10 @@ module.exports = function(sequelize, DataTypes) {
         model: 'GrupaProjekta',
         key: 'idgrupaprojekta'
       }
+    },
+    ostvareniBodovi: {
+      type: DataTypes.INTEGER(10),
+      allowNull: true
     },
     kreator: {
       type: DataTypes.BOOLEAN,
