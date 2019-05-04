@@ -83,7 +83,6 @@ describe('Testiranje post metode base/api/projects/bodovanjeGrupe', () => {
                     idGrupaProjekta: 1
                 }
             }).then((clanovi) => {
-                console.log(JSON.stringify(clanovi));
                 for(let i = 0; i < clanovi.length; i++) {
                     expect(clanovi[i].ostvareniBodovi).to.equal(8);
                 }
