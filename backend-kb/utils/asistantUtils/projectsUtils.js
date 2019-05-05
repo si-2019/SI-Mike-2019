@@ -6,42 +6,41 @@ const provjeraParametaraPostPZ = (postBody) => {
     else return true;
 }
 
-const upisNovogProjektaUBazu = (postBody, prog, rokProjekta, callback) => {
+const upisNovogProjektaUBazu = (postBody, prog, rokProjekta) => {
     let novi = {
         nazivProjekta: postBody['naziv_projekta'],
         idPredmet: postBody['id_predmeta'],
         idKorisnik: postBody['id_asistenta'],
         opisProjekta: postBody['opis_projekta'],
         moguciBodovi: postBody['moguci_bodovi'],
-        progress: prog,
+        progress: prog ? prog : 0.000,
         rokProjekta: rokProjekta ? rokProjekta : ''
     }
     // provjeravanje da li postoji id_predmeta
-    db.Predmet.findOne({
-            where: {
-                id: postBody['id_predmeta']
-            }
-        })
-        .then((predmet) => {
-            if (!predmet) callback(true);
-            else {
+    return new Promise((resolve, reject) => {
+        db.Predmet.findOne({
+                where: {
+                    id: postBody['id_predmeta']
+                }
+            })
+            .then((predmet) => {
+                if (!predmet) reject(true);
                 // provjeravanje da li postoji id_asistenta
-                db.Korisnik.findOne({
-                    where: {
-                        id: postBody['id_asistenta']
-                    }
-                }).then((asistent) => {
-                    if (!asistent) callback(true);
-                    else {
-                        db.Projekat.create(novi)
+                else db.Korisnik.findOne({
+                        where: {
+                            id: postBody['id_asistenta']
+                        }
+                    })
+                    .then((asistent) => {
+                        if (!asistent) reject(true);
+                        else db.Projekat.create(novi)
                             .then((projekat) => {
-                                if (!projekat) callback(true);
-                                else callback(null, projekat);
-                            })
-                    }
-                });
-            }
-        })
+                                if (!projekat) reject(true);
+                                else resolve(projekat);
+                            });
+                    })
+            })
+    })
 }
 
 const provjeraParametaraRokProjekta = (postBody) => {
@@ -94,7 +93,9 @@ const upisRokaIzradeProjekta = (postBody, callback) => {
         });
 }
 
-module.exports.upisNovogProjektaUBazu = upisNovogProjektaUBazu;
-module.exports.provjeraParametaraPostPZ = provjeraParametaraPostPZ;
-module.exports.provjeraParametaraRokProjekta = provjeraParametaraRokProjekta;
-module.exports.upisRokaIzradeProjekta = upisRokaIzradeProjekta;
+module.exports = {
+    upisNovogProjektaUBazu,
+    provjeraParametaraPostPZ,
+    provjeraParametaraRokProjekta,
+    upisRokaIzradeProjekta
+}
