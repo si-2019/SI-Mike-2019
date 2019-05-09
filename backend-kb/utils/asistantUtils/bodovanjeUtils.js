@@ -108,7 +108,7 @@ const upisBodovaProjektaPoClanu = (postBody, callback) => {
         }));
     });
     Promise.all(promises)
-    .then(() => callback(null))
+    .then((rez) => { console.log(rez); callback(null)})
     .catch(() => callback('Greska prilikom referenicranje podataka u bazi!'));
 }
 

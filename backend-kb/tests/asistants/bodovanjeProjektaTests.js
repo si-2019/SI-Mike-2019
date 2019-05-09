@@ -57,7 +57,7 @@ describe('Testiranje post metode base/api/bodovanjeprojekata/unified', () => {
                 'content-type': 'application/x-www-form-urlencoded'
             },
             url: `${process.env.FULL_NAME}/api/bodovanjeprojekata/unified`,
-            body: encodeURI("idGrupaProjekta=2&bodovi=10000")
+            body: encodeURI("idGrupaProjekta=1&bodovi=100000")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
                 message: 'Bodovi moraju biti u intervalu [0, max].'
