@@ -30,4 +30,20 @@ bodovanjeRouter.post('/unified', (req, res) => {
     });
 });
 
+// POST base/api/bodovanjeprojekata/specified
+// obavezni parametri [idProjekat, ]
+
+bodovanjeRouter.post('/specified', (res, req) => {
+    res.setHeader('Content-Type', 'application/json');
+    bodovanjeUtils.provjeraBodySpecified(req.body, (err) => {
+        if(!err) {
+            bodovanjeUtils.upisBodovaProjektaPoClanu(req.body, (err) => {
+                if(err) res.send(JSON.stringify({ message: 'Doslo je do greske sa bazom.' }));
+                else res.send(JSON.stringify({ message: 'Uspjesno bodovan projekat.' }));
+            })
+        } else res.send(JSON.stringify({ message: err }));
+    });
+});
+
+
 module.exports = bodovanjeRouter;

@@ -72,7 +72,18 @@ const upisBodovaProjektneGrupe = (postBody, callback) => {
         });
 };
 
+const provjeraBodySpecified = (postBody, callback) => {
+    
+} 
+
+const upisBodovaProjektaPoClanu = (postBody, callback) => {
+
+}
+
+
 module.exports = {
     provjeraParametaraBodovanjeProjektneGrupe,
-    upisBodovaProjektneGrupe
+    upisBodovaProjektneGrupe,
+    provjeraBodySpecified,
+    upisBodovaProjektaPoClanu
 }
