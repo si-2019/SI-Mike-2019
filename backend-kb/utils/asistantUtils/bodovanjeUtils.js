@@ -72,12 +72,44 @@ const upisBodovaProjektneGrupe = (postBody, callback) => {
         });
 };
 
+const provjeraSvihClanova = (niz, maxB) => {
+    for (let i = 0; i < niz.length; ++i) {
+        let brojBodovaClana = niz[i]["ostvareniBodovi"];
+        if (!niz[i]["idStudent"] || !niz[i]["idGrupaProjekta"] || !brojBodovaClana || brojBodovaClana < 0 || brojBodovaClana > maxB) return false;
+    }
+    return true;
+}
+
+
 const provjeraBodySpecified = (postBody, callback) => {
-    
-} 
+    let payload = postBody['payload'];
+    let projekatId = postBody['projekat'];
+    if (!projekatId || !payload) callback('Projekat/Payload parametri ispravno nisu definisani!');
+    else {
+        db.Projekat.findOne({ where: { idProjekat: projekatId }})
+            .then((result) => {
+                if (!result) callback('Poslani id projekta ne postoji u bazi!');
+                else if (!provjeraSvihClanova(payload, result.moguciBodovi)) callback('Svi parametri unutar payloada za svakog studenta niza nisu specifirani (> maxbodovi?)!');
+                else callback(null);
+            });
+    }
+}
 
 const upisBodovaProjektaPoClanu = (postBody, callback) => {
-
+    let promises = [];
+    postBody.forEach((user) => {
+        promises.push(db.ClanGrupe.update({
+            ostvareniBodovi: user['ostvareniBodovi']
+        }, {
+            where: {
+                idStudent: user['idStudent'],
+                idGrupaProjekta: user['idGrupaProjekta']
+            }
+        }));
+    });
+    Promise.all(promises)
+    .then(() => callback(null))
+    .catch(() => callback('Greska prilikom referenicranje podataka u bazi!'));
 }
 
 
