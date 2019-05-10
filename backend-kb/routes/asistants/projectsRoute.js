@@ -10,7 +10,7 @@ const projectUtils = require('../../utils/asistantUtils/projectsUtils');
  *      tags:
  *       - Studenti - Rad na projektu
  *      description: 'Omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
- *      Salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodan projekat,
+ *      Salje se kao url encoded format i prima i kao rezultat vraca json projekta ukoliko je uspješno dodan projekat,
  *      a ako nije json sa parametrom message koji govori da nije uspješno dodan projekat.
  *      Realizvano od strane: Mašović Haris'
  *      consumes:
@@ -23,7 +23,7 @@ const projectUtils = require('../../utils/asistantUtils/projectsUtils');
  *        - in: formData
  *          name: id_predmeta
  *          type: integer
- *          description: ID predmeta npr ~ [3].
+ *          description: ID predmeta npr ~ [4].
  *        - in: formData
  *          name: id_asistenta
  *          type: integer
