@@ -8,7 +8,14 @@ const workUtils = require('../../utils/studentUtils/workUtils');
 // [opis, zavrsen, komentar_asistenta] nisu obavezni parametri za ovaj post
 // salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodan
 // a ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat
-
+/**
+ * @swagger
+ * /api/work/:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu
+ *      description: Omogucava dodavanje projektnih zadataka za vec postojeci projekat
+ */
 workRouter.post('/', (req, res) => {    
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');

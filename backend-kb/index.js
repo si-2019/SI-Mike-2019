@@ -7,6 +7,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const db = require ('./models/db.js');
 
+const swaggerDoc = require('./swaggerDoc.js');
+
 // povezivanje sa bazom
 db.sequelize.sync()
     .then(() => console.log("MIKE REST API: Uspjesno povezano sa peca bazom!"))
@@ -30,6 +32,9 @@ const groupRouter = require('./routes/students/groupRoute');
 const workRouter = require('./routes/students/workRoute');
 const viewSRouter = require('./routes/students/viewSRoute');
 const progressRouter = require('./routes/students/progressRoute');
+
+// postavljanje swaggera
+swaggerDoc(app);
 
 // postavljanje CORS-a za naš drugi server
 // da samo on može kupiti podatke
