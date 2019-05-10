@@ -9,6 +9,14 @@ const projectUtils = require('../../utils/asistantUtils/projectsUtils');
 // salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodan
 // a ako nije json sa parametrom message koji govori da nije uspješno dodan projekat
 
+/**
+ * @swagger
+ * /api/projects/newp:
+ *    post:
+ *      tags:
+*       - Asistenti - Kreiranje projekata na nivou predmeta
+ *      description: Omogucava kreiranje novog projekta
+ */
 projectsRouter.post('/newp', (req, res) => {
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');
@@ -36,6 +44,14 @@ projectsRouter.post('/newp', (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/projects/setdeadline:
+ *    post:
+ *      tags:
+*       - Asistenti - Kreiranje projekata na nivou predmeta
+ *      description: Omogucava postavljanje roka za projekat
+ */
 projectsRouter.post('/setdeadline', (req, res) => {
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');

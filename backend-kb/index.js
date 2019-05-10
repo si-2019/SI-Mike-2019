@@ -7,6 +7,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const db = require ('./models/db.js');
 
+const swaggerDoc = require('./swaggerDoc.js');
+
 // povezivanje sa bazom
 db.sequelize.sync()
     .then(() => console.log("MIKE REST API: Uspjesno povezano sa peca bazom!"))
@@ -60,6 +62,9 @@ app.use('/api/generate', generateRouter);
 app.use('/api/bodovanjeprojekata', bodovanjeRouter); 
 // definisanje ruta za dio "Pregled projekata"
 app.use('/api/viewA', viewARouter);
+
+// postavljanje swaggera
+swaggerDoc(app);
 
 app.listen(PORT, () => {
     console.log(`Rest-api service started on ${PORT} port!`);

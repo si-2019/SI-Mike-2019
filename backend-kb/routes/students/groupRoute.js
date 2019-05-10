@@ -5,6 +5,14 @@ const groupUtils = require('../../utils/studentUtils/groupUtils');
 
 // [idGrupaProjekta, idProjekat] obavezni parametari u bodiju posta
 // [nazivGrupe, ostvareniBodovi, komentarAsistenta] neobavezni parametri u bodiju posta
+/**
+ * @swagger
+ * /api/group/:
+ *    post:
+ *      tags:
+*       - Studenti - Kreiranje projektne grupe
+ *      description: Omogucava kreiranje novih projektnih grupa
+ */
 groupRouter.post('/', (req, res) => {
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');
@@ -32,7 +40,14 @@ groupRouter.post('/', (req, res) => {
 // [kreator] nije obavezan, ali ukoliko se pošalje smatra se da je ta osoba vođa grupe
 // salje se kao json format, a kao rezultat vraca json sa uspjesnom porukom
 // a ako nije json sa parametrom message koji govori šta nije bilo uspjesno
-
+/**
+ * @swagger
+ * /api/group/addmembers:
+ *    post:
+ *      tags:
+*       - Studenti - Kreiranje projektne grupe
+ *      description: Omogucava kreiranje novih clanova u grupu, koji već nisu bilo u toj grupi
+ */
 groupRouter.post('/addmembers', (req, res) => {
     let nizNovihMembera = req.body.payload;
     if (!groupUtils.provjeraNovihMembera(nizNovihMembera)) res.send(JSON.stringify({
