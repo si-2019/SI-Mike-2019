@@ -70,6 +70,21 @@ const upisNovihMemberaUBazu = (niz, callback) => {
         })
 }
 
+const upisVodjeGrupe = (clanId, callback) => {
+    db.ClanGrupe.findOne({
+        where:{
+            idClanGrupe:clanId
+        }
+    }).then((clanGrupe)=>{
+        if(!clanGrupe) callback(true);
+        else{
+        clanGrupe.update({
+            kreator:true
+        }).success(callback(null));
+    }
+    });
+}
+
 module.exports = {
     provjeraParametaraPostG,
     upisNoveGrupeUBazu,

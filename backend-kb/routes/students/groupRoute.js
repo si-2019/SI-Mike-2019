@@ -92,6 +92,29 @@ groupRouter.post('/addmembers', (req, res) => {
     }
 });
 
+// POST base/api/group/selectleader
+// [idClanGrupe] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /api/group/selectleader:
+ *    post:
+ *      tags:
+*       - Studenti - Kreiranje projektne grupe
+ *      description: Izbor vođe generisane grupe
+ */
+groupRouter.post('/selectleader', (req, res) => {
+    let idClanaGrupe=req.body.id;
+    groupUtils.upisVodjeGrupe(idClanaGrupe,(err)=>{
+        if(err) res.send(JSON.stringify({
+            message: 'Greska prilikom upisa vodje grupe!',
+            err
+        }));
+        else res.send(JSON.stringify({
+            message: 'Uspjesno upisan vodja grupe!'
+        }));
+    });
+});
+
 
 
 module.exports = groupRouter;
