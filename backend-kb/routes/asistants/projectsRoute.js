@@ -17,9 +17,13 @@ const projectUtils = require('../../utils/asistantUtils/projectsUtils');
  *       - application/x-www-form-urlencoded
  *      parameters:
  *        - in: formData
+ *          name: naziv_projekta
+ *          type: string
+ *          description: naziv projekta.
+ *        - in: formData
  *          name: id_predmeta
  *          type: integer
- *          description: ID projekta npr ~ [3].
+ *          description: ID predmeta npr ~ [3].
  *        - in: formData
  *          name: id_asistenta
  *          type: integer
