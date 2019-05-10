@@ -71,6 +71,7 @@ bodovanjeRouter.post('/unified', (req, res) => {
  *                required:
  *                - idStudent
  *                - idGrupaProjekta
+ *                - ostvareniBodovi
  *      responses:
  *       200:
  *         description: Vraca se JSON objekat sa parametrom message
