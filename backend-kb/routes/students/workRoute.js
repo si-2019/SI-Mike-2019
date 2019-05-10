@@ -1,20 +1,16 @@
 const express = require('express');
 const workRouter = express.Router();
-
 const workUtils = require('../../utils/studentUtils/workUtils');
 
-// POST base/api/work/ 
-// [id_projekta, prioritet, od_kad, do_kad] obavezni parametar u bodiju posta
-// [opis, zavrsen, komentar_asistenta] nisu obavezni parametri za ovaj post
-// salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodan
-// a ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat
 /**
  * @swagger
  * /api/work/:
  *    post:
  *      tags:
  *       - Studenti - Rad na projektu
- *      description: Omogucava dodavanje projektnih zadataka za vec postojeci projekat
+ *      description: "Omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
+ *      Salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodana 
+ *      ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat."
  *      consumes:
  *       - application/x-www-form-urlencoded
  *      parameters:
@@ -30,6 +26,18 @@ const workUtils = require('../../utils/studentUtils/workUtils');
  *          name: do_kad
  *          type: string
  *          description: datum do kada npr ~ [2019-11-03 23:00:00].
+ *        - in: formData
+ *          name: opis
+ *          type: string
+ *          description: opis projektnog zadatka.
+ *        - in: formData
+ *          name: zavrsen
+ *          type: boolean
+ *          description: opis projektnog zadatka.
+ *        - in: formData
+ *          name: komentar_asistenta
+ *          type: string
+ *          description: komentar asistenta.
  *      required:
  *        - id_projekta
  *        - od_kad
