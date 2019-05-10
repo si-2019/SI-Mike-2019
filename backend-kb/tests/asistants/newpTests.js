@@ -61,7 +61,7 @@ describe('Testiranje post metode base/api/projects/newp', () => {
                 'content-type': 'application/x-www-form-urlencoded'
             },
             url: `${process.env.FULL_NAME}/api/projects/newp`,
-            body:    encodeURI(`id_predmeta=3&id_asistenta=2&opis_projekta=hahah&moguci_bodovi=1337&naziv_projekta=${random}`)
+            body:    encodeURI(`id_predmeta=4&id_asistenta=2&opis_projekta=hahah&moguci_bodovi=1337&naziv_projekta=${random}`)
         }, function (error, response, body) {
             let novi = body ? JSON.parse(body) : null;
             db.Projekat.findOne({
@@ -69,7 +69,7 @@ describe('Testiranje post metode base/api/projects/newp', () => {
                     nazivProjekta : random
                 }
             }).then((rez) => {
-                expect(novi.idPredmet).to.equal('3');
+                expect(novi.idPredmet).to.equal('4');
                 expect(novi.idKorisnik).to.equal('2');
                 expect(novi.opisProjekta).to.equal('hahah');
                 expect(novi.moguciBodovi).to.equal('1337');
