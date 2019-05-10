@@ -11,7 +11,7 @@ const projectUtils = require('../../utils/asistantUtils/projectsUtils');
 
 /**
  * @swagger
- * /api/projects/newp:
+ * base-url/api/projects/newp:
  *    post:
  *      tags:
 *       - Asistenti - Kreiranje projekata na nivou predmeta
@@ -46,7 +46,7 @@ projectsRouter.post('/newp', (req, res) => {
 
 /**
  * @swagger
- * /api/projects/setdeadline:
+ * base-url/api/projects/setdeadline:
  *    post:
  *      tags:
 *       - Asistenti - Kreiranje projekata na nivou predmeta

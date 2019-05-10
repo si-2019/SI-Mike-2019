@@ -5,7 +5,7 @@ const bodovanjeUtils = require('../../utils/asistantUtils/bodovanjeUtils');
 
 /**
  * @swagger
- * /api/bodovanjeprojekata/unified:
+ * base-url/api/bodovanjeprojekata/unified:
  *    post:
  *      tags:
 *       - Asistenti - Bodovanje projekata
@@ -44,11 +44,12 @@ bodovanjeRouter.post('/unified', (req, res) => {
 // UKOLIKO JE ZA ODREDJENI OBJEKAT SVE ISPRAVNO, TAJ OBJEKAT CE BITI PROMIJENJEN DOK OSTALI KOJI NISU ISPRAVNO DEFINISANI NECE!
 /**
  * @swagger
- * /api/bodovanjeprojekata/specified:
+ * base-url/api/bodovanjeprojekata/specified:
  *    post:
  *      tags:
-*       - Asistenti - Bodovanje projekata
- *      description: Omogucava bodovanje projekata, tako da se definisu bodovi za svakog clana grupe 
+ *      - Asistenti - Bodovanje projekata
+ *      description: Omogucava bodovanje projekata, tako da se definisu bodovi za svakog clana grupe
+ *      cosumes : application/json 
  */
 bodovanjeRouter.post('/specified', (req, res) => {
     res.setHeader('Content-Type', 'application/json');

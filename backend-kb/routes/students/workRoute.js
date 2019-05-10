@@ -10,7 +10,7 @@ const workUtils = require('../../utils/studentUtils/workUtils');
 // a ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat
 /**
  * @swagger
- * /api/work/:
+ * base-url/api/work/:
  *    post:
  *      tags:
 *       - Studenti - Rad na projektu

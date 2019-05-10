@@ -7,10 +7,15 @@ const options = {
     swaggerDefinition: {
         info: {
             title: 'Dokumentacija za backend API za MIKE Kolaboraciju',
-            version: '1.0.0',
-            host : process.env.FULL_NAME, 
+            version: '1.0.0', 
             description: 'Citav api opis potreban za backend dio za tim mike.',
         },
+        host : process.env.FULL_NAME,
+        basePath: '/',
+        servers : [ {
+            url : process.env.FRONTEND,
+            description : "Frontend server koji koristi ovaj rest api."
+        }]
     },
     // List of files to be processes. You can also set globs './routes/*.js'
     apis: ['./routes/asistants/*.js', './routes/students/*.js'],
