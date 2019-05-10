@@ -18,7 +18,7 @@ const options = {
         }]
     },
     // List of files to be processes. You can also set globs './routes/*.js'
-    apis: ['./routes/asistants/*.js', './routes/students/*.js'],
+    apis: ['./index.js', './routes/asistants/*.js', './routes/students/*.js'],
 };
 
 const specs = swaggerJsdoc(options);

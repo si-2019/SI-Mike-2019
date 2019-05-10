@@ -15,31 +15,25 @@ const workUtils = require('../../utils/studentUtils/workUtils');
  *      tags:
  *       - Studenti - Rad na projektu
  *      description: Omogucava dodavanje projektnih zadataka za vec postojeci projekat
+ *      consumes:
+ *       - application/x-www-form-urlencoded
  *      parameters:
- *       - name: body
- *         in: body
- *         schema:
- *           type: object
- *           properties:
- *             id_projekta:
- *               type: string
- *             prioritet:
- *               type: string
- *             od_kad:
- *               type: string
- *             do_kad:
- *               type: string
- *             opis:
- *               type: string
- *             zavrsen:
- *               type: boolean
- *             komentar_asistenta:
- *               type: string
- *         required:
- *           - id_projekta
- *           - prioritet
- *           - od_kad
- *           - do_kad
+ *        - in: formData
+ *          name: id_projekta
+ *          type: number
+ *          description: ID projekta npr ~ [29].
+ *        - in: formData
+ *          name: od_kad
+ *          type: string
+ *          description: datum od kada npr ~ [2019-11-03 23:00:00].
+ *        - in: formData
+ *          name: do_kad
+ *          type: string
+ *          description: datum do kada npr ~ [2019-11-03 23:00:00].
+ *      required:
+ *        - id_projekta
+ *        - od_kad
+ *        - do_kad
  *      responses:
  *       200:
  *         description: Vraca se JSON objekat sa parametrom message

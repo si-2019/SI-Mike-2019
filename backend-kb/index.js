@@ -33,9 +33,6 @@ const workRouter = require('./routes/students/workRoute');
 const viewSRouter = require('./routes/students/viewSRoute');
 const progressRouter = require('./routes/students/progressRoute');
 
-// postavljanje swaggera
-swaggerDoc(app);
-
 // postavljanje CORS-a za naš drugi server
 // da samo on može kupiti podatke
 app.use('/*', (req, res, next) => {
@@ -65,6 +62,9 @@ app.use('/api/generate', generateRouter);
 app.use('/api/bodovanjeprojekata', bodovanjeRouter); 
 // definisanje ruta za dio "Pregled projekata"
 app.use('/api/viewA', viewARouter);
+
+// postavljanje swaggera
+swaggerDoc(app);
 
 app.listen(PORT, () => {
     console.log(`Rest-api service started on ${PORT} port!`);
