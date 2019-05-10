@@ -7,7 +7,7 @@ const groupUtils = require('../../utils/studentUtils/groupUtils');
 // [nazivGrupe, ostvareniBodovi, komentarAsistenta] neobavezni parametri u bodiju posta
 /**
  * @swagger
- * base-url/api/group/:
+ * /api/group/:
  *    post:
  *      tags:
 *       - Studenti - Kreiranje projektne grupe
@@ -42,7 +42,7 @@ groupRouter.post('/', (req, res) => {
 // a ako nije json sa parametrom message koji govori šta nije bilo uspjesno
 /**
  * @swagger
- * base-url/api/group/addmembers:
+ * /api/group/addmembers:
  *    post:
  *      tags:
 *       - Studenti - Kreiranje projektne grupe

@@ -10,12 +10,47 @@ const workUtils = require('../../utils/studentUtils/workUtils');
 // a ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat
 /**
  * @swagger
- * base-url/api/work/:
+ * /api/work/:
  *    post:
  *      tags:
-*       - Studenti - Rad na projektu
+ *       - Studenti - Rad na projektu
  *      description: Omogucava dodavanje projektnih zadataka za vec postojeci projekat
- */
+ *      parameters:
+ *       - name: body
+ *         in: body
+ *         schema:
+ *           type: object
+ *           properties:
+ *             id_projekta:
+ *               type: string
+ *             prioritet:
+ *               type: string
+ *             od_kad:
+ *               type: string
+ *             do_kad:
+ *               type: string
+ *             opis:
+ *               type: string
+ *             zavrsen:
+ *               type: boolean
+ *             komentar_asistenta:
+ *               type: string
+ *         required:
+ *           - id_projekta
+ *           - prioritet
+ *           - od_kad
+ *           - do_kad
+ *      responses:
+ *       200:
+ *         description: Vraca se JSON objekat sa parametrom message
+ *         content: 
+ *           application/json:
+ *               schema: 
+ *                 type: object
+ *                 properties:
+ *                  message:
+ *                   type: string
+*/
 workRouter.post('/', (req, res) => {    
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');

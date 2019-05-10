@@ -5,7 +5,7 @@ const bodovanjeUtils = require('../../utils/asistantUtils/bodovanjeUtils');
 
 /**
  * @swagger
- * base-url/api/bodovanjeprojekata/unified:
+ * /api/bodovanjeprojekata/unified:
  *    post:
  *      tags:
 *       - Asistenti - Bodovanje projekata
@@ -44,7 +44,7 @@ bodovanjeRouter.post('/unified', (req, res) => {
 // UKOLIKO JE ZA ODREDJENI OBJEKAT SVE ISPRAVNO, TAJ OBJEKAT CE BITI PROMIJENJEN DOK OSTALI KOJI NISU ISPRAVNO DEFINISANI NECE!
 /**
  * @swagger
- * base-url/api/bodovanjeprojekata/specified:
+ * /api/bodovanjeprojekata/specified:
  *    post:
  *      tags:
  *      - Asistenti - Bodovanje projekata

@@ -10,7 +10,7 @@ const options = {
             version: '1.0.0', 
             description: 'Citav api opis potreban za backend dio za tim mike.',
         },
-        host : process.env.FULL_NAME,
+        host : `${process.env.HOST}:${process.env.PORT}`,
         basePath: '/',
         servers : [ {
             url : process.env.FRONTEND,
