@@ -14,3 +14,8 @@
 - PRIJE GENERISANJA: IMATI GLOBALNO INSTALIRANO: MYSQL, SEQULIZE-AUTO
 - ukoliko je potrebno generisati nove modele kucari `npm run generate`
 - DODATI OBAVEZNO `autoIncrement: true` u primary key atribute KAD SE KREIRA, jer sam sequlize-auto ne doda (radi auto increment opcije)!
+
+## Korištenje swaggera
+- Prije/tokom/na kraju pisanja api call metode, OBAVEZNO definisati i swagger objekat prije njenog poziva
+- Primjer kako se to radi može se naći `./routes/students/workRoute.js`
+- Unutar toga treba se definisati ŠTA ta metoda radi, KOJI su OBAVEZNI ulazni parametri, KOJI su OBAVEZNI izlazni parametri! 
