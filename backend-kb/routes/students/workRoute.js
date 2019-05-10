@@ -8,9 +8,10 @@ const workUtils = require('../../utils/studentUtils/workUtils');
  *    post:
  *      tags:
  *       - Studenti - Rad na projektu
- *      description: "Omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
+ *      description: 'Omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
  *      Salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodana 
- *      ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat."
+ *      ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat. 
+ *      Realizvano od strane: Mašović Haris'
  *      consumes:
  *       - application/x-www-form-urlencoded
  *      parameters:
