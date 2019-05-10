@@ -34,22 +34,48 @@ groupRouter.post('/', (req, res) => {
     }
 });
 
-// POST base/api/group/addmembers 
-// [idStudent, idGrupaProjekta] obavezni parametari u json nizu ZA SVAKOG MEMBERA unutar body posta
-// a obavezan je json koji se šalje kao npr: {"payload" : [{"idStudent" : 1, "idGrupaProjekta" : 2},{"idStudent" : 2, "idGrupaProjekta" : 2}]}
-// [kreator] nije obavezan, ali ukoliko se pošalje smatra se da je ta osoba vođa grupe
-// salje se kao json format, a kao rezultat vraca json sa uspjesnom porukom
-// a ako nije json sa parametrom message koji govori šta nije bilo uspjesno
 /**
  * @swagger
  * /api/group/addmembers:
  *    post:
  *      tags:
-*       - Studenti - Kreiranje projektne grupe
- *      description: Omogucava kreiranje novih clanova u grupu, koji već nisu bilo u toj grupi
- */
+ *       - Studenti - Kreiranje projektne grupe
+ *      description: 'Omogucava dodavanje novih osoba u već postojeće grupe za definisanje projekte.
+ *      Realizvano od strane: Mašović Haris'
+ *      consumes:
+ *       - application/json
+ *      parameters:
+ *          - in: body
+ *            name: payload
+ *            description: The user to create.
+ *            schema:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                  idStudent:
+ *                   type: integer
+ *                  idGrupaProjekta:
+ *                   type: integer
+ *                  kreator:
+ *                   type: boolean
+ *               required:
+ *               - idStudent
+ *               - idGrupaProjekta
+ *      responses:
+ *       200:
+ *         description: Vraca se JSON objekat sa parametrom message
+ *         content: 
+ *           application/json:
+ *               schema: 
+ *                 type: object
+ *                 properties:
+ *                  message:
+ *                   type: string
+*/
 groupRouter.post('/addmembers', (req, res) => {
     let nizNovihMembera = req.body.payload;
+    if(!nizNovihMembera){ res.send(JSON.stringify({ message: 'Nisu poslani memberi unutar payloada!' })); return; }
     if (!groupUtils.provjeraNovihMembera(nizNovihMembera)) res.send(JSON.stringify({
         message: 'Svaki member u JSON body-u ne sadrži [idStudent, idGrupaProjekta]!'
     }));
