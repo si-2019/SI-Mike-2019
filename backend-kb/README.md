@@ -2,7 +2,7 @@
 Čitaj redom sve.
 
 ## Port klasifikacija & Runtime/Testing & envoirment upute
-- 3001 : Rest api node
+- 31913 : Rest api node
 - `npm install` uraditi unutar backend foldera
 - `npm start` u backend folderu za pokreteanje servisa
 - `npm run test-students` u backend folderu za rest api testove za studente (uslov: imati pokrenut server)
@@ -19,3 +19,5 @@
 - Prije/tokom/na kraju pisanja api call metode, OBAVEZNO definisati i swagger objekat prije njenog poziva
 - Primjer kako se to radi može se naći `./routes/students/workRoute.js`
 - Unutar toga treba se definisati ŠTA ta metoda radi, KOJI su OBAVEZNI ulazni parametri, KOJI su OBAVEZNI izlazni parametri! 
+- http://localhost:31913/ - za dobijanje swagger-ui
+- http://localhost:31913/swagger-json - za dobijanje json fajla swaggera
