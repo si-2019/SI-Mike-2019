@@ -18,13 +18,13 @@ const options = {
         }]
     },
     // List of files to be processes. You can also set globs './routes/*.js'
-    apis: ['./index.js', './routes/asistants/*.js', './routes/students/*.js'],
+    apis: ['./index.js', './api/asistants/*.js', './api/students/*.js'],
 };
 
 const specs = swaggerJsdoc(options);
 
 module.exports = (app) => {
-    app.use('/swagger-json', (req, res) => {
+    app.use('/swagger-json-api', (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(specs);
     })
