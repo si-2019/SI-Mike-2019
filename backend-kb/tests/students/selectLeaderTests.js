@@ -7,7 +7,7 @@ const uuidv4 = require('uuid/v4');
 const db = require('../../models/db');
 
 describe('Testiranje post metode base/services/group/selectleader', () => {
-/*
+
     it('Treba da postavi studenta za vodju grupe', (done) => {
         let testni = {
             idClanGrupe: 100,
@@ -36,5 +36,5 @@ describe('Testiranje post metode base/services/group/selectleader', () => {
             })
         })
         .catch((err) => console.log(err));
-    }); */
+    }); 
 });
