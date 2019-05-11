@@ -7,10 +7,10 @@ const groupUtils = require('../../utils/studentUtils/groupUtils');
 // [nazivGrupe, ostvareniBodovi, komentarAsistenta] neobavezni parametri u bodiju posta
 /**
  * @swagger
- * /api/group/:
+ * /services/group/:
  *    post:
  *      tags:
-*       - Studenti - Kreiranje projektne grupe
+*       - Studenti - Kreiranje projektne grupe - Service 
  *      description: Omogucava kreiranje novih projektnih grupa
  */
 groupRouter.post('/', (req, res) => {
@@ -36,10 +36,10 @@ groupRouter.post('/', (req, res) => {
 
 /**
  * @swagger
- * /api/group/addmembers:
+ * /services/group/addmembers:
  *    post:
  *      tags:
- *       - Studenti - Kreiranje projektne grupe
+ *       - Studenti - Kreiranje projektne grupe - Service
  *      description: 'Omogucava dodavanje novih osoba u već postojeće grupe za definisanje projekte.
  *      Realizvano od strane: Mašović Haris'
  *      consumes:
@@ -96,10 +96,10 @@ groupRouter.post('/addmembers', (req, res) => {
 // [idClanGrupe] obavezni parametar u bodiju posta
 /**
  * @swagger
- * /api/group/selectleader:
+ * /services/group/selectleader:
  *    post:
  *      tags:
-*       - Studenti - Kreiranje projektne grupe
+*       - Studenti - Kreiranje projektne grupe - Service
  *      description: Izbor vođe generisane grupe
  */
 groupRouter.post('/selectleader', (req, res) => {
