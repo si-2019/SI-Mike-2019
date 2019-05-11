@@ -33,7 +33,7 @@ const workRouter = express.Router();
  *        - in: formData
  *          name: zavrsen
  *          type: boolean
- *          description: opis projektnog zadatka.
+ *          description: zavrsen projektni zadatak?.
  *        - in: formData
  *          name: komentar_asistenta
  *          type: string
