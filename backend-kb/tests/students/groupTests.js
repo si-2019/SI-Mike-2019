@@ -6,14 +6,14 @@ dotenv.config(); // postavljanje configa
 const uuidv4 = require('uuid/v4');
 const db = require('../../models/db');
 
-describe('Testiranje post metode base/api/group', () => {
+describe('Testiranje post metode base/services/group', () => {
     
     it('Treba da vrati gresku jer id projekta nije uredu', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/group`,
+            url: `${process.env.FULL_NAME}/services/group`,
             body:    encodeURI("idGrupaProjekta=5&idProjekat=56&nazivGrupe=Najbolja&ostvareniBodovi=555&komentarAsistenta=sjajno") 
         }, function (error, response, body) {
             let projekat = JSON.parse(body);
@@ -29,7 +29,7 @@ describe('Testiranje post metode base/api/group', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/group`,
+            url: `${process.env.FULL_NAME}/services/group`,
             body:    encodeURI(`idGrupaProjekta=5&idProjekat=3&nazivGrupe=Najbolja&ostvareniBodovi=555&komentarAsistenta=sjajno${random}`)
         }, function (error, response, body) {
             let novi = body ? JSON.parse(body) : null;

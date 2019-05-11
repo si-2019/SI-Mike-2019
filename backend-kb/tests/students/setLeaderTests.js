@@ -6,7 +6,7 @@ dotenv.config(); // postavljanje configa
 const uuidv4 = require('uuid/v4');
 const db = require('../../models/db');
 
-describe('Testiranje post metode base/api/group/selectleader', () => {
+describe('Testiranje post metode base/services/group/selectleader', () => {
 
     it('Treba da postavi studenta za vodju grupe', (done) => {
         let testni = {
@@ -22,7 +22,7 @@ describe('Testiranje post metode base/api/group/selectleader', () => {
                 headers: {
                     'content-type': 'application/x-www-form-urlencoded'
                 },
-                url: `${process.env.FULL_NAME}/api/group/selectleader`,
+                url: `${process.env.FULL_NAME}/services/group/selectleader`,
                 body: encodeURI(`id=100`)
             }, function (error, response, body) {
                 db.ClanGrupe.findOne({

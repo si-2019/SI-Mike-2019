@@ -5,14 +5,14 @@ dotenv.config();
 
 const db = require('../../models/db');
 
-describe('Testiranje post metode base/api/bodovanjeprojekata/unified', () => {
+describe('Testiranje post metode base/services/bodovanjeprojekata/unified', () => {
 
     it('Treba da vraca gresku jer nije zadovoljen body', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata/unified`
+            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/unified`
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
                 message: 'Body parametri nisu specifirani [idGrupaProjekta, bodovi]'
@@ -26,7 +26,7 @@ describe('Testiranje post metode base/api/bodovanjeprojekata/unified', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata/unified`,
+            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/unified`,
             body: encodeURI("idGrupaProjekta=15678&bodovi=10")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -41,7 +41,7 @@ describe('Testiranje post metode base/api/bodovanjeprojekata/unified', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata/unified`,
+            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/unified`,
             body: encodeURI("idGrupaProjekta=1&bodovi=-1")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -56,7 +56,7 @@ describe('Testiranje post metode base/api/bodovanjeprojekata/unified', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata/unified`,
+            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/unified`,
             body: encodeURI("idGrupaProjekta=1&bodovi=100000")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -71,7 +71,7 @@ describe('Testiranje post metode base/api/bodovanjeprojekata/unified', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata/unified`,
+            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/unified`,
             body: encodeURI("idGrupaProjekta=1&bodovi=8")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({

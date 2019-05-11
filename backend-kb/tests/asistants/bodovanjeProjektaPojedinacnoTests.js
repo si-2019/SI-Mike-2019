@@ -3,7 +3,7 @@ const request = require('request');
 const dotenv = require('dotenv'); // definisanje env varijabli
 dotenv.config(); // postavljanje configa 
 
-describe('Testiranje post metode base/api/group/addmembers', () => {
+describe('Testiranje post metode base/services/group/addmembers', () => {
     
     it('Treba da vraca specifican json jer nije zadovoljen body', (done) => {
         request.post({
@@ -11,7 +11,7 @@ describe('Testiranje post metode base/api/group/addmembers', () => {
                 'content-Type': 'application/json',
                 'Accept' : 'application/json'
             },
-            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata/specified`,
+            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/specified`,
             body: {
                 "projekat_ne_valja" : 29,
                 "payload" : [{"idStudent" : 1, "idGrupaProjekta" : 1, "ostvareniBodovi" : 50}, 
@@ -30,7 +30,7 @@ describe('Testiranje post metode base/api/group/addmembers', () => {
                 'content-Type': 'application/json',
                 'Accept' : 'application/json'
             },
-            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata/specified`,
+            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/specified`,
             body: {
                 "projekat_ne_valja" : 29,
                 "payload" : [{"idStudent" : 1, "idGrupaProjekta" : 1, "ostvareniBodovi" : 500}, 
@@ -49,7 +49,7 @@ describe('Testiranje post metode base/api/group/addmembers', () => {
                 'content-Type': 'application/json',
                 'Accept' : 'application/json'
             },
-            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata/specified`,
+            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/specified`,
             body: {
                 "projekat" : 293,
                 "payload" : [{"idStudent" : 1, "idGrupaProjekta" : 1, "ostvareniBodovi" : 30}, 
@@ -68,7 +68,7 @@ describe('Testiranje post metode base/api/group/addmembers', () => {
                 'content-Type': 'application/json',
                 'Accept' : 'application/json'
             },
-            url: `${process.env.FULL_NAME}/api/bodovanjeprojekata/specified`,
+            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/specified`,
             body: {
                 "projekat" : 29,
                 "payload" : [{"idStudent" : 1, "idGrupaProjekta" : 1, "ostvareniBodovi" : 50}, 

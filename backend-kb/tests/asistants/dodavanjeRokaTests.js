@@ -5,14 +5,14 @@ dotenv.config();
 
 const db = require('../../models/db');
 
-describe('Testiranje post metode base/api/projects/setdeadline', () => {
+describe('Testiranje post metode base/services/projects/setdeadline', () => {
 
     it('Treba da vraca gresku jer nije zadovoljen body', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/setdeadline`
+            url: `${process.env.FULL_NAME}/services/projects/setdeadline`
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
                 message: 'Body parametri nisu specifirani [idProjekat, rokProjekta]'
@@ -26,7 +26,7 @@ describe('Testiranje post metode base/api/projects/setdeadline', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/setdeadline`,
+            url: `${process.env.FULL_NAME}/services/projects/setdeadline`,
             body: encodeURI("idProjekat=15678&rokProjekta=2017-08-08 23:04:05")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -41,7 +41,7 @@ describe('Testiranje post metode base/api/projects/setdeadline', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/setdeadline`,
+            url: `${process.env.FULL_NAME}/services/projects/setdeadline`,
             body: encodeURI("idProjekat=1&rokProjekta=3044-01-01 24:23:75")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -56,7 +56,7 @@ describe('Testiranje post metode base/api/projects/setdeadline', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/setdeadline`,
+            url: `${process.env.FULL_NAME}/services/projects/setdeadline`,
             body: encodeURI(`idProjekat=29&rokProjekta=2019-08-01 20:20:20`)
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
