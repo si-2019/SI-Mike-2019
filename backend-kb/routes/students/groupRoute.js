@@ -42,36 +42,6 @@ groupRouter.post('/', (req, res) => {
  *       - Studenti - Kreiranje projektne grupe - Service
  *      description: 'Omogucava dodavanje novih osoba u već postojeće grupe za definisanje projekte.
  *      Realizvano od strane: Mašović Haris'
- *      consumes:
- *       - application/json
- *      parameters:
- *          - in: body
- *            name: payload
- *            description: The user to create.
- *            schema:
- *             type: array
- *             items:
- *               type: object
- *               properties:
- *                  idStudent:
- *                   type: integer
- *                  idGrupaProjekta:
- *                   type: integer
- *                  kreator:
- *                   type: boolean
- *               required:
- *               - idStudent
- *               - idGrupaProjekta
- *      responses:
- *       200:
- *         description: Vraca se JSON objekat sa parametrom message
- *         content: 
- *           application/json:
- *               schema: 
- *                 type: object
- *                 properties:
- *                  message:
- *                   type: string
 */
 groupRouter.post('/addmembers', (req, res) => {
     let nizNovihMembera = req.body.payload;
