@@ -6,7 +6,7 @@ dotenv.config(); // postavljanje configa
 const uuidv4 = require('uuid/v4');
 const db = require('../../models/db');
 
-describe('Testiranje post metode base/api/work', () => {
+describe('Testiranje post metode base/services/work', () => {
     
 
     it('Treba da vraca specifican json jer nije zadovoljen body', (done) => {
@@ -14,7 +14,7 @@ describe('Testiranje post metode base/api/work', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/work`
+            url: `${process.env.FULL_NAME}/services/work`
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
                 message: 'Body parametri nisu specifirani [id_projekta, od_kad, do_kad]'
@@ -28,7 +28,7 @@ describe('Testiranje post metode base/api/work', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/work`,
+            url: `${process.env.FULL_NAME}/services/work`,
             body:    encodeURI("id_projekta=3&od_kad=2019-14-03 23:00:00&do_kad=2019-12-03 23:00:00") // u bazi je dummy 3
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -43,7 +43,7 @@ describe('Testiranje post metode base/api/work', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/work`,
+            url: `${process.env.FULL_NAME}/services/work`,
             body:    encodeURI("id_projekta=55&od_kad=2019-11-03 23:00:00&do_kad=2019-12-03 23:00:00") // u bazi je dummy 3
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -59,7 +59,7 @@ describe('Testiranje post metode base/api/work', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/work`,
+            url: `${process.env.FULL_NAME}/services/work`,
             body:    encodeURI("id_projekta=29&od_kad=2019-11-03 23:00:00&do_kad=2019-12-03 23:00:00") // u bazi je dummy 29
         }, function (error, response, body) {
             let novi = JSON.parse(body);
@@ -77,7 +77,7 @@ describe('Testiranje post metode base/api/work', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/work`,
+            url: `${process.env.FULL_NAME}/services/work`,
             body:    encodeURI(`id_projekta=29&od_kad=2019-11-03 23:00:00&do_kad=2019-12-03 23:00:00&opis=${random}`) // dummy 29
             // u bazi je dummy 3
         }, function (error, response, body) {

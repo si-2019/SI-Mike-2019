@@ -6,14 +6,14 @@ dotenv.config(); // postavljanje configa
 const uuidv4 = require('uuid/v4');
 const db = require('../../models/db');
 
-describe('Testiranje post metode base/api/projects/newp', () => {
+describe('Testiranje post metode base/services/projects/newp', () => {
     
     it('Treba da vraca specifican json jer nije zadovoljen body', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/newp`
+            url: `${process.env.FULL_NAME}/services/projects/newp`
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
                 message: 'Body parametri nisu specifirani [naziv_projekta, id_predmeta, id_asistenta, opis_projekta, moguci_bodovi]'
@@ -27,7 +27,7 @@ describe('Testiranje post metode base/api/projects/newp', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/newp`,
+            url: `${process.env.FULL_NAME}/services/projects/newp`,
             body:    encodeURI("id_asistenta=10003&id_predmeta=2&opis_projekta=hahah&moguci_bodovi=1337&naziv_projekta=mashin")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -42,7 +42,7 @@ describe('Testiranje post metode base/api/projects/newp', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/newp`,
+            url: `${process.env.FULL_NAME}/services/projects/newp`,
             body:    encodeURI("id_asistenta=1&id_predmeta=100002&opis_projekta=hahah&moguci_bodovi=1337&naziv_projekta=mashin")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
@@ -60,7 +60,7 @@ describe('Testiranje post metode base/api/projects/newp', () => {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/api/projects/newp`,
+            url: `${process.env.FULL_NAME}/services/projects/newp`,
             body:    encodeURI(`id_predmeta=4&id_asistenta=2&opis_projekta=hahah&moguci_bodovi=1337&naziv_projekta=${random}`)
         }, function (error, response, body) {
             let novi = body ? JSON.parse(body) : null;

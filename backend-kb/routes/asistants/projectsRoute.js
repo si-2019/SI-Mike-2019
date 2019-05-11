@@ -5,60 +5,12 @@ const projectUtils = require('../../utils/asistantUtils/projectsUtils');
 
 /**
  * @swagger
- * /api/projects/newp:
+ * /services/projects/newp:
  *    post:
  *      tags:
- *       - Studenti - Rad na projektu
- *      description: 'Omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
- *      Salje se kao url encoded format i prima i kao rezultat vraca json projekta ukoliko je uspješno dodan projekat,
- *      a ako nije json sa parametrom message koji govori da nije uspješno dodan projekat.
+ *       - Asistenti - Kreiranje projekata na nivou predmeta - Service
+ *      description: 'Servis koji omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
  *      Realizvano od strane: Mašović Haris'
- *      consumes:
- *       - application/x-www-form-urlencoded
- *      parameters:
- *        - in: formData
- *          name: naziv_projekta
- *          type: string
- *          description: naziv projekta.
- *        - in: formData
- *          name: id_predmeta
- *          type: integer
- *          description: ID predmeta npr ~ [4].
- *        - in: formData
- *          name: id_asistenta
- *          type: integer
- *          description: ID nekog asistenta ~ [2]
- *        - in: formData
- *          name: opis_projekta
- *          type: string
- *          description: opis projekta, sta se radi.
- *        - in: formData
- *          name: moguci_bodovi
- *          type: number
- *          description: moguci ostvarivi bodovi na projektu.
- *        - in: formData
- *          name: progress
- *          type: number
- *          description: progress projekta.
- *        - in: formData
- *          name: rok_projekta
- *          type: string
- *          description: rok projekta završetak.
- *      required:
- *        - id_predmeta
- *        - id_asistenta
- *        - opis_projekta
- *        - moguci_bodovi
- *      responses:
- *       200:
- *         description: Vraca se JSON objekat sa parametrom message
- *         content: 
- *           application/json:
- *               schema: 
- *                 type: object
- *                 properties:
- *                  message:
- *                   type: string
 */
 projectsRouter.post('/newp', (req, res) => {
     let postBody = req.body;
@@ -89,10 +41,10 @@ projectsRouter.post('/newp', (req, res) => {
 
 /**
  * @swagger
- * /api/projects/setdeadline:
+ * /services/projects/setdeadline:
  *    post:
  *      tags:
-*       - Asistenti - Kreiranje projekata na nivou predmeta
+*       - Asistenti - Kreiranje projekata na nivou predmeta - Service
  *      description: Omogucava postavljanje roka za projekat
  */
 projectsRouter.post('/setdeadline', (req, res) => {
