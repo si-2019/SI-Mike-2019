@@ -10,7 +10,7 @@ const projectsRouter = express.Router();
  *      description: 'Omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
  *      Salje se kao url encoded format i prima i kao rezultat vraca json projekta ukoliko je uspješno dodan projekat,
  *      a ako nije json sa parametrom message koji govori da nije uspješno dodan projekat.
- *      Realizvano od strane: Mašović Haris'
+ *      Realizovano od strane: Mašović Haris'
  *      consumes:
  *       - application/x-www-form-urlencoded
  *      parameters:
@@ -65,8 +65,35 @@ projectsRouter.post('/newp', (req, res) => res.redirect(307, '/services/projects
  * /api/projects/setdeadline:
  *    post:
  *      tags:
-*       - Asistenti - Kreiranje projekata na nivou predmeta - API
- *      description: Omogucava postavljanje roka za projekat
+ *       - Asistenti - Kreiranje projekata na nivou predmeta - API
+ *      description: 'Omogucava postavljanje roka za projekat.
+ *      Salje se kao url encoded format i prima id projekta i rok izrade, 
+ *      te vraca poruku u skladu s tim da li je rok uspjesno postavljen ili je doslo do greske.
+ *      Realizovano od strane: Skopljak Emin'
+ *      consumes:
+ *       - application/x-www-form-urlencoded
+ *      parameters:
+ *        - in: formData
+ *          name: idProjekat
+ *          type: integer
+ *          description: ID projekta za koji se postavlja rok.
+ *        - in: formData
+ *          name: rokProjekta
+ *          type: string
+ *          description: Rok projekta.
+ *      required:
+ *        - idProjekat
+ *        - rokProjekta
+ *      responses:
+ *       200:
+ *         description: Vraca se JSON objekat sa parametrom message
+ *         content: 
+ *           application/json:
+ *               schema: 
+ *                 type: object
+ *                 properties:
+ *                  message:
+ *                   type: string
  */
 projectsRouter.post('/setdeadline', (req, res) => res.redirect(307, '/services/projects/setdeadline'));
 

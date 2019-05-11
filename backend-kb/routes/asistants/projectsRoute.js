@@ -45,7 +45,8 @@ projectsRouter.post('/newp', (req, res) => {
  *    post:
  *      tags:
 *       - Asistenti - Kreiranje projekata na nivou predmeta - Service
- *      description: Omogucava postavljanje roka za projekat
+ *      description: 'Omogucava postavljanje roka za projekat
+ *      Realizovano od strane: Skopljak Emin'
  */
 projectsRouter.post('/setdeadline', (req, res) => {
     let postBody = req.body;

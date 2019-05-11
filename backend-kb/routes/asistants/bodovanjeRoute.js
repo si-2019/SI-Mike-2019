@@ -9,7 +9,8 @@ const bodovanjeUtils = require('../../utils/asistantUtils/bodovanjeUtils');
  *    post:
  *      tags:
 *       - Asistenti - Bodovanje projekata - Service
- *      description: Omogucava bodovanje projekata, tako da se definisu bodovi jednaki za svakog člana  
+ *      description: 'Omogucava bodovanje projekata, tako da se definisu bodovi jednaki za svakog clana  
+ *      Realizovano od strane: Skopljak Emin'
  */
 bodovanjeRouter.post('/unified', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
