@@ -1,7 +1,7 @@
 const db = require('../../models/db');
 
 const provjeraParametaraPostG = (postBody) => {
-    if (!postBody['idGrupaProjekta'] || !postBody['idProjekat']) return false;
+    if (!postBody['idProjekat']) return false;
     else return true;
 }
 
@@ -17,7 +17,7 @@ const upisNoveGrupeUBazu = (postBody, callback) => {
 
     db.Projekat.findOne({
         where: {
-            id: postBody['idProjekat']
+            idProjekat: postBody['idProjekat']
         }
     }).then((projekat) => {
         //ako ne postoji projekat, vrati true
@@ -80,7 +80,8 @@ const upisVodjeGrupe = (clanId, callback) => {
         else{
         clanGrupe.update({
             kreator:true
-        }).success(callback(null));
+        })
+        .then(() => callback(null));
     }
     });
 }

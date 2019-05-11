@@ -19,7 +19,7 @@ groupRouter.post('/', (req, res) => {
 
     let provjereno = groupUtils.provjeraParametaraPostG(postBody);
     if (!provjereno) res.send(JSON.stringify({
-        message: 'Body parametri nisu specifirani ili nisu u dobrom formatu [idGrupaProjekta, idProjekat, nazivGrupe, ostvareniBodovi, komentarAsistenta]'
+        message: 'Body parametri nisu specifirani ili nisu u dobrom formatu [idProjekat, nazivGrupe, ostvareniBodovi, komentarAsistenta]'
     }));
     // ukoliko je sve zadovoljeno piše se u bazu nova grupa
     else {
@@ -28,7 +28,7 @@ groupRouter.post('/', (req, res) => {
                 message: 'Poslani id projekta ne postoji u bazi ili je doslo do greske sa bazom!'
             }));
             else res.send(JSON.stringify({
-                message: 'Uspjesno kreirana nova grupa u bazi. '
+                message: 'Uspjesno kreirana nova grupa u bazi.'
             }));
         });
     }
