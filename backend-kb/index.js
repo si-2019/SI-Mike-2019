@@ -7,8 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const db = require ('./models/db.js');
 
-const swaggerServices = require('./swaggerServices.js');
-const swaggerAPI = require('./swaggerAPI.js');
+const swaggerDoc = require('./swaggerDoc.js');
 
 // povezivanje sa bazom
 db.sequelize.sync()
@@ -82,7 +81,7 @@ app.use('/services/viewA', viewARouter);
 // definisanje ruta za dio "Kreiranje projektne grupe"
 app.use('/api/group', groupapi); 
 // definisanje ruta za dio "Pregled projekata"
-app.use('/api/viewS', viewAapi);
+app.use('/api/viewS', viewSapi);
 // definisanje ruta za dio "Rad na projektu"
 app.use('/api/work', workapi);
 // definisanje ruta za dio "Praćenje progresa projekta"
@@ -101,7 +100,7 @@ app.use('/api/viewA', viewAapi);
 // -------------------------------------------------------------------------------------------------------------
 
 // postavljanje swaggera
-swaggerAPI(app); swaggerServices(app);
+swaggerDoc(app);
 
 app.listen(PORT, () => {
     console.log(`Rest-api service started on ${PORT} port!`);

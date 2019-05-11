@@ -1,7 +1,7 @@
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
-const dotenv = require('dotenv');  // definisanje env varijabli
-dotenv.config();                   
+const dotenv = require('dotenv'); // definisanje env varijabli
+dotenv.config();
 
 const options = {
     swaggerDefinition: {
@@ -21,10 +21,11 @@ const options = {
     apis: ['./index.js', './api/asistants/*.js', './api/students/*.js'],
 };
 
+
 const specs = swaggerJsdoc(options);
 
 module.exports = (app) => {
-    app.use('/swagger-json-api', (req, res) => {
+    app.use('/swagger-json', (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(specs);
     })
