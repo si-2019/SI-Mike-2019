@@ -17,7 +17,7 @@
 
 ## Korištenje swaggera
 - Prije/tokom/na kraju pisanja api call metode, OBAVEZNO definisati i swagger objekat prije njenog poziva
-- Primjer kako se to radi može se naći `./routes/students/workRoute.js`
+- Primjer kako se to radi može se naći `./api/students/workRoute.js`
 - Unutar toga treba se definisati ŠTA ta metoda radi, KOJI su OBAVEZNI ulazni parametri, KOJI su OBAVEZNI izlazni parametri i KO JE uradio tu metodu unutar deskripcije! 
 - http://localhost:31913/ - za dobijanje swagger-ui
 - http://localhost:31913/swagger-json - za dobijanje json fajla swaggera
