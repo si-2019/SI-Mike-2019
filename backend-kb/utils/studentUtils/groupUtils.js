@@ -89,5 +89,6 @@ module.exports = {
     provjeraParametaraPostG,
     upisNoveGrupeUBazu,
     provjeraNovihMembera,
-    upisNovihMemberaUBazu
+    upisNovihMemberaUBazu,
+    upisVodjeGrupe
 }

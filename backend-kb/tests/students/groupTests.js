@@ -49,30 +49,4 @@ describe('Testiranje post metode base/api/group', () => {
         }); 
         done();
     });
-    it('Treba da postavi studenta za vodju grupe', (done)=>{
-        let testni={
-            idClanGrupe:100,
-            idStudent:5,
-            idGrupaProjekta:1,
-            ostvareniBodovi:10,
-            kreator:null
-        }
-        db.ClanGrupe.Create(testni).then(
-            request.post({
-                headers: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
-                url: `${process.env.FULL_NAME}/api/group/selectleader`,
-                body:    encodeURI(`id=100`)
-            }, function(error,response,body){
-                db.ClanGrupe.findOne({
-                    where:{
-                        idClanGrupe:100
-                    }
-                }).then((rez)=>{
-                    expect(rez.kreator).to.equal('true');
-                });
-            })
-        );
-    });
 });
