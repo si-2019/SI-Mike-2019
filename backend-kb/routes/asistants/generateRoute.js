@@ -13,7 +13,7 @@ const generateUtils = require('../../utils/asistantUtils/generateUtils');
  *      za zadani projekat i za trenutnu akademsku godinu.
  *      Realizovano od strane: Skopljak Emin'
  */
-generateRoute.post('/genOrdered', (req, res) => {
+generateRouter.post('/genOrdered', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     generateUtils.provjeraParametaraGenerisanjeGrupe(req.body, (cb) => {
         if(cb.ispravno) {
