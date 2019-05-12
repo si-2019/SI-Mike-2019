@@ -21,5 +21,7 @@ db.Projekat = sequelize.import(__dirname + '/Projekat.js');
 db.ProjekniFile = sequelize.import(__dirname + '/ProjektniFile.js');
 db.ProjektniZadatak_ClanGrupe = sequelize.import(__dirname + '/projektniZadatak_clanGrupe.js');
 db.ProjektniZadatak = sequelize.import(__dirname + '/ProjektniZadatak.js');
+db.AkademskaGodina = sequelize.import(__dirname + '/AkademskaGodina.js');
+db.Predmet_Student = sequelize.import(__dirname + '/predmet_student.js');
 
 module.exports = db;
