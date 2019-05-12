@@ -6,7 +6,7 @@ const generateRouter = express.Router();
  * /api/generate/genOrdered:
  *    post:
  *      tags:
- *       - Asistenti - Kreiranje grupa abecednim redoslijedom - Service
+ *       - Asistenti - Generisanje projektnih grupa - API
  *      description: 'Omogucava kreiranje projektnih grupa abecednim redoslijedom
  *      za zadani projekat i za trenutnu akademsku godinu.
  *      Salje se kao url encoded format i prima id projekta i broj grupa, 

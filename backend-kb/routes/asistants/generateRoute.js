@@ -8,7 +8,7 @@ const generateUtils = require('../../utils/asistantUtils/generateUtils');
  * /services/generate/genOrdered:
  *    post:
  *      tags:
- *       - Asistenti - Kreiranje grupa abecednim redoslijedom - Service
+ *       - Asistenti - Generisanje projektnih grupa - Service
  *      description: 'Omogucava kreiranje projektnih grupa abecednim redoslijedom
  *      za zadani projekat i za trenutnu akademsku godinu.
  *      Realizovano od strane: Skopljak Emin'
