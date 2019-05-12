@@ -45,7 +45,7 @@ bodovanjeRouter.post('/unified', (req, res) => {
  *    post:
  *      tags:
  *       - Asistenti - Bodovanje projekata - Service
- *      description: 'Servis koji omogucava dodavanje novih osoba u već postojeće grupe za definisanje projekte.
+ *      description: 'Servis koji omogucava bodovanje projekata za svakog clana pojedinacno.
  *      Realizovano od strane: Mašović Haris'
  */
 bodovanjeRouter.post('/specified', (req, res) => {

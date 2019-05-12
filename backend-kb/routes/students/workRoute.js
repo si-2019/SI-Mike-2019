@@ -41,4 +41,46 @@ workRouter.post('/', (req, res) => {
     }
 });
 
+// POST base/api/work/addfile
+// [idProjektnogZadatka] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/work/addfile:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: Unos novog fajla u projektni zadatak
+ */
+workRouter.post('/addfile',(req,res)=>{
+
+});
+
+// POST base/api/work/assigntask
+// [idProjektnogZadatka, idClanGrupe] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/work/assigntask:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: Dodjela projektnog zadatka clanu grupe
+ */
+workRouter.post('/assigntask',(req,res)=>{
+
+});
+
+// POST base/api/work/deletefile
+// [idFajla] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/work/deletefile:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: Brisanje fajla iz projektnog zadatka
+ */
+workRouter.post('/deletefile',(req,res)=>{
+
+});
+
 module.exports = workRouter;
