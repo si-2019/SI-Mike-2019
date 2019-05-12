@@ -45,7 +45,7 @@ bodovanjeRouter.post('/unified', (req, res) => res.redirect(307, `/services/bodo
  *      tags:
  *       - Asistenti - Bodovanje projekata - API
  *      description: 'Omogucava dodavanje novih osoba u već postojeće grupe za definisanje projekte.
- *      Realizvano od strane: Mašović Haris'
+ *      Realizovano od strane: Mašović Haris'
  *      consumes:
  *       - application/json
  *      parameters:

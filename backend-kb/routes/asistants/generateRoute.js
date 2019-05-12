@@ -1,5 +1,5 @@
 const express = require('express');
-const generateRoute = express.Router();
+const generateRouter = express.Router();
 
 const generateUtils = require('../../utils/asistantUtils/generateUtils');
 
@@ -39,4 +39,19 @@ generateRoute.post('/genOrdered', (req, res) => {
     });
 });
 
-module.exports = generateRoute;
+// POST base/services/generate/generategroups
+// [idProjekat] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/viewA/generategroups:
+ *    post:
+ *      tags:
+*       - Asistenti - Generisanje projektnih grupa - Service
+ *      description: Generisanje projektnih grupa na projektu
+ */
+generateRouter.post('/generategroups',(req,res)=>{
+
+
+});
+
+module.exports = generateRouter;

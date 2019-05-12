@@ -9,8 +9,8 @@ const projectUtils = require('../../utils/asistantUtils/projectsUtils');
  *    post:
  *      tags:
  *       - Asistenti - Kreiranje projekata na nivou predmeta - Service
- *      description: 'Servis koji omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
- *      Realizvano od strane: Mašović Haris'
+ *      description: 'Servis koji omogucava dodavanje projekata na predmetu. 
+ *      Realizovano od strane: Mašović Haris'
 */
 projectsRouter.post('/newp', (req, res) => {
     let postBody = req.body;

@@ -1,0 +1,199 @@
+{
+    "info": {
+        "title": "Dokumentacija tima MIKE za Backend dio kolaboracije.",
+        "version": "1.0.0",
+        "description": "Citav opis potreban za backend dio za tim MIKE koji se tiče opisa i testiranje metoda za SERVISE."
+    },
+    "host": "localhost:31913",
+    "basePath": "/",
+    "servers": [
+        {
+            "url": "http://localhost:3000",
+            "description": "Frontend server koji koristi ovaj rest api."
+        }
+    ],
+    "swagger": "2.0",
+    "paths": {
+        "/services/bodovanjeprojekata/unified": {
+            "post": {
+                "tags": [
+                    "Asistenti - Bodovanje projekata - Service"
+                ],
+                "description": "Omogucava bodovanje projekata, tako da se definisu bodovi jednaki za svakog clana   Realizovano od strane: Skopljak Emin"
+            }
+        },
+        "/services/bodovanjeprojekata/specified": {
+            "post": {
+                "tags": [
+                    "Asistenti - Bodovanje projekata - Service"
+                ],
+                "description": "Servis koji omogucava bodovanje projekata za svakog clana pojedinacno. Realizovano od strane: Mašović Haris"
+            }
+        },
+        "/services/viewA/generategroups": {
+            "post": {
+                "tags": [
+                    "Asistenti - Generisanje projektnih grupa - Service"
+                ],
+                "description": "Generisanje projektnih grupa na projektu"
+            }
+        },
+        "/services/projects/newp": {
+            "post": {
+                "tags": [
+                    "Asistenti - Kreiranje projekata na nivou predmeta - Service"
+                ],
+                "description": "Servis koji omogucava dodavanje projekata na predmetu.  Realizovano od strane: Mašović Haris"
+            }
+        },
+        "/services/projects/setdeadline": {
+            "post": {
+                "tags": [
+                    "Asistenti - Kreiranje projekata na nivou predmeta - Service"
+                ],
+                "description": "Omogucava postavljanje roka za projekat Realizovano od strane: Skopljak Emin"
+            }
+        },
+        "/services/viewA/acourses": {
+            "post": {
+                "tags": [
+                    "Asistenti - Pregled projekata - Service"
+                ],
+                "description": "Dohvatanje svih predmeta asistenta na kojim je aktivan projekat"
+            }
+        },
+        "/services/viewA/projectgroups": {
+            "post": {
+                "tags": [
+                    "Asistenti - Pregled projekata - Service"
+                ],
+                "description": "Dohvatanje svih projektnih grupa na projektu"
+            }
+        },
+        "/services/viewA/commenttask": {
+            "post": {
+                "tags": [
+                    "Asistenti - Pregled projekata - Service"
+                ],
+                "description": "Unos komentara na projektni zadatak"
+            }
+        },
+        "/services/viewA/commentproject": {
+            "post": {
+                "tags": [
+                    "Asistenti - Pregled projekata - Service"
+                ],
+                "description": "Unos komentara na projekat"
+            }
+        },
+        "/services/group/": {
+            "post": {
+                "tags": [
+                    "Studenti - Kreiranje projektne grupe - Service"
+                ],
+                "description": "Omogucava kreiranje novih projektnih grupa"
+            }
+        },
+        "/services/group/addmembers": {
+            "post": {
+                "tags": [
+                    "Studenti - Kreiranje projektne grupe - Service"
+                ],
+                "description": "Omogucava dodavanje novih osoba u već postojeće grupe za definisanje projekte. Realizovano od strane: Mašović Haris"
+            }
+        },
+        "/services/group/selectleader": {
+            "post": {
+                "tags": [
+                    "Studenti - Kreiranje projektne grupe - Service"
+                ],
+                "description": "Izbor vođe generisane grupe"
+            }
+        },
+        "/services/group/projectcourses": {
+            "post": {
+                "tags": [
+                    "Studenti - Kreiranje projektne grupe - Service"
+                ],
+                "description": "Dohvatanje predmeta studenta na kojima je moguce kreiranje projekta"
+            }
+        },
+        "/services/group/deletemember": {
+            "post": {
+                "tags": [
+                    "Studenti - Kreiranje projektne grupe - Service"
+                ],
+                "description": "Brisanje clana predmetne grupe"
+            }
+        },
+        "/services/progress/endtask": {
+            "post": {
+                "tags": [
+                    "Studenti - Pracenje progresa projekta - Service"
+                ],
+                "description": "Oznacavanje projektnog zadatka zavrsenim"
+            }
+        },
+        "/services/progress/endproject": {
+            "post": {
+                "tags": [
+                    "Studenti - Pracenje progresa projekta - Service"
+                ],
+                "description": "Oznacavanje projekta zavrsenim"
+            }
+        },
+        "/services/viewS/projects": {
+            "post": {
+                "tags": [
+                    "Studenti - Pregled projekata - Service"
+                ],
+                "description": "Dohvatanje svih projekata studenta"
+            }
+        },
+        "/services/viewS/tasks": {
+            "post": {
+                "tags": [
+                    "Studenti - Pregled projekata - Service"
+                ],
+                "description": "Dohvatanje svih zadataka na projektu"
+            }
+        },
+        "/services/work/": {
+            "post": {
+                "tags": [
+                    "Studenti - Rad na projektu - Service"
+                ],
+                "description": "Servis koji omogucava dodavanje projektnih zadataka za vec postojeci projekat.   Realizovano od strane: Mašović Haris"
+            }
+        },
+        "/services/work/addfile": {
+            "post": {
+                "tags": [
+                    "Studenti - Rad na projektu - Service"
+                ],
+                "description": "Unos novog fajla u projektni zadatak"
+            }
+        },
+        "/services/work/assigntask": {
+            "post": {
+                "tags": [
+                    "Studenti - Rad na projektu - Service"
+                ],
+                "description": "Dodjela projektnog zadatka clanu grupe"
+            }
+        },
+        "/services/work/deletefile": {
+            "post": {
+                "tags": [
+                    "Studenti - Rad na projektu - Service"
+                ],
+                "description": "Brisanje fajla iz projektnog zadatka"
+            }
+        }
+    },
+    "definitions": {},
+    "responses": {},
+    "parameters": {},
+    "securityDefinitions": {},
+    "tags": []
+}

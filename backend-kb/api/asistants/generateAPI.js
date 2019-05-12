@@ -39,4 +39,19 @@ const generateRouter = express.Router();
  */
 generateRouter.post('/genOrdered', (req, res) => res.redirect(307, `/services/generate/genOrdered`));
 
+// POST base/api/generate/generategroups
+// [idProjekat] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /api/viewA/generategroups:
+ *    post:
+ *      tags:
+*       - Asistenti - Generisanje projektnih grupa - API
+ *      description: Generisanje projektnih grupa na projektu
+ */
+generateRouter.post('/generategroups',(req,res)=>{
+
+});
+
+
 module.exports = generateRouter;

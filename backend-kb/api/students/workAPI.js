@@ -10,7 +10,7 @@ const workRouter = express.Router();
  *      description: 'Omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
  *      Salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodana 
  *      ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat. 
- *      Realizvano od strane: Mašović Haris'
+ *      Realizovano od strane: Mašović Haris'
  *      consumes:
  *       - application/x-www-form-urlencoded
  *      parameters:
@@ -54,5 +54,47 @@ const workRouter = express.Router();
  *                   type: string
 */
 workRouter.post('/', (req, res) => res.redirect(307, '/services/work/')); 
+
+// POST base/api/work/addfile
+// [idProjektnogZadatka] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /api/work/addfile:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - API
+ *      description: Unos novog fajla u projektni zadatak
+ */
+workRouter.post('/addfile',(req,res)=>{
+
+});
+
+// POST base/api/work/assigntask
+// [idProjektnogZadatka, idClanGrupe] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /api/work/assigntask:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - API
+ *      description: Dodjela projektnog zadatka clanu grupe
+ */
+workRouter.post('/assigntask',(req,res)=>{
+
+});
+
+// POST base/api/work/deletefile
+// [idFajla] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /api/work/deletefile:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - API
+ *      description: Brisanje fajla iz projektnog zadatka
+ */
+workRouter.post('/deletefile',(req,res)=>{
+
+});
 
 module.exports = workRouter;
