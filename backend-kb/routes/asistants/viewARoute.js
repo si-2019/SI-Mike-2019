@@ -1,5 +1,5 @@
 const express = require('express');
-const viewRoute = express.Router();
+const viewARouter = express.Router();
 
 const viewUtils = require('../../utils/asistantUtils/viewAUtils');
 
@@ -13,7 +13,7 @@ const viewUtils = require('../../utils/asistantUtils/viewAUtils');
 *       - Asistenti - Pregled projekata - Service
  *      description: Dohvatanje svih predmeta asistenta na kojim je aktivan projekat
  */
-viewRoute.post('/acourses',(req,res)=>{
+viewARouter.post('/acourses',(req,res)=>{
 
 });
 
@@ -27,7 +27,7 @@ viewRoute.post('/acourses',(req,res)=>{
 *       - Asistenti - Pregled projekata - Service
  *      description: Dohvatanje svih projektnih grupa na projektu
  */
-viewRoute.post('/projectgroups',(req,res)=>{
+viewARouter.post('/projectgroups',(req,res)=>{
 
 });
 
@@ -41,7 +41,7 @@ viewRoute.post('/projectgroups',(req,res)=>{
 *       - Asistenti - Pregled projekata - Service
  *      description: Unos komentara na projektni zadatak
  */
-viewRoute.post('/commenttask',(req,res)=>{
+viewARouter.post('/commenttask',(req,res)=>{
 
 });
 
@@ -55,8 +55,8 @@ viewRoute.post('/commenttask',(req,res)=>{
 *       - Asistenti - Pregled projekata - Service
  *      description: Unos komentara na projekat
  */
-viewRoute.post('/commentproject',(req,res)=>{
+viewARouter.post('/commentproject',(req,res)=>{
 
 });
 
-module.exports = viewRoute;
+module.exports = viewARouter;

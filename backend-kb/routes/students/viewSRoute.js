@@ -1,5 +1,5 @@
 const express = require('express');
-const viewSRoute = express.Router();
+const viewSRouter = express.Router();
 
 const viewSUtils = require('../../utils/studentUtils/viewSUtils');
 
@@ -13,7 +13,7 @@ const viewSUtils = require('../../utils/studentUtils/viewSUtils');
 *       - Studenti - Pregled projekata - Service
  *      description: Dohvatanje svih projekata studenta
  */
-viewSRoute.post('/projects',(req,res)=>{
+viewSRouter.post('/projects',(req,res)=>{
 
 });
 
@@ -27,8 +27,8 @@ viewSRoute.post('/projects',(req,res)=>{
 *       - Studenti - Pregled projekata - Service
  *      description: Dohvatanje svih zadataka na projektu
  */
-viewSRoute.post('/tasks',(req,res)=>{
+viewSRouter.post('/tasks',(req,res)=>{
 
 });
 
-module.exports = viewSRoute;
+module.exports = viewSRouter;

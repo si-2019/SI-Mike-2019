@@ -62,4 +62,32 @@ groupRouter.post('/addmembers', (req, res) => res.redirect(307, '/services/group
  */
 groupRouter.post('/selectleader', (req, res) => res.redirect(307, '/services/group/selectleader'));
 
+// POST base/api/group/projectcourses
+// [idUser] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /api/group/projectcourses:
+ *    post:
+ *      tags:
+*       - Studenti - Kreiranje projektne grupe - API
+ *      description: Dohvatanje predmeta studenta na kojima je moguce kreiranje projekta
+ */
+groupRouter.post('/projectcourses',(req,res)=>{
+
+});
+
+// POST base/api/group/deletemember
+// [idClanGrupe] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /api/group/deletemember:
+ *    post:
+ *      tags:
+*       - Studenti - Kreiranje projektne grupe - API
+ *      description: Brisanje clana predmetne grupe
+ */
+groupRouter.post('/deletemember',(req,res)=>{
+
+});
+
 module.exports = groupRouter;
