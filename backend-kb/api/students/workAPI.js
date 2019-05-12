@@ -10,7 +10,7 @@ const workRouter = express.Router();
  *      description: 'Omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
  *      Salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodana 
  *      ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat. 
- *      Realizvano od strane: Mašović Haris'
+ *      Realizovano od strane: Mašović Haris'
  *      consumes:
  *       - application/x-www-form-urlencoded
  *      parameters:

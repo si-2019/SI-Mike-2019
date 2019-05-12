@@ -18,7 +18,7 @@ groupRouter.post('/', (req, res) => res.redirect(307, '/services/group/'));
  *      tags:
  *       - Studenti - Kreiranje projektne grupe - API
  *      description: 'Omogucava dodavanje novih osoba u već postojeće grupe za definisanje projekte.
- *      Realizvano od strane: Mašović Haris'
+ *      Realizovano od strane: Mašović Haris'
  *      consumes:
  *       - application/json
  *      parameters:

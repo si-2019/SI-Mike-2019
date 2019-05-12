@@ -9,7 +9,7 @@ const workUtils = require('../../utils/studentUtils/workUtils');
  *      tags:
  *       - Studenti - Rad na projektu - Service
  *      description: 'Servis koji omogucava dodavanje projektnih zadataka za vec postojeci projekat.  
- *      Realizvano od strane: Mašović Haris'
+ *      Realizovano od strane: Mašović Haris'
 */
 workRouter.post('/', (req, res) => {    
     let postBody = req.body;
