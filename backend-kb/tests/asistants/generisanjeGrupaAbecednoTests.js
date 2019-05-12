@@ -83,7 +83,6 @@ describe('Testiranje post metode base/services/generate/genOrdered', () => {
                     idProjekat: 78
                 }
             }).then((grupe) => {
-                console.log(JSON.stringify(grupe));
                 expect(grupe.length > 1).to.equal(true);
                 done();
             })
