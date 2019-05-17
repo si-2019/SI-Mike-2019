@@ -112,6 +112,20 @@ groupRouter.post('/deletemember',(req,res)=>{
 
 });
 
+//dohvati studente - Mirza
+groupRouter.post('/getProjectStudents',(req,res)=>{
+    var student=req.body.student;
+    var grupa=req.body.grupa;
+    if(student==1){
+    groupUtils.dohvatiStudenteProjekat(grupa).then((jsonString)=>{
+    res.writeHead(200,{'Content-Type':'application/json'});
+    res.write(jsonString);
+    res.end();
+    });
+    }
+    else res.end();
+});
+
 
 
 module.exports = groupRouter;
