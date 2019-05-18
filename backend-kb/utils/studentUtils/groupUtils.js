@@ -121,7 +121,7 @@ const dohvatiStudenteProjekat=(idGrupa)=>{
                         }
                     }
                     if(!clan){
-                    var objekat={ime:dime,prezime:dprezime};
+                    var objekat={ime:dime,prezime:dprezime,id:id};
                     json.push(objekat);
                     }
                 }
