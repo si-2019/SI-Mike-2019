@@ -112,6 +112,30 @@ groupRouter.post('/deletemember',(req,res)=>{
 
 });
 
+//dohvati studente - Mirza
+// POST base/api/group/getProjectStudents
+// [idClanGrupe] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/group/getProjectStudents:
+ *    post:
+ *      tags:
+*       - Studenti - Kreiranje projektne grupe - Service
+ *      description: Dohvatanje studenata koji su clanovi projektne grupe
+ */
+groupRouter.post('/getProjectStudents',(req,res)=>{
+    var student=req.body.student;
+    var grupa=req.body.grupa;
+    if(student==1){
+    groupUtils.dohvatiStudenteProjekat(grupa).then((jsonString)=>{
+    res.writeHead(200,{'Content-Type':'application/json'});
+    res.write(jsonString);
+    res.end();
+    });
+    }
+    else res.end();
+});
+
 
 
 module.exports = groupRouter;

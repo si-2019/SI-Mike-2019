@@ -86,10 +86,57 @@ const upisVodjeGrupe = (clanId, callback) => {
     });
 }
 
+//dohvati studente - Mirza
+const dohvatiStudenteProjekat=(idGrupa)=>{
+    return new Promise((resolve,reject)=>{
+        var json=[];
+        db.Korisnik.findAndCountAll({
+            where:{idUloga:1}
+            //koji slusaju odabrani predmet
+            //koji su u poslanoj grupi ili nisu ni na jednom projektu 
+        }).then((studenti)=>{
+            db.ClanGrupe.findAndCountAll({}).then((clanovi)=>{
+                var duzinaStudenti=studenti.count;
+                var duzinaClanovi=clanovi.count;
+                for(var i=0;i<duzinaStudenti;i++){
+                    var dime=studenti.rows[i].ime.toString();
+                    var dprezime=studenti.rows[i].prezime.toString();
+                    var id=studenti.rows[i].id.toString();
+                    var clan=false;
+                    if(idGrupa==0){
+                        for(var j=0;j<duzinaClanovi;j++){
+                            if(clanovi.rows[j].idStudent==id){
+                                clan=true;
+                                break;
+                            }
+                        }
+                    }
+                    else{
+                        clan=true;
+                        for(var j=0;j<duzinaClanovi;j++){
+                            if(clanovi.rows[j].idGrupaProjekta==idGrupa && clanovi.rows[j].idStudent==id){
+                                clan=false;
+                                break;
+                            }
+                        }
+                    }
+                    if(!clan){
+                    var objekat={ime:dime,prezime:dprezime,id:id};
+                    json.push(objekat);
+                    }
+                }
+                var jsonString=JSON.stringify(json);
+                resolve(jsonString);
+            });
+        });
+    });
+}
+
 module.exports = {
     provjeraParametaraPostG,
     upisNoveGrupeUBazu,
     provjeraNovihMembera,
     upisNovihMemberaUBazu,
-    upisVodjeGrupe
+    upisVodjeGrupe,
+    dohvatiStudenteProjekat
 }
