@@ -3,12 +3,15 @@ const projectsRouter = express.Router();
 
 const projectUtils = require('../../utils/asistantUtils/projectsUtils');
 
-// POST base/api/projects/newp 
-// [id_predmeta, id_asistenta, opis_projekta, moguci_bodovi] obavezni parametar u bodiju posta
-// [progress, rok_projekta] se ne mora, a i može poslati, ako se ne pošalje smatra se default 0
-// salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodan
-// a ako nije json sa parametrom message koji govori da nije uspješno dodan projekat
-
+/**
+ * @swagger
+ * /services/projects/newp:
+ *    post:
+ *      tags:
+ *       - Asistenti - Kreiranje projekata na nivou predmeta - Service
+ *      description: 'Servis koji omogucava dodavanje projekata na predmetu. 
+ *      Realizovano od strane: Mašović Haris'
+*/
 projectsRouter.post('/newp', (req, res) => {
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');
@@ -36,6 +39,15 @@ projectsRouter.post('/newp', (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /services/projects/setdeadline:
+ *    post:
+ *      tags:
+*       - Asistenti - Kreiranje projekata na nivou predmeta - Service
+ *      description: 'Omogucava postavljanje roka za projekat
+ *      Realizovano od strane: Skopljak Emin'
+ */
 projectsRouter.post('/setdeadline', (req, res) => {
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');

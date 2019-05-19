@@ -1,16 +1,14 @@
 const express = require('express');
 const viewSRouter = express.Router();
 
-const viewSUtils = require('../../utils/studentUtils/viewSUtils');
-
 // POST base/api/viewS/projects
 // [idUser] obavezni parametar u bodiju posta
 /**
  * @swagger
- * /services/viewS/projects:
+ * /api/viewS/projects:
  *    post:
  *      tags:
-*       - Studenti - Pregled projekata - Service
+*       - Studenti - Pregled projekata - API
  *      description: Dohvatanje svih projekata studenta
  */
 viewSRouter.post('/projects',(req,res)=>{
@@ -21,10 +19,10 @@ viewSRouter.post('/projects',(req,res)=>{
 // [idProjekat] obavezni parametar u bodiju posta
 /**
  * @swagger
- * /services/viewS/tasks:
+ * /api/viewS/tasks:
  *    post:
  *      tags:
-*       - Studenti - Pregled projekata - Service
+*       - Studenti - Pregled projekata - API
  *      description: Dohvatanje svih zadataka na projektu
  */
 viewSRouter.post('/tasks',(req,res)=>{

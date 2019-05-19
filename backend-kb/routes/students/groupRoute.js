@@ -5,13 +5,21 @@ const groupUtils = require('../../utils/studentUtils/groupUtils');
 
 // [idGrupaProjekta, idProjekat] obavezni parametari u bodiju posta
 // [nazivGrupe, ostvareniBodovi, komentarAsistenta] neobavezni parametri u bodiju posta
+/**
+ * @swagger
+ * /services/group/:
+ *    post:
+ *      tags:
+*       - Studenti - Kreiranje projektne grupe - Service 
+ *      description: Omogucava kreiranje novih projektnih grupa
+ */
 groupRouter.post('/', (req, res) => {
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');
 
     let provjereno = groupUtils.provjeraParametaraPostG(postBody);
     if (!provjereno) res.send(JSON.stringify({
-        message: 'Body parametri nisu specifirani ili nisu u dobrom formatu [idGrupaProjekta, idProjekat, nazivGrupe, ostvareniBodovi, komentarAsistenta]'
+        message: 'Body parametri nisu specifirani ili nisu u dobrom formatu [idProjekat, nazivGrupe, ostvareniBodovi, komentarAsistenta]'
     }));
     // ukoliko je sve zadovoljeno piše se u bazu nova grupa
     else {
@@ -20,21 +28,24 @@ groupRouter.post('/', (req, res) => {
                 message: 'Poslani id projekta ne postoji u bazi ili je doslo do greske sa bazom!'
             }));
             else res.send(JSON.stringify({
-                message: 'Uspjesno kreirana nova grupa u bazi. '
+                message: 'Uspjesno kreirana nova grupa u bazi.'
             }));
         });
     }
 });
 
-// POST base/api/group/addmembers 
-// [idStudent, idGrupaProjekta] obavezni parametari u json nizu ZA SVAKOG MEMBERA unutar body posta
-// a obavezan je json koji se šalje kao npr: {"payload" : [{"idStudent" : 1, "idGrupaProjekta" : 2},{"idStudent" : 2, "idGrupaProjekta" : 2}]}
-// [kreator] nije obavezan, ali ukoliko se pošalje smatra se da je ta osoba vođa grupe
-// salje se kao json format, a kao rezultat vraca json sa uspjesnom porukom
-// a ako nije json sa parametrom message koji govori šta nije bilo uspjesno
-
+/**
+ * @swagger
+ * /services/group/addmembers:
+ *    post:
+ *      tags:
+ *       - Studenti - Kreiranje projektne grupe - Service
+ *      description: 'Omogucava dodavanje novih osoba u već postojeće grupe za definisanje projekte.
+ *      Realizovano od strane: Mašović Haris'
+*/
 groupRouter.post('/addmembers', (req, res) => {
     let nizNovihMembera = req.body.payload;
+    if(!nizNovihMembera){ res.send(JSON.stringify({ message: 'Nisu poslani memberi unutar payloada!' })); return; }
     if (!groupUtils.provjeraNovihMembera(nizNovihMembera)) res.send(JSON.stringify({
         message: 'Svaki member u JSON body-u ne sadrži [idStudent, idGrupaProjekta]!'
     }));
@@ -49,6 +60,80 @@ groupRouter.post('/addmembers', (req, res) => {
             }));
         });
     }
+});
+
+// POST base/api/group/selectleader
+// [idClanGrupe] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/group/selectleader:
+ *    post:
+ *      tags:
+*       - Studenti - Kreiranje projektne grupe - Service
+ *      description: Izbor vođe generisane grupe
+ */
+groupRouter.post('/selectleader', (req, res) => {
+    let idClanaGrupe=req.body.id;
+    groupUtils.upisVodjeGrupe(idClanaGrupe,(err)=>{
+        if(err) res.send(JSON.stringify({
+            message: 'Greska prilikom upisa vodje grupe!',
+            err
+        }));
+        else res.send(JSON.stringify({
+            message: 'Uspjesno upisan vodja grupe!'
+        }));
+    });
+});
+// POST base/api/group/projectcourses
+// [idUser] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/group/projectcourses:
+ *    post:
+ *      tags:
+*       - Studenti - Kreiranje projektne grupe - Service
+ *      description: Dohvatanje predmeta studenta na kojima je moguce kreiranje projekta
+ */
+groupRouter.post('/projectcourses',(req,res)=>{
+
+});
+
+// POST base/api/group/deletemember
+// [idClanGrupe] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/group/deletemember:
+ *    post:
+ *      tags:
+*       - Studenti - Kreiranje projektne grupe - Service
+ *      description: Brisanje clana predmetne grupe
+ */
+groupRouter.post('/deletemember',(req,res)=>{
+
+});
+
+//dohvati studente - Mirza
+// POST base/api/group/getProjectStudents
+// [idClanGrupe] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/group/getProjectStudents:
+ *    post:
+ *      tags:
+*       - Studenti - Kreiranje projektne grupe - Service
+ *      description: Dohvatanje studenata koji su clanovi projektne grupe
+ */
+groupRouter.post('/getProjectStudents',(req,res)=>{
+    var student=req.body.student;
+    var grupa=req.body.grupa;
+    if(student==1){
+    groupUtils.dohvatiStudenteProjekat(grupa).then((jsonString)=>{
+    res.writeHead(200,{'Content-Type':'application/json'});
+    res.write(jsonString);
+    res.end();
+    });
+    }
+    else res.end();
 });
 
 

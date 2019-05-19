@@ -1,16 +1,14 @@
 const express = require('express');
 const progressRouter = express.Router();
 
-const progressUtils = require('../../utils/studentUtils/progressUtil');
-
 // POST base/api/progress/endtask
 // [idProjektnogZadatka] obavezni parametar u bodiju posta
 /**
  * @swagger
- * /services/progress/endtask:
+ * /api/progress/endtask:
  *    post:
  *      tags:
-*       - Studenti - Pracenje progresa projekta - Service
+*       - Studenti - Pracenje progresa projekta - API
  *      description: Oznacavanje projektnog zadatka zavrsenim
  */
 progressRouter.post('/endtask',(req,res)=>{
@@ -21,10 +19,10 @@ progressRouter.post('/endtask',(req,res)=>{
 // [idProjekta] obavezni parametar u bodiju posta
 /**
  * @swagger
- * /services/progress/endproject:
+ * /api/progress/endproject:
  *    post:
  *      tags:
-*       - Studenti - Pracenje progresa projekta - Service
+*       - Studenti - Pracenje progresa projekta - API
  *      description: Oznacavanje projekta zavrsenim
  */
 progressRouter.post('/endproject',(req,res)=>{

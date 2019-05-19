@@ -1,16 +1,14 @@
 const express = require('express');
 const viewARouter = express.Router();
 
-const viewUtils = require('../../utils/asistantUtils/viewAUtils');
-
 // POST base/api/viewA/acourses
 // [idUser] obavezni parametar u bodiju posta
 /**
  * @swagger
- * /services/viewA/acourses:
+ * /api/viewA/acourses:
  *    post:
  *      tags:
-*       - Asistenti - Pregled projekata - Service
+*       - Asistenti - Pregled projekata - API
  *      description: Dohvatanje svih predmeta asistenta na kojim je aktivan projekat
  */
 viewARouter.post('/acourses',(req,res)=>{
@@ -21,10 +19,10 @@ viewARouter.post('/acourses',(req,res)=>{
 // [idProjekt] obavezni parametar u bodiju posta
 /**
  * @swagger
- * /services/viewA/projectgroups:
+ * /api/viewA/projectgroups:
  *    post:
  *      tags:
-*       - Asistenti - Pregled projekata - Service
+*       - Asistenti - Pregled projekata - API
  *      description: Dohvatanje svih projektnih grupa na projektu
  */
 viewARouter.post('/projectgroups',(req,res)=>{
@@ -35,10 +33,10 @@ viewARouter.post('/projectgroups',(req,res)=>{
 // [idProjektnogZadatka] obavezni parametar u bodiju posta
 /**
  * @swagger
- * /services/viewA/commenttask:
+ * /api/viewA/commenttask:
  *    post:
  *      tags:
-*       - Asistenti - Pregled projekata - Service
+*       - Asistenti - Pregled projekata - API
  *      description: Unos komentara na projektni zadatak
  */
 viewARouter.post('/commenttask',(req,res)=>{
@@ -49,10 +47,10 @@ viewARouter.post('/commenttask',(req,res)=>{
 // [idProjekt] obavezni parametar u bodiju posta
 /**
  * @swagger
- * /services/viewA/commentproject:
+ * /api/viewA/commentproject:
  *    post:
  *      tags:
-*       - Asistenti - Pregled projekata - Service
+*       - Asistenti - Pregled projekata - API
  *      description: Unos komentara na projekat
  */
 viewARouter.post('/commentproject',(req,res)=>{

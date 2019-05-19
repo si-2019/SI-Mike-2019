@@ -1,14 +1,16 @@
 const express = require('express');
 const workRouter = express.Router();
-
 const workUtils = require('../../utils/studentUtils/workUtils');
 
-// POST base/api/work/ 
-// [id_projekta, prioritet, od_kad, do_kad] obavezni parametar u bodiju posta
-// [opis, zavrsen, komentar_asistenta] nisu obavezni parametri za ovaj post
-// salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodan
-// a ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat
-
+/**
+ * @swagger
+ * /services/work/:
+ *    post:
+ *      tags:
+ *       - Studenti - Rad na projektu - Service
+ *      description: 'Servis koji omogucava dodavanje projektnih zadataka za vec postojeci projekat.  
+ *      Realizovano od strane: Mašović Haris'
+*/
 workRouter.post('/', (req, res) => {    
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');
@@ -37,6 +39,48 @@ workRouter.post('/', (req, res) => {
         });
         
     }
+});
+
+// POST base/api/work/addfile
+// [idProjektnogZadatka] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/work/addfile:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: Unos novog fajla u projektni zadatak
+ */
+workRouter.post('/addfile',(req,res)=>{
+
+});
+
+// POST base/api/work/assigntask
+// [idProjektnogZadatka, idClanGrupe] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/work/assigntask:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: Dodjela projektnog zadatka clanu grupe
+ */
+workRouter.post('/assigntask',(req,res)=>{
+
+});
+
+// POST base/api/work/deletefile
+// [idFajla] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/work/deletefile:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: Brisanje fajla iz projektnog zadatka
+ */
+workRouter.post('/deletefile',(req,res)=>{
+
 });
 
 module.exports = workRouter;

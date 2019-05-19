@@ -5,87 +5,85 @@ dotenv.config();
 
 const db = require('../../models/db');
 
-describe('Testiranje post metode base/services/bodovanjeprojekata/unified', () => {
+describe('Testiranje post metode base/services/generate/genOrdered', () => {
 
     it('Treba da vraca gresku jer nije zadovoljen body', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/unified`
+            url: `${process.env.FULL_NAME}/services/generate/genOrdered`
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
-                message: 'Body parametri nisu specifirani [idGrupaProjekta, bodovi]'
+                message: 'Body parametri nisu specifirani [idProjekat, brojGrupa]'
             }));
             done();
         });
     });
 
-    it('Treba da vrati gresku jer idGrupaProjekta ne postoji u bazi ', (done) => {
+    it('Treba da vrati gresku jer idProjekat ne postoji u bazi ', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/unified`,
-            body: encodeURI("idGrupaProjekta=15678&bodovi=10")
+            url: `${process.env.FULL_NAME}/services/generate/genOrdered`,
+            body: encodeURI("idProjekat=15678&brojGrupa=10")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
-                message: 'Pogresan ID grupe.'
+                message: 'Poslani ID projekta ne postoji.'
             }));
             done();
         });
     });
 
-    it('Treba da vrati gresku jer su bodovi manji od nule', (done) => {
+    it('Treba da vrati gresku jer je broj grupa manji od jedan', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/unified`,
-            body: encodeURI("idGrupaProjekta=1&bodovi=-1")
+            url: `${process.env.FULL_NAME}/services/generate/genOrdered`,
+            body: encodeURI("idProjekat=77&brojGrupa=-1")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
-                message: 'Bodovi moraju biti u intervalu [0, max].'
+                message: 'Broj grupa mora biti veci ili jednak 1.'
             }));
             done();
         });
     });
 
-    it('Treba da vrati gresku jer su bodovi veci od maksimalnih za projekat', (done) => {
+    it('Treba da vrati gresku jer je broj grupa veci od broja studenata', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/unified`,
-            body: encodeURI("idGrupaProjekta=1&bodovi=100000")
+            url: `${process.env.FULL_NAME}/services/generate/genOrdered`,
+            body: encodeURI("idProjekat=77&brojGrupa=100000")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
-                message: 'Bodovi moraju biti u intervalu [0, max].'
+                message: 'Doslo je do greske.'
             }));
             done();
         });
     });
 
-    it('Treba da ispravno izvrsi upis bodova projekta u bazu za sve clanove', (done) => {
+    it('Treba da ispravno izvrsi kreiranje projektnih grupa abecednim redom', (done) => {
         request.post({
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
             },
-            url: `${process.env.FULL_NAME}/services/bodovanjeprojekata/unified`,
-            body: encodeURI("idGrupaProjekta=1&bodovi=8")
+            url: `${process.env.FULL_NAME}/services/generate/genOrdered`,
+            body: encodeURI("idProjekat=78&brojGrupa=2")
         }, function (error, response, body) {
             expect(body).to.equal(JSON.stringify({
-                message: 'Uspjesno bodovan projekat.'
+                message: 'Uspjesno kreirane projektne grupe.'
             }));
-
-            db.ClanGrupe.findAll({
+            
+            db.GrupaProjekta.findAll({
                 where: {
-                    idGrupaProjekta: 1
+                    idProjekat: 78
                 }
-            }).then((clanovi) => {
-                for(let i = 0; i < clanovi.length; i++) {
-                    expect(clanovi[i].ostvareniBodovi).to.equal(8);
-                }
+            }).then((grupe) => {
+                expect(grupe.length > 1).to.equal(true);
                 done();
             })
         });
