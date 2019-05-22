@@ -70,7 +70,7 @@ viewSRouter.post('/customdata', (req,res) => {
 
 /**
  * @swagger
- * /services/viewS/customdata:
+ * /services/viewS/predmeti:
  *    get:
  *      tags:
 *       - Studenti - Pregled projekata - Service
