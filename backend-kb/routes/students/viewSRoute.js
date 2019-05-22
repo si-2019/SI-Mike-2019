@@ -31,4 +31,57 @@ viewSRouter.post('/tasks',(req,res)=>{
 
 });
 
+
+/**
+ * @swagger
+ * /services/viewS/customdata:
+ *    post:
+ *      tags:
+*       - Studenti - Pregled projekata - Service
+ *      description: Custom servis za dohvatanje podataka po mjeri / obavezno slati idPredmet!
+ */
+viewSRouter.post('/customdata', (req,res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let finalanNiz = [];
+    if (!req.body['idPredmet']) res.send(JSON.stringify({
+        message: 'Greška u bazi'
+    }));
+    else {
+        viewSUtils.dajSveProjekte(req.body['idPredmet'], (err, projekti) => {
+            if (err) res.send(JSON.stringify({
+                message: 'Greška u bazi'
+            }));
+            else {
+                for (let i = 0; i < projekti.length; ++i) finalanNiz.push({
+                    id: projekti[i].idProjekat,
+                    opis_projekta: projekti[i].opisProjekta
+                });
+                viewSUtils.zaSvakiPredmetPopuniProjektneZadatke(finalanNiz, (err2, rez) => {
+                    if (err2) res.send(JSON.stringify({
+                        message: 'Greška u bazi'
+                    }));
+                    else res.send(JSON.stringify({projekti: rez}));
+                })
+            }
+        });
+    }
+    
+});
+
+/**
+ * @swagger
+ * /services/viewS/customdata:
+ *    get:
+ *      tags:
+*       - Studenti - Pregled projekata - Service
+ *      description: Custom servis za dohvacanje svih predmeta.
+ */
+viewSRouter.get('/predmeti', (req,res) => {
+    res.setHeader('Content-Type', 'application/json');
+    viewSUtils.dajSvePredmete((err, predmeti) => {
+        if (err) res.send(JSON.stringify({ message: 'Greška u bazi' }));
+        else res.send(JSON.stringify(predmeti));
+    });
+});
+
 module.exports = viewSRouter;
