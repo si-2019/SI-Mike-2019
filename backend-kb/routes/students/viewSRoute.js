@@ -45,6 +45,39 @@ viewSRouter.get('/customdata/:id', (req,res) => {
     let finalanNiz = [];
     if (!req.params.id) res.send(JSON.stringify({ message: 'ID nije poslan u url.' }));
     else {
+        viewSUtils.dajSveProjekte(req.params.id, (err, projekti) => {
+            if (err) res.send(JSON.stringify({
+                message: 'Greška u bazi'
+            }));
+            else {
+                for (let i = 0; i < projekti.length; ++i) finalanNiz.push({
+                    id: projekti[i].idProjekat,
+                    opis_projekta: projekti[i].opisProjekta
+                });
+                viewSUtils.zaSvakiPredmetPopuniProjektneZadatke(finalanNiz, (err2, rez) => {
+                    if (err2) res.send(JSON.stringify({
+                        message: 'Greška u bazi'
+                    }));
+                    else res.send(JSON.stringify({projekti: rez}));
+                })
+            }
+        });
+    }
+});
+
+/**
+ * @swagger
+ * /services/viewS/user-projects/id:
+ *    get:
+ *      tags:
+*       - Studenti - Pregled projekata - Service
+ *      description: Custom servis za dobijanje projekata zavisno od id usera
+ */
+viewSRouter.get('/user-projects/:id', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let finalanNiz = [];
+    if (!req.params.id) res.send(JSON.stringify({ message: 'ID nije poslan u url.' }));
+    else {
         viewSUtils.dajSveProjekte(req.body['idPredmet'], (err, projekti) => {
             if (err) res.send(JSON.stringify({
                 message: 'Greška u bazi'
@@ -63,8 +96,8 @@ viewSRouter.get('/customdata/:id', (req,res) => {
             }
         });
     }
-    
 });
+
 
 /**
  * @swagger
