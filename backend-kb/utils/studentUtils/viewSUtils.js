@@ -34,6 +34,10 @@ const dajSvePredmete = (callback) => {
         .catch((err) => callback(err));
 }
 
+const dajSveProjekteUser = (id, callback) => {
+    
+}
+
 module.exports = {
     dajSveProjekte,
     zaSvakiPredmetPopuniProjektneZadatke,

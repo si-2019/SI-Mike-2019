@@ -78,23 +78,7 @@ viewSRouter.get('/user-projects/:id', (req, res) => {
     let finalanNiz = [];
     if (!req.params.id) res.send(JSON.stringify({ message: 'ID nije poslan u url.' }));
     else {
-        viewSUtils.dajSveProjekte(req.body['idPredmet'], (err, projekti) => {
-            if (err) res.send(JSON.stringify({
-                message: 'Greška u bazi'
-            }));
-            else {
-                for (let i = 0; i < projekti.length; ++i) finalanNiz.push({
-                    id: projekti[i].idProjekat,
-                    opis_projekta: projekti[i].opisProjekta
-                });
-                viewSUtils.zaSvakiPredmetPopuniProjektneZadatke(finalanNiz, (err2, rez) => {
-                    if (err2) res.send(JSON.stringify({
-                        message: 'Greška u bazi'
-                    }));
-                    else res.send(JSON.stringify({projekti: rez}));
-                })
-            }
-        });
+        res.send('to be..');
     }
 });
 
