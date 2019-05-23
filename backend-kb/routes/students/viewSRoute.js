@@ -34,18 +34,16 @@ viewSRouter.post('/tasks',(req,res)=>{
 
 /**
  * @swagger
- * /services/viewS/customdata:
- *    post:
+ * /services/viewS/customdata/id:
+ *    get:
  *      tags:
 *       - Studenti - Pregled projekata - Service
  *      description: Custom servis za dohvatanje podataka po mjeri / obavezno slati idPredmet!
  */
-viewSRouter.post('/customdata', (req,res) => {
+viewSRouter.get('/customdata/:id', (req,res) => {
     res.setHeader('Content-Type', 'application/json');
     let finalanNiz = [];
-    if (!req.body['idPredmet']) res.send(JSON.stringify({
-        message: 'Greška u bazi'
-    }));
+    if (!req.params.id) res.send(JSON.stringify({ message: 'ID nije poslan u url.' }));
     else {
         viewSUtils.dajSveProjekte(req.body['idPredmet'], (err, projekti) => {
             if (err) res.send(JSON.stringify({
