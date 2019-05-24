@@ -28,13 +28,13 @@ const dajSveZadatkeProjekta = (idProjekta) => {
 
 const dajSvePredmete = () => { return db.Predmet.findAll(); }
 
-// svi projekti na predmetu, za koje dati student nije niti u jednoj grupi
+// svi projekti na predmetu, za koje dati student nije niti u jednoj grupi u ovoj akademskoj godini
 const dajProjekteKreiranjeGrupe = (idStudenta, idPredmeta) => {
     return db.sequelize.query(`SELECT DISTINCT projekat.idProjekat, projekat.nazivProjekta, projekat.progress, projekat.opisProjekta,
                                         projekat.moguciBodovi, projekat.rokProjekta
                             FROM Projekat projekat, Korisnik korisnik, predmet_student ps, AkademskaGodina ag
                             WHERE projekat.idPredmet=${idPredmeta} AND korisnik.id=${idStudenta} AND ps.idStudent=korisnik.id AND 
-                            ps.idPredmet=${idPredmeta} AND ps.idAkademskaGodina=ag.id AND korisnik.id NOT IN (
+                            ps.idPredmet=${idPredmeta} AND ps.idAkademskaGodina=ag.id AND ag.aktuelna='1' AND korisnik.id NOT IN (
                                 SELECT k2.id
                                 FROM Korisnik k2, GrupaProjekta gp, ClanGrupe cg
                                 WHERE k2.id=cg.idStudent AND gp.idGrupaProjekta=cg.idGrupaProjekta AND gp.idProjekat=projekat.idProjekat
