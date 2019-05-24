@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('projektniZadatak_clanGrupe', {
+  const pz = sequelize.define('projektniZadatak_clanGrupe', {
     idProjektniZadatak: {
       type: DataTypes.INTEGER(10),
       allowNull: false,
@@ -20,5 +20,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     tableName: 'projektniZadatak_clanGrupe'
-  });
+  })
+  pz.removeAttribute('id');
+  return pz;
 };

@@ -111,10 +111,13 @@ bodovanjeRouter.post('/specified', (req, res) => res.redirect(307, '/services/bo
  *                   type: string
  *                  ostvareniBodovi:
  *                   type: number
+ *                  idProjekat:
+ *                   type: number
  *               required:
  *                 - idProjektnogZadatka
  *                 - komentarAsistenta
  *                 - ostvareniBodovi
+ *                 - idProjekat
  *      responses:
  *       200:
  *         description: Vraca se JSON objekat sa parametrom message
