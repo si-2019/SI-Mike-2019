@@ -14,6 +14,7 @@
 - PRIJE GENERISANJA: IMATI GLOBALNO INSTALIRANO: MYSQL, SEQULIZE-AUTO
 - ukoliko je potrebno generisati nove modele kucari `npm run generate`
 - DODATI OBAVEZNO `autoIncrement: true` u primary key atribute KAD SE KREIRA, jer sam sequlize-auto ne doda (radi auto increment opcije)!
+- dodati i id remover za `projektniZadatak_clanGrupe` model!
 
 ## Korištenje swaggera
 - Prije/tokom/na kraju pisanja api call metode, OBAVEZNO definisati i swagger objekat prije njenog poziva
@@ -21,3 +22,6 @@
 - Unutar toga treba se definisati ŠTA ta metoda radi, KOJI su OBAVEZNI ulazni parametri, KOJI su OBAVEZNI izlazni parametri i KO JE uradio tu metodu unutar deskripcije! 
 - http://localhost:31913/ - za dobijanje swagger-ui
 - http://localhost:31913/swagger-json - za dobijanje json fajla swaggera
+
+## Korištenje gita timovi
+- https://bit.ly/2HUuaAH
