@@ -67,18 +67,105 @@ viewSRouter.get('/customdata/:id', (req,res) => {
 
 /**
  * @swagger
- * /services/viewS/user-projects/id:
+ * /services/viewS/user-projects/:id:
  *    get:
  *      tags:
 *       - Studenti - Pregled projekata - Service
- *      description: Custom servis za dobijanje projekata zavisno od id usera
+ *      description: Custom servis za dobijanje svih projekata zajedno sa pripadajucim zadacima za datog korisnika
  */
 viewSRouter.get('/user-projects/:id', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    let finalanNiz = [];
     if (!req.params.id) res.send(JSON.stringify({ message: 'ID nije poslan u url.' }));
     else {
-        res.send('to be..');
+        viewSUtils.dajSveProjekteUsera(req.params.id).then((projekti) => {
+            if(!projekti) {
+                res.send(JSON.stringify({ message: 'Doslo je do greske.' }));
+            }
+            else {
+                //za svaki projekat fetchati sve projektne zadatke
+                let finalanNiz = [];
+                let brojObradjenih = 0;
+                let greska = false;
+
+                for(let i = 0; i < projekti.length; i++) {
+                    new function() {
+                        var i_closure = i;
+
+                        viewSUtils.dajSveZadatkeProjekta(projekti[i].idProjekat).then((zadaci) => {
+                            if(!zadaci) {
+                                if(!greska) res.send(JSON.stringify({ message: 'Doslo je do greske.' }));
+                                greska = true;
+                            }
+
+                            finalanNiz[i_closure] = {
+                                id: projekti[i_closure].idProjekat,
+                                naziv_projekta: projekti[i_closure].nazivProjekta,
+                                naziv_predmeta: projekti[i_closure].naziv,
+                                opis_projekta: projekti[i_closure].opis,
+                                zadaci: zadaci
+                            }
+                            brojObradjenih++;
+                            if(brojObradjenih == projekti.length) {
+                                if(!greska) res.send(JSON.stringify({projekti: finalanNiz}));
+                            }
+                        });
+                    }();
+                }
+            }
+        });
+    }
+});
+
+//
+/**
+ * @swagger
+ * /services/viewS/user-projects/:id:
+ *    get:
+ *      tags:
+ *       - Studenti - Pregled projekata - Service
+ *      description: 'Custom servis za dobijanje svih predmeta na kojima je student, sa pripadajucim projektima,
+ *      na kojima student nije niti u jednoj grupi tako da moze generisati novu grupu za taj projekat'
+ */
+viewSRouter.get('/predmeti-za-generisanje-grupa/:id', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    if (!req.params.id) res.send(JSON.stringify({ message: 'ID nije poslan u url.' }));
+    else {
+        viewSUtils.dajSvePredmete().then((predmeti) => {
+            if(!predmeti) {
+                res.send(JSON.stringify({ message: 'Doslo je do greske.' }));
+            }
+            else {
+                let finalanNiz = [];
+                let brojObradjenih = 0;
+                let greska = false;
+
+                for(let i = 0; i < predmeti.length; i++) {
+                    new function() {
+                        var i_closure = i;
+
+                        viewSUtils.dajProjekteKreiranjeGrupe(req.params.id, predmeti[i_closure].id).then((projekti) => {
+                            if(!projekti) {
+                                if(!greska) res.send(JSON.stringify({ message: 'Doslo je do greske.' }));
+                                greska = true;
+                            }
+    
+                            finalanNiz[i_closure] = {
+                                id: predmeti[i_closure].id,
+                                naziv_predmeta: predmeti[i_closure].naziv,
+                                projekti: projekti
+                            }
+
+                            brojObradjenih++;
+                            if(brojObradjenih == predmeti.length) {
+                                if(!greska) {
+                                    res.send(JSON.stringify({predmeti: finalanNiz.filter(predmet => predmet.projekti.length > 0)}));
+                                }
+                            }
+                        });
+                    }();
+                }
+            }
+        });
     }
 });
 

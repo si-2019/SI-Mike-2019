@@ -41,8 +41,6 @@ const upisGrupaNasumicno = (postBody, callback) => {
     idProjekta = postBody['idProjekat'];
     brojGrupa = postBody['brojGrupa'];
 
-    console.log("Pozvan upis grupa nasumicno.");
-
     db.sequelize.query(`SELECT DISTINCT korisnik.id, korisnik.ime, korisnik.prezime 
                         FROM Korisnik korisnik, Predmet predmet, Projekat projekat, AkademskaGodina ag, predmet_student ps 
                         WHERE korisnik.id=ps.idStudent AND predmet.id=ps.idPredmet AND projekat.idProjekat=${idProjekta} 
@@ -60,17 +58,11 @@ const upisGrupaNasumicno = (postBody, callback) => {
                     ))
             }); 
 
-            console.log(JSON.stringify(studenti));
-
             let base = Math.floor(studenti.length / brojGrupa);
-            console.log(`base: ${base}`);
-            console.log(`broj studenata: ${studenti.length}`);
-            console.log(`broj grupa: ${brojGrupa}`);
             if(base < 1) {
                 callback(true);
                 return;
             }
-            console.log("Sortirao studente i odredio base koji je bio ispravan.");
             let greska = false;
             let kolikoDodatnih = studenti.length - base * brojGrupa;
 
