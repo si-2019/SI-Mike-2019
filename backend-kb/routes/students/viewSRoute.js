@@ -119,7 +119,7 @@ viewSRouter.get('/user-projects/:id', (req, res) => {
 //
 /**
  * @swagger
- * /services/viewS/user-projects/:id:
+ * /services/viewS/predmeti-za-generisanje-grupa/:id:
  *    get:
  *      tags:
  *       - Studenti - Pregled projekata - Service
