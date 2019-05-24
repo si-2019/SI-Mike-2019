@@ -86,4 +86,46 @@ bodovanjeRouter.post('/unified', (req, res) => res.redirect(307, `/services/bodo
 bodovanjeRouter.post('/specified', (req, res) => res.redirect(307, '/services/bodovanjeprojekata/specified'));
 
 
+/**
+ * @swagger
+ * /api/bodovanjeprojekata/tasks:
+ *    post:
+ *      tags:
+ *       - Asistenti - Bodovanje projekata - API
+ *      description: 'Omogucava bodovanje clanova grupe na osnovu bodovanja projektnih zadataka. Ukoliko se za korisnika posalje vise bodova nego sto treba uzima se minimum.
+ *      Realizovano od strane: Mašović Haris'
+ *      consumes:
+ *       - application/json
+ *      parameters:
+ *          - in: body
+ *            name: payload
+ *            description: array of tasks.
+ *            schema:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                  idProjektnogZadatka:
+ *                   type: integer
+ *                  komentarAsistenta:
+ *                   type: string
+ *                  ostvareniBodovi:
+ *                   type: number
+ *               required:
+ *                 - idProjektnogZadatka
+ *                 - komentarAsistenta
+ *                 - ostvareniBodovi
+ *      responses:
+ *       200:
+ *         description: Vraca se JSON objekat sa parametrom message
+ *         content: 
+ *           application/json:
+ *               schema: 
+ *                 type: object
+ *                 properties:
+ *                  message:
+ *                   type: string
+*/
+bodovanjeRouter.post('/tasks', (req, res) => res.redirect(307, '/services/bodovanjeprojekata/tasks'));
+
 module.exports = bodovanjeRouter;
