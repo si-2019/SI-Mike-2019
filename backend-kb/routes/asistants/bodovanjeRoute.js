@@ -75,7 +75,7 @@ bodovanjeRouter.post('/tasks', (req, res) => {
     if(!bodovanjeUtils.provjeraSvakogProjektnog(req.body)) res.send(JSON.stringify({ message: 'Format podataka nije pravilo definisan.' }));
     else bodovanjeUtils.bodovanjeProjektnogZadatka(req.body, (err) => {
             if(err) res.send(JSON.stringify({ message: err }));
-            else res.send(JSON.stringify({ message: 'Uspiješno bodovan svaki projektni zadatak!' }));
+            else res.send(JSON.stringify({ message: 'Uspješno bodovan svaki projektni zadatak!' }));
         }); 
 });
 

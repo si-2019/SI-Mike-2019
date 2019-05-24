@@ -93,6 +93,7 @@ bodovanjeRouter.post('/specified', (req, res) => res.redirect(307, '/services/bo
  *      tags:
  *       - Asistenti - Bodovanje projekata - API
  *      description: 'Omogucava bodovanje clanova grupe na osnovu bodovanja projektnih zadataka. Ukoliko se za korisnika posalje vise bodova nego sto treba uzima se minimum.
+ *      Vraća se error ukoliko je greška do refenciranja svih projektnih zadataka ili ukoliko format nije zadovoljen.
  *      Realizovano od strane: Mašović Haris'
  *      consumes:
  *       - application/json

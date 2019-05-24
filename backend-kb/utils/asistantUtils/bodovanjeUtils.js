@@ -137,8 +137,9 @@ const bodovanjeProjektnogZadatka = (nizVrijednosti, callback) => {
                         veza.idClanGrupe = c.idClanGrupe AND c.idGrupaProjekta = gp.idGrupaProjekta AND
                         pz.idProjektnogZadatka IN (${string})`, { type: sequelize.QueryTypes.SELECT })
         .then((podaci) => {
-            console.log('podaciPotrebni', nizVrijednosti);
-            console.log('podaci', podaci);
+            // console.log('podaciPotrebni', nizVrijednosti);
+            // console.log('podaci', podaci);
+            // console.log('string', string);
             let promisi = [];
 
             for (let i = 0; i < nizVrijednosti.length; ++i) {
@@ -158,11 +159,12 @@ const bodovanjeProjektnogZadatka = (nizVrijednosti, callback) => {
                     }
                 }
             }
-            Promise.all(promisi)
+            if(!promisi.length) callback('Nijedan projektni zadatak ne postoji u bazi/nije bodovan.');
+            else Promise.all(promisi)
                 .then((rez) => { callback(null); return null; })
                 .catch((err) => callback('Greska prilikom referenicranje podataka u bazi!', err));
         })
-        .catch((err) => callback(err));
+        .catch((err) => callback('Greska prilikom referenicranje podataka u bazi!', err));
 }
 
 module.exports = {
