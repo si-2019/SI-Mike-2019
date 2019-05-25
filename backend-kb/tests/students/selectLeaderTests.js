@@ -23,11 +23,11 @@ describe('Testiranje post metode base/services/group/selectleader', () => {
                     'content-type': 'application/x-www-form-urlencoded'
                 },
                 url: `${process.env.FULL_NAME}/services/group/selectleader`,
-                body: encodeURI(`id=100`)
+                body: encodeURI(`id=207`)
             }, function (error, response, body) {
                 db.ClanGrupe.findOne({
                     where: {
-                        idClanGrupe: 100
+                        idClanGrupe: 207
                     }
                 }).then((rez) => {
                     expect(rez.kreator).to.equal(true);
