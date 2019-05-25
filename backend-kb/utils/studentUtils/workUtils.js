@@ -40,17 +40,25 @@ const provjeraParametaraAssignTask = (body) => {
 const provjeraVodjeIClanova = (body, callback) => {
     db.ClanGrupe.findOne({ where: { idClanGrupe : body.idVodje }})
     .then((vodja) => {
-        if(!vodja.kreator) callback('Vodja nije kreator!')
+        if(!vodja) callback('Ne postoji poslani vodja!');
+        else if(!vodja.kreator) callback('Vodja nije kreator!')
         else {
             let nizClanovaId = [];
-            body.zadaci.forEach(element => nizClanovaId.push(element.idClanGrupe));
-            db.ClanGrupe.findAll({ where: { idClanGrupe : nizClanovaId }})
-            .then((sviClanovi) => {
-               let bool = true;
-               for(let i = 0; i < sviClanovi.length; ++i) if(sviClanovi[i].idGrupaProjekta !== vodja.idGrupaProjekta) { bool = false; break; }
-               if(!bool) callback('Svi clanovi nisu u istoj grupi gdje je i vođa!');
-               else callback(null);
-               return null;
+            let nizPz = [];
+            body.zadaci.forEach(element => { nizClanovaId.push(element.idClanGrupe); nizPz.push(element.idProjektniZadatak); });
+            db.ProjektniZadatak.findAll({ where: { idProjektnogZadatka : nizPz }})
+            .then((rezultat) => {
+                if(rezultat.length !== nizPz.length) callback('Ne postoje svi projektni zadaci u bazi!');
+                else db.ClanGrupe.findAll({ where: { idClanGrupe : nizClanovaId }})
+                    .then((sviClanovi) => {
+                        if(sviClanovi.length !== nizClanovaId.length) callback('Ne postoje svi clanovi u bazi!');
+                        else {
+                            let bool = true;
+                            for(let i = 0; i < sviClanovi.length; ++i) if(sviClanovi[i].idGrupaProjekta !== vodja.idGrupaProjekta) { bool = false; break; }
+                            if(!bool) callback('Svi clanovi nisu u istoj grupi gdje je i vođa!');
+                            else callback(null);
+                            return null;
+                        }})
             })
         }
     })
