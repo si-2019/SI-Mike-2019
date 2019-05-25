@@ -69,19 +69,38 @@ workRouter.post('/addfile',(req,res)=>{
 
 });
 
-// POST base/api/work/assigntask
-// [idProjektnogZadatka, idClanGrupe] obavezni parametar u bodiju posta
 /**
  * @swagger
  * /api/work/assigntask:
  *    post:
  *      tags:
-*       - Studenti - Rad na projektu - API
- *      description: Dodjela projektnog zadatka clanu grupe
+ *       - Studenti - Rad na projektu - API
+ *      description: 'Dodjela projektnog zadatka clanu grupe od studenta vođe ekipe. Realizovano od strane: Mašović Haris.'
+ *      consumes:
+ *       - application/json
+ *      parameters:
+ *       - in: body
+ *         schema:
+ *          type: object
+ *          properties:
+ *           idKreator:
+ *            type: integer
+ *           noviZadaci:
+ *            type: array
+ *            items:
+ *             type: object
+ *             properties:
+ *               idClanGrupe:
+ *                type: integer
+ *               idProjektniZadatak:
+ *                type: integer
+ *             required:
+ *              - idClanGrupe
+ *              - idProjektniZadatak
+ *          required:
+ *           - idKreator
  */
-workRouter.post('/assigntask',(req,res)=>{
-
-});
+workRouter.post('/assigntask', (req, res) => res.redirect(307, '/services/work/assigntask'));
 
 // POST base/api/work/deletefile
 // [idFajla] obavezni parametar u bodiju posta

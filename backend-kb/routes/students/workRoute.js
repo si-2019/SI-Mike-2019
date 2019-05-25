@@ -55,18 +55,16 @@ workRouter.post('/addfile',(req,res)=>{
 
 });
 
-// POST base/api/work/assigntask
-// [idProjektnogZadatka, idClanGrupe] obavezni parametar u bodiju posta
 /**
  * @swagger
  * /services/work/assigntask:
  *    post:
  *      tags:
 *       - Studenti - Rad na projektu - Service
- *      description: Dodjela projektnog zadatka clanu grupe
+ *      description: Dodjela projektnog zadatka clanu grupe, od strane vođe grupe.
  */
-workRouter.post('/assigntask',(req,res)=>{
-
+workRouter.post('/assigntask', (req, res) => {
+    res.send('masha');
 });
 
 // POST base/api/work/deletefile
