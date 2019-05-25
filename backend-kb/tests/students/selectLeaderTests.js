@@ -11,7 +11,7 @@ describe('Testiranje post metode base/services/group/selectleader', () => {
     it('Treba da postavi studenta za vodju grupe', (done) => {
         let testni = {
             idClanGrupe: 100,
-            idStudent: 5,
+            idStudent: 2,
             idGrupaProjekta: 1,
             ostvareniBodovi: 10,
             kreator: null
@@ -23,11 +23,11 @@ describe('Testiranje post metode base/services/group/selectleader', () => {
                     'content-type': 'application/x-www-form-urlencoded'
                 },
                 url: `${process.env.FULL_NAME}/services/group/selectleader`,
-                body: encodeURI(`id=207`)
+                body: encodeURI(`id=100`)
             }, function (error, response, body) {
                 db.ClanGrupe.findOne({
                     where: {
-                        idClanGrupe: 207
+                        idClanGrupe: 100
                     }
                 }).then((rez) => {
                     expect(rez.kreator).to.equal(true);
