@@ -70,10 +70,10 @@ workRouter.post('/assigntask', (req, res) => {
     let bool = workUtils.provjeraParametaraAssignTask(postBody);
     if (!bool) res.send(JSON.stringify({ message: 'Body parametri nisu specifirani: idVodje, zadaci: [{idClangGrupe, idProjektniZadatak}..].' }));
     else workUtils.provjeraVodjeIClanova(postBody, (err) => {
-        if(!err) res.send(JSON.stringify({ message: err }));
+        if(err) res.send(JSON.stringify({ message: err }));
         // ukoliko je sve zadovoljeno, onda se prelazi na postavljanje projektnih zadataka određenim članovima
-        else workUtils.odradiPostavljanjeZadataka(postBody.zadaci, (err) => {
-            if(!err) res.send(JSON.stringify({ message: err }))
+        else workUtils.odradiPostavljanjeZadataka(postBody.zadaci, (err2) => {
+            if(err) res.send(JSON.stringify({ message: err2 }))
             else res.send(JSON.stringify({ message: 'Uspiješno dodijeljeni zadaci svim članovima.' }));
         })
     }); 
