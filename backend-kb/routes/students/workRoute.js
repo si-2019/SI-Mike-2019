@@ -55,18 +55,28 @@ workRouter.post('/addfile',(req,res)=>{
 
 });
 
-// POST base/api/work/assigntask
-// [idProjektnogZadatka, idClanGrupe] obavezni parametar u bodiju posta
 /**
  * @swagger
  * /services/work/assigntask:
  *    post:
  *      tags:
 *       - Studenti - Rad na projektu - Service
- *      description: Dodjela projektnog zadatka clanu grupe
+ *      description: 'Dodjela projektnog zadatka clanu grupe, od strane vođe grupe. Realizovano od strane: Mašović Haris.'
  */
-workRouter.post('/assigntask',(req,res)=>{
-
+workRouter.post('/assigntask', (req, res) => {
+    let postBody = req.body;
+    res.setHeader('Content-Type', 'application/json');
+    
+    let bool = workUtils.provjeraParametaraAssignTask(postBody);
+    if (!bool) res.send(JSON.stringify({ message: 'Body parametri nisu specifirani: idVodje, zadaci: [{idClangGrupe, idProjektniZadatak}..].' }));
+    else workUtils.provjeraVodjeIClanova(postBody, (err) => {
+        if(err) res.send(JSON.stringify({ message: err }));
+        // ukoliko je sve zadovoljeno, onda se prelazi na postavljanje projektnih zadataka određenim članovima
+        else workUtils.odradiPostavljanjeZadataka(postBody.zadaci, (err2) => {
+            if(err) res.send(JSON.stringify({ message: err2 }))
+            else res.send(JSON.stringify({ message: 'Uspiješno dodijeljeni zadaci svim članovima.' }));
+        })
+    }); 
 });
 
 // POST base/api/work/deletefile
