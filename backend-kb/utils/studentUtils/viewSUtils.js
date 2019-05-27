@@ -67,6 +67,9 @@ const dajSveProjekteProjektneZadatke = (callback) => {
             for (let j = 0; j < projektniZadaci.length; ++j) {
                 for (let i = 0; i < projekti.length; ++i) {
                     if (projekti[i].idProjekat === projektniZadaci[j].idProjekta) {
+                        const buf = Buffer.from(JSON.stringify(projektniZadaci[j].zavrsen));
+                        const objekat = JSON.parse(buf.toString());
+                        projektniZadaci[j].zavrsen = objekat.data[0] ? true : false;
                         projekti[i].dataValues.projektniZadaci.push(JSON.parse(JSON.stringify(projektniZadaci[j])));
                     }
                 }
@@ -74,7 +77,7 @@ const dajSveProjekteProjektneZadatke = (callback) => {
             callback(null, projekti);
             return null;
         })
-        .catch((err) => callback(err));
+        .catch((err) => { console.log(err); callback(err)});
         return null;
     })
     .catch((err) => callback(err));
