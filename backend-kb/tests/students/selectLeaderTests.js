@@ -11,7 +11,7 @@ describe('Testiranje post metode base/services/group/selectleader', () => {
     it('Treba da postavi studenta za vodju grupe', (done) => {
         let testni = {
             idClanGrupe: 100,
-            idStudent: 5,
+            idStudent: 2,
             idGrupaProjekta: 1,
             ostvareniBodovi: 10,
             kreator: null

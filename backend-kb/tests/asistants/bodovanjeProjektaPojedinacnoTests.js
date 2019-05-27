@@ -3,7 +3,7 @@ const request = require('request');
 const dotenv = require('dotenv'); // definisanje env varijabli
 dotenv.config(); // postavljanje configa 
 
-describe('Testiranje post metode base/services/group/addmembers', () => {
+describe('Testiranje post metode base/services/bodovanjeprojekata/specified', () => {
     
     it('Treba da vraca specifican json jer nije zadovoljen body', (done) => {
         request.post({

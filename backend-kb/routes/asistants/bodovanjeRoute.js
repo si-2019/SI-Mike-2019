@@ -60,5 +60,24 @@ bodovanjeRouter.post('/specified', (req, res) => {
     });
 });
 
+/**
+ * @swagger
+ * /services/bodovanjeprojekata/tasks:
+ *    post:
+ *      tags:
+ *       - Asistenti - Bodovanje projekata - Service
+ *      description: 'Servis koji omogucava bodovanje projektnih zadataka pojedinacno.
+ *      Realizovano od strane: Mašović Haris'
+ */
+bodovanjeRouter.post('/tasks', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+
+    if(!bodovanjeUtils.provjeraSvakogProjektnog(req.body)) res.send(JSON.stringify({ message: 'Format podataka nije pravilo definisan.' }));
+    else bodovanjeUtils.bodovanjeProjektnogZadatka(req.body, (err) => {
+            if(err) res.send(JSON.stringify({ message: err }));
+            else res.send(JSON.stringify({ message: 'Uspješno bodovan svaki projektni zadatak!' }));
+        }); 
+});
+
 
 module.exports = bodovanjeRouter;
