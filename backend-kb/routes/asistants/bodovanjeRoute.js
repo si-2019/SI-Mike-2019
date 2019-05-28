@@ -79,5 +79,31 @@ bodovanjeRouter.post('/tasks', (req, res) => {
         }); 
 });
 
+/**
+ * @swagger
+ * /services/bodovanjeprojekata/scaling:
+ *    post:
+ *      tags:
+*       - Asistenti - Bodovanje projekata - Service
+ *      description: 'Omogucava skaliranje bodova svim studentima na projektu u skladu sa poslanim faktorom skaliranja.
+ *      Realizovano od strane: Skopljak Emin'
+ */
+bodovanjeRouter.post('/scaling', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+
+    bodovanjeUtils.skaliranjeBodovaProjekta(req.body, (cb) => {
+        if(cb.ispravno) {
+            res.send(JSON.stringify({
+                message: 'Uspjesno skalirani bodovi.'
+            }));
+        }
+        else
+        {
+            res.send(JSON.stringify({
+                message: cb.poruka
+            }));
+        }
+    });
+});
 
 module.exports = bodovanjeRouter;
