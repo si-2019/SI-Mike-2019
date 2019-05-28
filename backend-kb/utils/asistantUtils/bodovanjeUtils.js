@@ -167,11 +167,98 @@ const bodovanjeProjektnogZadatka = (nizVrijednosti, callback) => {
         .catch((err) => callback('Greska prilikom referenicranje podataka u bazi!', err));
 }
 
+const skaliranjeBodovaProjekta = (postBody, cb) => {
+    let idProjekta = postBody['idProjekat'];
+    let faktorSkaliranja = postBody['faktorSkaliranja'];
+
+    if(!idProjekta || !faktorSkaliranja) {
+        cb({
+            ispravno: false,
+            poruka: 'Body parametri nisu specifirani [idProjekat, faktorSkaliranja]'
+        });
+    }
+    else if(faktorSkaliranja < 0) {
+        cb({
+            ispravno: false,
+            poruka: 'Faktor skaliranja mora biti veci ili jednak nula.'
+        });
+    }
+    else {
+        db.Projekat.findOne({
+            where: {
+                idProjekat: idProjekta
+            }
+        }).then((projekat) => {
+            if(!projekat) {
+                cb({
+                    ispravno: false,
+                    poruka: 'Dati projekat ne postoji.'
+                });
+            }
+            else {
+                let maxBodovaProjekta = projekat.moguciBodovi;
+
+                db.GrupaProjekta.findAll({
+                    where: {
+                        idProjekat: idProjekta
+                    }
+                }).then((grupe) => {
+                    if(grupe) {
+                        let brojOdradjenihGrupa = 0;
+                        for(let i = 0; i < grupe.length; i++) {
+                            new function() {
+                                let idGrupe = grupe[i].idGrupaProjekta;
+
+                                db.ClanGrupe.findAll({
+                                    where: {
+                                        idGrupaProjekta: idGrupe
+                                    }
+                                }).then((clanovi) => {
+                                    if(clanovi.length == 0) brojOdradjenihGrupa++;
+                                    let brojOdradjenihClanova = 0;
+                                    for(let j = 0; j < clanovi.length; j++) {
+                                        new function() {
+                                            let idClanaGrupe = clanovi[j].idClanGrupe;
+                                            let noviBodovi = clanovi[j].ostvareniBodovi * faktorSkaliranja;
+                                            noviBodovi = Math.floor((noviBodovi + 0.005) * 100) / 100;
+
+                                            if(noviBodovi > maxBodovaProjekta) noviBodovi = maxBodovaProjekta;
+                                            db.ClanGrupe.update({
+                                                ostvareniBodovi: noviBodovi
+                                            }, 
+                                            {
+                                                where: {
+                                                    idClanGrupe: idClanaGrupe
+                                                }
+                                            }).then(() => {
+                                                brojOdradjenihClanova++;
+                                                if(brojOdradjenihClanova >= clanovi.length) {
+                                                    brojOdradjenihGrupa++;
+                                                }
+                                                if(brojOdradjenihGrupa >= grupe.length) {
+                                                    cb({
+                                                        ispravno: true
+                                                    });
+                                                }
+                                            })
+                                        }();
+                                    }
+                                });
+                            }();
+                        }
+                    }
+                })        
+            }
+        })
+    }
+}
+
 module.exports = {
     provjeraParametaraBodovanjeProjektneGrupe,
     upisBodovaProjektneGrupe,
     provjeraBodySpecified,
     upisBodovaProjektaPoClanu,
     provjeraSvakogProjektnog,
-    bodovanjeProjektnogZadatka
+    bodovanjeProjektnogZadatka,
+    skaliranjeBodovaProjekta
 }
