@@ -1,4 +1,5 @@
 const db = require('../../models/db');
+const multer  = require('multer');
 
 const provjeraParametaraPostPZ = (postBody) => {
     if (!postBody['id_projekta'] || !postBody['od_kad'] || !postBody['do_kad']) return false;
@@ -90,10 +91,77 @@ const odradiPostavljanjeZadataka = (niz, callback) => {
         .catch((err) => callback('Greska prilikom referenicranje podataka u bazi!', err));
 }
 
+//
+
+const provjeraParametaraUploadFajla = (postBody, cb) => {
+    let idZadatka = postBody['idProjektnogZadatka'];
+
+    if(!idZadatka) {
+        cb ({
+            ispravno: false,
+            poruka: 'Body parametri nisu specifirani: idProjektnogZadatka.'
+        });
+    }
+    else {
+        db.ProjektniZadatak.findOne({
+            where: {
+                idProjektnogZadatka: idZadatka
+            }
+        }).then((zad) => {
+            if(!zad) {
+                cb ({
+                    ispravno: false,
+                    poruka: 'Ne postoji dati projektni zadatak.'
+                });
+            }
+            else {
+                cb ({
+                    ispravno: true
+                });
+            }
+        })
+    }
+}
+
+const noviID = () => {
+    return Math.random().toString(36).substr(2, 9);
+}
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) 
+    {
+        cb(null, __dirname + '../../../temp_files/')
+    },
+    filename: function (req, file, cb) 
+    {
+        let ext = '';
+        // ako ima ekstenzije
+        if (file.originalname.split('.').length > 1) {
+            ext = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
+        }
+        
+        cb(null, file.originalname + noviID());
+    }
+})
+
+const upload = multer({dest: __dirname + '../../../temp_files/', storage: storage});
+
+const spremiFajl = (idFajla) => {
+
+}
+
+const obrisiTempFajl = (id) => {
+    
+}
+
 module.exports = {
     provjeraParametaraPostPZ,
     upisNovogPZuBazu,
     provjeraParametaraAssignTask,
     provjeraVodjeIClanova,
-    odradiPostavljanjeZadataka
+    odradiPostavljanjeZadataka,
+    upload,
+    noviID,
+    provjeraParametaraUploadFajla,
+    obrisiTempFajl
 }
