@@ -41,20 +41,6 @@ workRouter.post('/', (req, res) => {
     }
 });
 
-// POST base/api/work/addfile
-// [idProjektnogZadatka] obavezni parametar u bodiju posta
-/**
- * @swagger
- * /services/work/addfile:
- *    post:
- *      tags:
-*       - Studenti - Rad na projektu - Service
- *      description: Unos novog fajla u projektni zadatak
- */
-workRouter.post('/addfile',(req,res)=>{
-
-});
-
 /**
  * @swagger
  * /services/work/assigntask:
@@ -77,6 +63,77 @@ workRouter.post('/assigntask', (req, res) => {
             else res.send(JSON.stringify({ message: 'Uspiješno dodijeljeni zadaci svim članovima.' }));
         })
     }); 
+});
+
+// POST base/api/work/addfile
+// [idProjektnogZadatka] obavezni parametar u bodiju posta
+/**
+ * @swagger
+ * /services/work/addfile:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: Unos novog fajla u projektni zadatak
+ */ 
+workRouter.post('/addfile', (req, res) => { 
+    res.setHeader('Content-Type', 'application/json');
+    workUtils.provjeraParametaraUploadFajla(req.body, (cb) => {
+        if(cb.ispravno) {
+            if(req.body.fajlovi) {
+                //submitanje forme - finaliziranje
+                console.log("Submitanje forme - finaliziranje");
+                console.log(req.body);
+                console.log(req.body.fajlovi);
+                        
+                //workUtils.spremiFajl(req.body.fajlovi, req.body['idProjektnogZadatka']);
+            }
+        }
+        else {
+            console.log("Neispravno");
+            res.send(JSON.stringify({
+                message: cb.poruka
+            }));
+        }
+    }); 
+});
+
+// POST base/api/work/addfileupload
+/**
+ * @swagger
+ * /services/work/addfile:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: Upload fajla
+ */ 
+workRouter.post('/addfileupload', workUtils.upload.array('fajlovi'), (req, res) => {
+    if(req.files && req.files.length > 0) {
+        //upload fajla
+        console.log("File upload pozvan");
+        console.log(req.files);
+
+        let puno_ime = req.files[0].filename;
+        let ime = puno_ime.substring(0, puno_ime.length - 9);
+        let id = puno_ime.substring(puno_ime.length - 9, puno_ime.length);
+
+        console.log(`ime: ${ime}  id: ${id}`);
+
+        res.setHeader('Content-Type', 'text/plain');
+        res.send(id);
+    }
+    else {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({
+            message: 'Doslo je do greske'
+        }));
+    }
+});
+
+workRouter.delete('/addfileupload', (req, res) => { 
+    console.log("DELETE pozvan");
+    //workUtils.obrisiTempFajl(req.body);
+    console.log(req.body);
+    res.end();
 });
 
 // POST base/api/work/deletefile
