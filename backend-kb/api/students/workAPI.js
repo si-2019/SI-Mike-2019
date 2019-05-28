@@ -66,7 +66,7 @@ workRouter.post('/', (req, res) => res.redirect(307, '/services/work/'));
  *      description: Unos novog fajla u projektni zadatak
  */
 workRouter.post('/addfile',(req,res)=>{
-
+    res.redirect(307, '/services/work/addfile')
 });
 
 /**
