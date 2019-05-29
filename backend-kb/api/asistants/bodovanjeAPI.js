@@ -132,4 +132,41 @@ bodovanjeRouter.post('/specified', (req, res) => res.redirect(307, '/services/bo
 */
 bodovanjeRouter.post('/tasks', (req, res) => res.redirect(307, '/services/bodovanjeprojekata/tasks'));
 
+/**
+ * @swagger
+ * /api/bodovanjeprojekata/scaling:
+ *    post:
+ *      tags:
+ *       - Asistenti - Bodovanje projekata - API
+ *      description: 'Omogucava skaliranje bodova svim studentima na projektu u skladu sa poslanim faktorom skaliranja.
+ *      Poslani faktor skaliranja mora biti veći ili jednak nula. Studenti ne mogu dobiti više od maksimalnog broja bodova 
+ *      namijenjenih za projekat.
+ *      Realizovano od strane: Skopljak Emin'
+*      consumes:
+ *       - application/x-www-form-urlencoded
+ *      parameters:
+ *        - in: formData
+ *          name: idProjekat
+ *          type: integer
+ *          description: ID projekta za koji skaliramo bodove
+ *        - in: formData
+ *          name: faktorSkaliranja
+ *          type: double
+ *          description: Faktor skaliranja u skladu s kojim skaliramo
+ *      required:
+ *        - idProjekat
+ *        - faktorSkaliranja
+ *      responses:
+ *       200:
+ *         description: Vraca se JSON objekat sa parametrom message
+ *         content: 
+ *           application/json:
+ *               schema: 
+ *                 type: object
+ *                 properties:
+ *                  message:
+ *                   type: string       
+ */
+bodovanjeRouter.post('/scaling', (req, res) => res.redirect(307, '/services/bodovanjeprojekata/scaling'));
+
 module.exports = bodovanjeRouter;
