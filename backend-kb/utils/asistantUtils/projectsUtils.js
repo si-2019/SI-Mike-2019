@@ -1,4 +1,5 @@
 const db = require('../../models/db');
+const sequelize = require('sequelize');
 
 const provjeraParametaraPostPZ = (postBody) => {
     if (!postBody['naziv_projekta'] || !postBody['id_predmeta'] || !postBody['id_asistenta'] ||
@@ -93,9 +94,57 @@ const upisRokaIzradeProjekta = (postBody, callback) => {
         });
 }
 
+const sveProvjereZaPredmeteAsistenta = (idAsistenta, callback) => {
+    // provjera da li je taj asistent zapravo asistent je na tom predmetu?
+    db.Predmet.findAll({ where: { idAsistent : idAsistenta}})
+    .then((predmeti) => {
+        if(!predmeti.length) callback(true);
+        else {
+            // filtriranje svih projekata koji sadrze neki projekat i da je asistent na tim projektima i da nema kreiranih grupa
+            db.sequelize.query(`SELECT DISTINCT p.naziv, pr.idProjekat FROM Predmet p, Projekat pr WHERE pr.idPredmet = p.id and p.idAsistent = ${idAsistenta}`, { type: sequelize.QueryTypes.SELECT })
+            .then((niz) => {
+                let nizIdProjekata = [];
+                for(let i = 0; i < niz.length; ++i) nizIdProjekata.push(niz[i].idProjekat);  
+                db.GrupaProjekta.findAll({ where: { idProjekat : nizIdProjekata }})
+                .then((nizGrupa) => {   
+                    if(!nizGrupa.length) callback(null, niz);
+                    else {
+                        // izbaciti one koji imaju kreiranu barem 1 grupu
+                        for (let i = 0; i < nizGrupa.length; ++i) {
+                            for (let j = 0; j < nizIdProjekata.length; ++j) {
+                                if (nizGrupa[i].idProjekat === nizIdProjekata[j]) {
+                                    niz.splice(j, 1);
+                                    nizIdProjekata.splice(j, 1);
+                                }
+                            }
+                        }
+                        callback(null, niz);
+                    }
+                    return null;
+                })
+                .catch((err) => { console.log(err); callback(err)});  
+                return null;     
+            })
+            .catch((err) => {console.log(err); callback(err)});
+        }
+    })
+}
+
+const dobaviProjektneGrupe = (idProjekat, callback) => {
+    db.GrupaProjekta.findAll({ where: { idProjekat }})
+    .then((grupeProjekta) => { 
+        callback(null, grupeProjekta);
+        return null;
+    })
+    .catch((err) => callback(err));
+}
+
+
 module.exports = {
     upisNovogProjektaUBazu,
     provjeraParametaraPostPZ,
     provjeraParametaraRokProjekta,
-    upisRokaIzradeProjekta
+    upisRokaIzradeProjekta,
+    sveProvjereZaPredmeteAsistenta,
+    dobaviProjektneGrupe
 }
