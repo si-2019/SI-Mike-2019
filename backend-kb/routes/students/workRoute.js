@@ -65,15 +65,13 @@ workRouter.post('/assigntask', (req, res) => {
     }); 
 });
 
-// POST base/api/work/addfile
-// [idProjektnogZadatka] obavezni parametar u bodiju posta
 /**
  * @swagger
  * /services/work/addfile:
  *    post:
  *      tags:
 *       - Studenti - Rad na projektu - Service
- *      description: Unos novog fajla u projektni zadatak
+ *      description: 'Unos novog fajla u projektni zadatak. Work in progress !!!'
  */ 
 workRouter.post('/addfile', (req, res) => { 
     res.setHeader('Content-Type', 'application/json');
@@ -97,14 +95,13 @@ workRouter.post('/addfile', (req, res) => {
     }); 
 });
 
-// POST base/api/work/addfileupload
 /**
  * @swagger
  * /services/work/addfile:
  *    post:
  *      tags:
 *       - Studenti - Rad na projektu - Service
- *      description: Upload fajla
+ *      description: 'Upload fajla u temp folder. Realizovano od strane: Skopljak Emin.'
  */ 
 workRouter.post('/addfileupload', workUtils.upload.array('fajlovi'), (req, res) => {
     if(req.files && req.files.length > 0) {
@@ -112,14 +109,24 @@ workRouter.post('/addfileupload', workUtils.upload.array('fajlovi'), (req, res) 
         console.log("File upload pozvan");
         console.log(req.files);
 
-        let puno_ime = req.files[0].filename;
-        let ime = puno_ime.substring(0, puno_ime.length - 9);
-        let id = puno_ime.substring(puno_ime.length - 9, puno_ime.length);
+        let fajl = req.files[0];
 
-        console.log(`ime: ${ime}  id: ${id}`);
+        let tempID = fajl.destination.substring(fajl.destination.length - workUtils.duzinaID - 1, fajl.destination.length - 1);
 
-        res.setHeader('Content-Type', 'text/plain');
-        res.send(id);
+        console.log(`tempID: ${tempID}`);
+
+        workUtils.spasiTempFajlInfo(tempID, fajl.mimetype, fajl.size, (err) => {
+            if(!err) {
+                res.setHeader('Content-Type', 'text/plain');
+                res.send(tempID);
+            }
+            else {
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({
+                    message: 'Doslo je do greske'
+                }));
+            }
+        });
     }
     else {
         res.setHeader('Content-Type', 'application/json');
@@ -129,11 +136,72 @@ workRouter.post('/addfileupload', workUtils.upload.array('fajlovi'), (req, res) 
     }
 });
 
+// Ruta za deletanje temp fileova. Work in progress !!!
 workRouter.delete('/addfileupload', (req, res) => { 
     console.log("DELETE pozvan");
     //workUtils.obrisiTempFajl(req.body);
     console.log(req.body);
     res.end();
+});
+
+/**
+ * @swagger
+ * /services/work/spremiFajlUBazu:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: 'Unos vec spasenog temp fajla u projektni zadatak. Realizovano od strane: Skopljak Emin.'
+ */ 
+workRouter.post('/spremiFajlUBazu', (req, res) => {
+    workUtils.spremiFajlUBazu(req.body.idTempFajla, req.body.idProjektnogZadatka, (cb) => {
+        if(!cb) {
+            res.send(JSON.stringify({message: 'Uspjesno spaseno'}));
+        }
+        else {
+            res.send(JSON.stringify({message: 'Doslo je do greske'}));
+        }
+    });
+});
+
+/**
+ * @swagger
+ * /services/work/downloadProjektniFajl:
+ *    get:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: 'Download fajla projektnog zadatka. Realizovano od strane: Skopljak Emin. Work in progress !!!'
+ */ 
+workRouter.get('/downloadProjektniFajl', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    //let idFajla = req.body.idProjektnogFajla;
+    let idFajla = req.query.idProjektnogFajla; //za testiranje u browseru
+
+    if(!idFajla) {
+        res.send(JSON.stringify({message: 'Body parametri nisu specifirani: idProjektnogFajla.'}));
+    }
+    else {
+        workUtils.dajFajlIzBaze(idFajla).then((fajl) => {
+            if(!fajl) {
+                res.send(JSON.stringify({message: 'Dati fajl ne postoji.'}));
+            }
+            else {
+                res.writeHead(200, {
+                    'Content-Type': fajl.file_type,
+                    'Content-Length': fajl.file_size,
+                    'Content-Disposition': `attachment; filename=${fajl.nazivFile}`
+                });
+
+                res.write(fajl.file, 'binary');
+                res.end();
+            }
+        }).catch((err) => {
+            console.log(`ERROR: ${err}`);
+            try {
+                res.send(JSON.stringify({message: 'Doslo je do greske.'}));
+            }
+            catch(err) {}
+        });
+    }
 });
 
 // POST base/api/work/deletefile

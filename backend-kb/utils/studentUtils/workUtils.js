@@ -1,11 +1,11 @@
 const db = require('../../models/db');
 const multer  = require('multer');
+const fs = require('fs');
 
 const provjeraParametaraPostPZ = (postBody) => {
     if (!postBody['id_projekta'] || !postBody['od_kad'] || !postBody['do_kad']) return false;
     else return true;
 }
-
 
 const upisNovogPZuBazu = (postBody, opis, zavrsen, komentar_a, callback) => {
     let novi = {
@@ -123,35 +123,97 @@ const provjeraParametaraUploadFajla = (postBody, cb) => {
     }
 }
 
+const duzinaID = 10;
 const noviID = () => {
-    return Math.random().toString(36).substr(2, 9);
+    // duzi ID ?
+    return Math.random().toString(36).substr(2, duzinaID);
 }
-
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) 
-    {
-        cb(null, __dirname + '../../../temp_files/')
-    },
-    filename: function (req, file, cb) 
-    {
-        let ext = '';
-        // ako ima ekstenzije
-        if (file.originalname.split('.').length > 1) {
-            ext = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
-        }
-        
-        cb(null, file.originalname + noviID());
+/*
+const tipFajla = (ime) => {
+    if (ime.split('.').length > 1) {
+        return ime.substring(ime.lastIndexOf('.'), ime.length);
     }
-})
+    return null;
+}*/
 
-const upload = multer({dest: __dirname + '../../../temp_files/', storage: storage});
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) 
+        {
+            let path = __dirname + `../../../temp_files/${noviID()}/`;
+            fs.mkdir(path, (err) => {
+                if(!err) cb(null, path);
+                else console.log(`Error pri kreiranju foldera: ${err}`);
+            });
+        },
+        filename: function (req, file, cb) 
+        {
+            cb(null, file.originalname);
+        }
+    })
+});
 
-const spremiFajl = (idFajla) => {
-
+const spasiTempFajlInfo = (idTempFajla, mimetype, size, callback) => {
+    let path =  __dirname + `../../../temp_files/${idTempFajla}/info${idTempFajla}.txt`;
+    let content = `${mimetype},${size}`;
+    fs.writeFile(path, content, (err) => {
+        if(err) {
+            console.log('Greska pri spasavanju info fajla.');
+            callback(true);
+        }
+        else {
+            callback(null);
+        }
+    });
 }
 
-const obrisiTempFajl = (id) => {
+const obrisiTempFajl = (idTempFajla) => {
     
+}
+
+const spremiFajlUBazu = (idTempFajla, idProjektniZadatak, callback) => {
+    let path = __dirname + `../../../temp_files/${idTempFajla}`;
+    let infoFajl = `info${idTempFajla}.txt`;
+
+    fs.readFile(path + '/' + infoFajl, (err, info) => {
+        // citanje info
+        let podaci = info.toString().split(',');
+
+        let mimetype = podaci[0];
+        let size = podaci[1];
+
+        fs.readdir(path, (err, files) => {
+            if(!err) {
+                files.forEach((imeFajla) => {
+                    if(!imeFajla.endsWith(infoFajl)) {
+                        fs.readFile(path + '/' + imeFajla, (err, data) => {
+                            db.ProjektniFile.create({
+                                idProjektniZadatak: idProjektniZadatak,
+                                file: data,
+                                file_size: size, //fs.statSync(path).size,
+                                file_type: mimetype,
+                                nazivFile: imeFajla
+                            }).then((ProjektniFajl) => {
+                                callback(ProjektniFajl == null);
+                            });
+                        });
+                    }
+                });
+            }
+            else {
+                console.log('Greska pri citanju direktorija.');
+                callback(true);
+            }
+        });
+    });
+}
+
+const dajFajlIzBaze = (idProjektnogFajla) => {
+    return db.ProjektniFile.findOne({
+        where: {
+            idProjektniFile: idProjektnogFajla
+        }
+    });
 }
 
 module.exports = {
@@ -161,7 +223,11 @@ module.exports = {
     provjeraVodjeIClanova,
     odradiPostavljanjeZadataka,
     upload,
+    duzinaID,
     noviID,
     provjeraParametaraUploadFajla,
-    obrisiTempFajl
+    obrisiTempFajl,
+    spremiFajlUBazu,
+    dajFajlIzBaze,
+    spasiTempFajlInfo
 }
