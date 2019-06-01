@@ -59,7 +59,7 @@ workRouter.post('/', (req, res) => res.redirect(307, '/services/work/'));
 // [idProjektnogZadatka] obavezni parametar u bodiju posta
 /**
  * @swagger
- * /api/work/:
+ * /api/work/addfile:
  *    post:
  *      tags:
  *       - Studenti - Rad na projektu - API
