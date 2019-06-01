@@ -33,6 +33,9 @@ const workRouter = require('./routes/students/workRoute');
 const viewSRouter = require('./routes/students/viewSRoute');
 const progressRouter = require('./routes/students/progressRoute');
 
+//servisi drugih grupa
+const servisiRouter=require('./routes/outsourced');
+
 // definisanje REST API calls / ruta
 // asistenti rute za api
 const projectsapi = require('./api/asistants/projectsAPI');
@@ -65,7 +68,6 @@ app.use('/services/work', workRouter);
 // definisanje ruta za dio "Praćenje progresa projekta"
 app.use('/services/progress', progressRouter);
 
-
 // definisanje 4 rutera, za definisanje services calls za ASISTENTA
 // definisanje ruta za dio "Kreiranje projekata na nivou predmeta"
 app.use('/services/projects', projectsRouter); 
@@ -75,6 +77,10 @@ app.use('/services/generate', generateRouter);
 app.use('/services/bodovanjeprojekata', bodovanjeRouter); 
 // definisanje ruta za dio "Pregled projekata"
 app.use('/services/viewA', viewARouter);
+
+//servisi drugih grupa
+app.use('./routes/outsourced',servisiRouter);
+
 // -------------------------------------------------------------------------------------------------------------
 
 // ----------------------------------------------------- API ---------------------------------------------------
