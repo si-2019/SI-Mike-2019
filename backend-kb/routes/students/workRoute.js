@@ -99,7 +99,7 @@ workRouter.post('/addfile', workUtils.upload.array('fajlovi'), (req, res) => {
             }
             else {
                 res.send(JSON.stringify({
-                    message: "Doslo je do greske."
+                    message: "Doslo je do greske. Da li su fajlovi poslani?"
                 }));
             }
         }
