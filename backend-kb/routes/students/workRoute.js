@@ -71,23 +71,54 @@ workRouter.post('/assigntask', (req, res) => {
  *    post:
  *      tags:
 *       - Studenti - Rad na projektu - Service
- *      description: 'Unos novog fajla u projektni zadatak. Work in progress !!!'
+ *      description: 'Unos novog fajla u projektni zadatak. Realizovano od strane: Skopljak Emin.'
  */ 
-workRouter.post('/addfile', (req, res) => { 
+workRouter.post('/addfile', workUtils.upload.array('fajlovi'), (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     workUtils.provjeraParametaraUploadFajla(req.body, (cb) => {
         if(cb.ispravno) {
-            if(req.body.fajlovi) {
-                //submitanje forme - finaliziranje
-                console.log("Submitanje forme - finaliziranje");
-                console.log(req.body);
-                console.log(req.body.fajlovi);
-                        
-                //workUtils.spremiFajl(req.body.fajlovi, req.body['idProjektnogZadatka']);
+            if(req.files) {
+                let idProjektnogZadatka = req.body.idProjektnogZadatka;
+
+                let promisi = []
+                for(let i = 0; i < req.files.length; i++) {
+                    promisi.push(
+                        workUtils.spremiFajlUBazu(req.files[i], idProjektnogZadatka)
+                    );
+                }
+
+                Promise.all(promisi).then((values) => {
+                    let ispravno = true;
+                    for(let i = 0; i < values.length; i++) {
+                        if(values[i] == null) {
+                            ispravno = false;
+                            break;
+                        }
+                    }
+
+                    if(ispravno) {
+                        res.send(JSON.stringify({
+                            message: 'Uspjesno dodani fajlovi u projektni zadatak.'
+                        }));
+                    }
+                    else {
+                        res.send(JSON.stringify({
+                            message: "Doslo je do greske. Fajlovi ne smiju biti veci od 64KB."
+                        }));
+                    }
+                }).catch(() => {
+                    res.send(JSON.stringify({
+                        message: "Doslo je do greske."
+                    }));
+                });
+            }
+            else {
+                res.send(JSON.stringify({
+                    message: "Doslo je do greske."
+                }));
             }
         }
         else {
-            console.log("Neispravno");
             res.send(JSON.stringify({
                 message: cb.poruka
             }));
@@ -97,84 +128,16 @@ workRouter.post('/addfile', (req, res) => {
 
 /**
  * @swagger
- * /services/work/addfile:
- *    post:
- *      tags:
-*       - Studenti - Rad na projektu - Service
- *      description: 'Upload fajla u temp folder. Realizovano od strane: Skopljak Emin.'
- */ 
-workRouter.post('/addfileupload', workUtils.upload.array('fajlovi'), (req, res) => {
-    if(req.files && req.files.length > 0) {
-        //upload fajla
-        console.log("File upload pozvan");
-        console.log(req.files);
-
-        let fajl = req.files[0];
-
-        let tempID = fajl.destination.substring(fajl.destination.length - workUtils.duzinaID - 1, fajl.destination.length - 1);
-
-        console.log(`tempID: ${tempID}`);
-
-        workUtils.spasiTempFajlInfo(tempID, fajl.mimetype, fajl.size, (err) => {
-            if(!err) {
-                res.setHeader('Content-Type', 'text/plain');
-                res.send(tempID);
-            }
-            else {
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify({
-                    message: 'Doslo je do greske'
-                }));
-            }
-        });
-    }
-    else {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({
-            message: 'Doslo je do greske'
-        }));
-    }
-});
-
-// Ruta za deletanje temp fileova. Work in progress !!!
-workRouter.delete('/addfileupload', (req, res) => { 
-    console.log("DELETE pozvan");
-    //workUtils.obrisiTempFajl(req.body);
-    console.log(req.body);
-    res.end();
-});
-
-/**
- * @swagger
- * /services/work/spremiFajlUBazu:
- *    post:
- *      tags:
-*       - Studenti - Rad na projektu - Service
- *      description: 'Unos vec spasenog temp fajla u projektni zadatak. Realizovano od strane: Skopljak Emin.'
- */ 
-workRouter.post('/spremiFajlUBazu', (req, res) => {
-    workUtils.spremiFajlUBazu(req.body.idTempFajla, req.body.idProjektnogZadatka, (cb) => {
-        if(!cb) {
-            res.send(JSON.stringify({message: 'Uspjesno spaseno'}));
-        }
-        else {
-            res.send(JSON.stringify({message: 'Doslo je do greske'}));
-        }
-    });
-});
-
-/**
- * @swagger
  * /services/work/downloadProjektniFajl:
  *    get:
  *      tags:
 *       - Studenti - Rad na projektu - Service
- *      description: 'Download fajla projektnog zadatka. Realizovano od strane: Skopljak Emin. Work in progress !!!'
+ *      description: 'Download fajla projektnog zadatka. Realizovano od strane: Skopljak Emin.'
  */ 
 workRouter.get('/downloadProjektniFajl', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    //let idFajla = req.body.idProjektnogFajla;
-    let idFajla = req.query.idProjektnogFajla; //za testiranje u browseru
+    let idFajla = req.body.idProjektnogFajla;
+    //let idFajla = req.query.idProjektnogFajla; //za testiranje u browseru
 
     if(!idFajla) {
         res.send(JSON.stringify({message: 'Body parametri nisu specifirani: idProjektnogFajla.'}));

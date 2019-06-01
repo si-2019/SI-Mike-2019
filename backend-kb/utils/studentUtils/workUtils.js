@@ -91,8 +91,6 @@ const odradiPostavljanjeZadataka = (niz, callback) => {
         .catch((err) => callback('Greska prilikom referenicranje podataka u bazi!', err));
 }
 
-//
-
 const provjeraParametaraUploadFajla = (postBody, cb) => {
     let idZadatka = postBody['idProjektnogZadatka'];
 
@@ -119,6 +117,11 @@ const provjeraParametaraUploadFajla = (postBody, cb) => {
                     ispravno: true
                 });
             }
+        }).catch((err) => {
+            cb({
+                ispravno: false,
+                poruka: 'Doslo je do greske sa bazom'
+            });
         })
     }
 }
@@ -128,13 +131,12 @@ const noviID = () => {
     // duzi ID ?
     return Math.random().toString(36).substr(2, duzinaID);
 }
-/*
-const tipFajla = (ime) => {
-    if (ime.split('.').length > 1) {
-        return ime.substring(ime.lastIndexOf('.'), ime.length);
-    }
-    return null;
-}*/
+
+const fileFilter = (req, file, callback) => {
+    provjeraParametaraUploadFajla(req.body, (cb) => {
+        callback(null, cb.ispravno);
+    }); 
+}
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -150,61 +152,66 @@ const upload = multer({
         {
             cb(null, file.originalname);
         }
-    })
+    }),
+    fileFilter: fileFilter
 });
 
-const spasiTempFajlInfo = (idTempFajla, mimetype, size, callback) => {
-    let path =  __dirname + `../../../temp_files/${idTempFajla}/info${idTempFajla}.txt`;
-    let content = `${mimetype},${size}`;
-    fs.writeFile(path, content, (err) => {
-        if(err) {
-            console.log('Greska pri spasavanju info fajla.');
-            callback(true);
-        }
-        else {
-            callback(null);
-        }
-    });
+const dajIDizDestinacije = (dest) => {
+    return dest.substr(dest.length - duzinaID - 1, duzinaID);
 }
 
-const obrisiTempFajl = (idTempFajla) => {
-    
-}
+const spremiFajlUBazu = (fajl, idProjektniZadatak) => {
+    let path = __dirname + `../../../temp_files/${dajIDizDestinacije(fajl.destination)}`;
 
-const spremiFajlUBazu = (idTempFajla, idProjektniZadatak, callback) => {
-    let path = __dirname + `../../../temp_files/${idTempFajla}`;
-    let infoFajl = `info${idTempFajla}.txt`;
+    fs.readFile(path + '/' + fajl.originalname, (err, data) => {
+        if(!err) {
+            let noviProjektniFajl = {
+                idProjektniZadatak: idProjektniZadatak,
+                file: data,
+                file_size: fajl.size,
+                file_type: fajl.mimetype,
+                nazivFile: fajl.originalname
+            };
 
-    fs.readFile(path + '/' + infoFajl, (err, info) => {
-        // citanje info
-        let podaci = info.toString().split(',');
-
-        let mimetype = podaci[0];
-        let size = podaci[1];
-
-        fs.readdir(path, (err, files) => {
-            if(!err) {
-                files.forEach((imeFajla) => {
-                    if(!imeFajla.endsWith(infoFajl)) {
-                        fs.readFile(path + '/' + imeFajla, (err, data) => {
-                            db.ProjektniFile.create({
-                                idProjektniZadatak: idProjektniZadatak,
-                                file: data,
-                                file_size: size, //fs.statSync(path).size,
-                                file_type: mimetype,
-                                nazivFile: imeFajla
-                            }).then((ProjektniFajl) => {
-                                callback(ProjektniFajl == null);
-                            });
-                        });
-                    }
+            if(fajl.size > 65000) {
+                console.log(`fajl size: ${fajl.size}`)
+                return new Promise((resolve, reject) => {
+                    resolve(null);
                 });
             }
-            else {
-                console.log('Greska pri citanju direktorija.');
-                callback(true);
-            }
-        });
+
+            obrisiTempFajl(fajl, (err) => {
+                if(err) {
+                    console.log("Doslo je do greske prilikom brisanja temp fajla.");
+                }
+            });
+
+            return db.ProjektniFile.create(noviProjektniFajl);
+        }
+        else {
+            return new Promise((resolve, reject) => {
+                resolve(null);
+            });
+        }
+    });   
+}
+
+const obrisiTempFajl = (fajl, cb) => {
+    let path = __dirname + `../../../temp_files/${dajIDizDestinacije(fajl.destination)}`;
+    fs.unlink(`${path}/${fajl.originalname}`, (err) => {
+        if(!err) {
+            fs.rmdir(path, (err) => {
+                if(!err) {
+                    cb(null);
+                }
+                else {
+                    cb(true);
+                }
+            });
+        }
+        else {
+            cb(true);
+        }
     });
 }
 
@@ -223,11 +230,7 @@ module.exports = {
     provjeraVodjeIClanova,
     odradiPostavljanjeZadataka,
     upload,
-    duzinaID,
-    noviID,
     provjeraParametaraUploadFajla,
-    obrisiTempFajl,
     spremiFajlUBazu,
-    dajFajlIzBaze,
-    spasiTempFajlInfo
+    dajFajlIzBaze
 }
