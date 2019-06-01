@@ -55,11 +55,40 @@ const zaSvakiPredmetPopuniProjektneZadatke = (niz, callback) => {
     .catch(err => callback(err));
 }
 
+const dajSveProjekteProjektneZadatke = (callback) => {
+    db.Projekat.findAll()
+    .then((projekti) => {
+        let string = "";
+        for (let i = 0; i < projekti.length; ++i) { projekti[i].dataValues.projektniZadaci = []; string += projekti[i].idProjekat.toString() + ','; }
+        string = string.substring(0, string.length - 1);
+        db.sequelize.query(`SELECT DISTINCT pz.idProjektnogZadatka, pz.idProjekta, pz.opis, pz.otkad, pz.dokad, pz.zavrsen, pz.komentarAsistenta
+                        FROM Projekat p, ProjektniZadatak pz WHERE pz.idProjekta = p.idProjekat AND pz.idProjekta IN (${string})`, { type: sequelize.QueryTypes.SELECT })
+        .then((projektniZadaci) => {
+            for (let j = 0; j < projektniZadaci.length; ++j) {
+                for (let i = 0; i < projekti.length; ++i) {
+                    if (projekti[i].idProjekat === projektniZadaci[j].idProjekta) {
+                        const buf = Buffer.from(JSON.stringify(projektniZadaci[j].zavrsen));
+                        const objekat = JSON.parse(buf.toString());
+                        projektniZadaci[j].zavrsen = objekat.data[0] ? true : false;
+                        projekti[i].dataValues.projektniZadaci.push(JSON.parse(JSON.stringify(projektniZadaci[j])));
+                    }
+                }
+            }
+            callback(null, projekti);
+            return null;
+        })
+        .catch((err) => { console.log(err); callback(err)});
+        return null;
+    })
+    .catch((err) => callback(err));
+}
+
 module.exports = {
     dajSveProjekte,
     zaSvakiPredmetPopuniProjektneZadatke,
     dajSvePredmete,
     dajSveProjekteUsera,
     dajSveZadatkeProjekta,
-    dajProjekteKreiranjeGrupe
+    dajProjekteKreiranjeGrupe,
+    dajSveProjekteProjektneZadatke
 };

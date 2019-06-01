@@ -86,6 +86,7 @@ const upisGrupaNasumicno = (postBody, callback) => {
                         let odakle = i_closure * vel;
                         let studenti_grupe = studenti.slice(odakle, odakle + vel);
                         brojDodanihStudenata = 0;
+                        if(vel == 0) brojDodanihGrupa++;
                         for(let k = 0; k < vel; k++) {
                             new function() {
                                 var k_closure = k;

@@ -29,4 +29,16 @@ viewSRouter.post('/tasks',(req,res)=>{
 
 });
 
+/**
+ * @swagger
+ * /api/viewS/download-projects-json:
+ *    get:
+ *      tags:
+*       - Studenti - Pregled projekata - API
+ *      description: Custom servis za download svih projekata i projektnih zadataka u vidu json fajla.
+ */
+viewSRouter.get('/download-projects-json', (req, res) => res.redirect(307, '/services/viewS/download-projects-json'));
+
+
+
 module.exports = viewSRouter;

@@ -69,4 +69,40 @@ projectsRouter.post('/setdeadline', (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /services/getInfoPredmeti/:idAsistenta:
+ *    get:
+ *      tags:
+ *      - Asistenti - Kreiranje projekata na nivou predmeta - Service
+ *      description: 'Omogucava dobavljanje predmeta asistenta za koje nisu kreirane grupe. Custom ordered. Realizovao: Mašović Haris'
+ */
+projectsRouter.get('/getInfoPredmeti/:idAsistenta', (req, res) => {
+    const idAsistenta = req.params.idAsistenta;
+    res.setHeader('Content-Type', 'application/json');
+
+    projectUtils.sveProvjereZaPredmeteAsistenta(idAsistenta, (err, predmeti) => {
+        if(err) res.send(JSON.stringify({ message: 'Za poslani predmet ili asistent nije asistent za taj predmet ili nema projekta na tom predmetu ili su vec kreirane grupe na tom projektu' }));
+        else res.send(JSON.stringify(predmeti));
+    });
+});
+
+/**
+ * @swagger
+ * /services/getProjectGroups/:idProjekat:
+ *    get:
+ *      tags:
+ *      - Asistenti - Kreiranje projekata na nivou predmeta - Service
+ *      description: 'Omogucava dobavljanje svih grupa za određeni projekat. Custom ordered. Realizovao: Mašović Haris'
+ */
+projectsRouter.get('/getProjectGroups/:idProjekat', (req, res) => {
+    const idProjekat = req.params.idProjekat;
+    res.setHeader('Content-Type', 'application/json');
+
+    projectUtils.dobaviProjektneGrupe(idProjekat, (err, grupe) => {
+        if(err) res.send(JSON.stringify({ message: 'Greska sa bazom!' }));
+        else res.send(JSON.stringify(grupe));
+    });
+});
+
 module.exports = projectsRouter;

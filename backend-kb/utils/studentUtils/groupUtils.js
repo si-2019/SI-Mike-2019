@@ -81,9 +81,10 @@ const upisVodjeGrupe = (clanId, callback) => {
         clanGrupe.update({
             kreator:true
         })
-        .then(() => callback(null));
+        .then(() => { callback(null); return null; })
+        .catch((err) => callback(err));
     }
-    });
+    }).catch((err) => callback(err));
 }
 
 //dohvati studente - Mirza

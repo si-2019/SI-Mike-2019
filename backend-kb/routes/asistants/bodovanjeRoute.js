@@ -60,5 +60,50 @@ bodovanjeRouter.post('/specified', (req, res) => {
     });
 });
 
+/**
+ * @swagger
+ * /services/bodovanjeprojekata/tasks:
+ *    post:
+ *      tags:
+ *       - Asistenti - Bodovanje projekata - Service
+ *      description: 'Servis koji omogucava bodovanje projektnih zadataka pojedinacno.
+ *      Realizovano od strane: Mašović Haris'
+ */
+bodovanjeRouter.post('/tasks', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+
+    if(!bodovanjeUtils.provjeraSvakogProjektnog(req.body)) res.send(JSON.stringify({ message: 'Format podataka nije pravilo definisan.' }));
+    else bodovanjeUtils.bodovanjeProjektnogZadatka(req.body, (err) => {
+            if(err) res.send(JSON.stringify({ message: err }));
+            else res.send(JSON.stringify({ message: 'Uspješno bodovan svaki projektni zadatak!' }));
+        }); 
+});
+
+/**
+ * @swagger
+ * /services/bodovanjeprojekata/scaling:
+ *    post:
+ *      tags:
+*       - Asistenti - Bodovanje projekata - Service
+ *      description: 'Omogucava skaliranje bodova svim studentima na projektu u skladu sa poslanim faktorom skaliranja.
+ *      Realizovano od strane: Skopljak Emin'
+ */
+bodovanjeRouter.post('/scaling', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+
+    bodovanjeUtils.skaliranjeBodovaProjekta(req.body, (cb) => {
+        if(cb.ispravno) {
+            res.send(JSON.stringify({
+                message: 'Uspjesno skalirani bodovi.'
+            }));
+        }
+        else
+        {
+            res.send(JSON.stringify({
+                message: cb.poruka
+            }));
+        }
+    });
+});
 
 module.exports = bodovanjeRouter;

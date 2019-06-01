@@ -186,4 +186,24 @@ viewSRouter.get('/predmeti', (req,res) => {
     });
 });
 
+/**
+ * @swagger
+ * /services/viewS/download-projects-json:
+ *    get:
+ *      tags:
+*       - Studenti - Pregled projekata - Service
+ *      description: Custom servis za download svih projekata i projektnih zadataka u vidu json fajla.
+ */
+viewSRouter.get('/download-projects-json', (req,res) => {
+    res.setHeader('Content-Type', 'application/json');
+    viewSUtils.dajSveProjekteProjektneZadatke((err, podaci) => {
+        if (err) res.send(JSON.stringify({ message : 'Greska prilikom downloadovanja.'}));
+        else {
+            res.setHeader('Content-Disposition', 'attachment; filename=projekti.json');
+            res.send(JSON.stringify(podaci)); 
+        }
+    });
+});
+
+
 module.exports = viewSRouter;

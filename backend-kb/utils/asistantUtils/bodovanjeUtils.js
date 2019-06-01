@@ -1,4 +1,5 @@
 const db = require('../../models/db');
+const sequelize = require('sequelize'); 
 
 const provjeraParametaraBodovanjeProjektneGrupe = (postBody, callback) => {
     idGrupaProjekta = postBody['idGrupaProjekta'];
@@ -86,7 +87,11 @@ const provjeraBodySpecified = (postBody, callback) => {
     let projekatId = postBody['projekat'];
     if (!projekatId || !payload) callback('Projekat/Payload parametri ispravno nisu definisani!');
     else {
-        db.Projekat.findOne({ where: { idProjekat: projekatId }})
+        db.Projekat.findOne({
+                where: {
+                    idProjekat: projekatId
+                }
+            })
             .then((result) => {
                 if (!result) callback('Poslani id projekta ne postoji u bazi!');
                 else if (!provjeraSvihClanova(payload, result.moguciBodovi)) callback('Svi parametri unutar payloada za svakog studenta niza nisu specifirani (> maxbodovi?)!');
@@ -108,14 +113,152 @@ const upisBodovaProjektaPoClanu = (postBody, callback) => {
         }));
     });
     Promise.all(promises)
-    .then((rez) => callback(null))
-    .catch(() => callback('Greska prilikom referenicranje podataka u bazi!'));
+        .then((rez) => callback(null))
+        .catch(() => callback('Greska prilikom referenicranje podataka u bazi!'));
 }
 
+const provjeraSvakogProjektnog = (niz) => {
+    if (!niz) return false;
+    for (let i = 0; i < niz.length; ++i)
+        if (!niz[i].idProjektniZadatak || !niz[i].komentarAsistenta || !niz[i].ostvareniBodovi ||
+            !niz[i].idProjekat) return false;
+    return true;
+}
+
+// mozda iskoci error node:12724, zanemariti glupost :)
+const bodovanjeProjektnogZadatka = (nizVrijednosti, callback) => {
+    // definisanje stringa da zadovoljava IN (..)
+    let string = "";
+    for (let i = 0; i < nizVrijednosti.length; ++i) string += nizVrijednosti[i].idProjektniZadatak.toString() + ',';
+    string = string.substring(0, string.length - 1);
+    db.sequelize.query(`SELECT DISTINCT p.idProjekat, p.moguciBodovi, pz.idProjektnogZadatka, pz.idProjekta, c.ostvareniBodovi, c.idClanGrupe 
+                        FROM Projekat p, ProjektniZadatak pz, ClanGrupe c, GrupaProjekta gp, projektniZadatak_clanGrupe veza 
+                        WHERE pz.idProjekta = p.idProjekat AND veza.idProjektniZadatak = pz.idProjektnogZadatka AND
+                        veza.idClanGrupe = c.idClanGrupe AND c.idGrupaProjekta = gp.idGrupaProjekta AND
+                        pz.idProjektnogZadatka IN (${string})`, { type: sequelize.QueryTypes.SELECT })
+        .then((podaci) => {
+            // console.log('podaciPotrebni', nizVrijednosti);
+            // console.log('podaci', podaci);
+            // console.log('string', string);
+            let promisi = [];
+
+            for (let i = 0; i < nizVrijednosti.length; ++i) {
+                for (let j = 0; j < podaci.length; ++j) {
+                    if (nizVrijednosti[i].idProjektniZadatak === podaci[j].idProjektnogZadatka && nizVrijednosti[i].idProjekat == podaci[j].idProjekat) {
+                        // updateovanje za svaki projektni zadatak sve info u bazi
+                        // provjeravanje jel preslo max definisanih bodova, ukoliko jest
+                        // ne dodaju se bodovi vec se uzima min {novih, starih}
+                        let brojB = (nizVrijednosti[i].ostvareniBodovi + podaci[j].ostvareniBodovi) < podaci[j].moguciBodovi ? nizVrijednosti[i].ostvareniBodovi + podaci[j].ostvareniBodovi : podaci[j].ostvareniBodovi;
+                        promisi.push(db.ClanGrupe.update({
+                            ostvareniBodovi: brojB,
+                        }, { where: { idClanGrupe : podaci[j].idClanGrupe }}));
+                        promisi.push(db.ProjektniZadatak.update({
+                            komentarAsistenta: nizVrijednosti[i].komentarAsistenta,
+                            zavrsen: true
+                        }, { where: { idProjektnogZadatka : nizVrijednosti[i].idProjektniZadatak }}));
+                    }
+                }
+            }
+            if(!promisi.length) callback('Nijedan projektni zadatak ne postoji u bazi/nije bodovan.');
+            else Promise.all(promisi)
+                .then((rez) => { callback(null); return null; })
+                .catch((err) => callback('Greska prilikom referenicranje podataka u bazi!', err));
+        })
+        .catch((err) => callback('Greska prilikom referenicranje podataka u bazi!', err));
+}
+
+const skaliranjeBodovaProjekta = (postBody, cb) => {
+    let idProjekta = postBody['idProjekat'];
+    let faktorSkaliranja = postBody['faktorSkaliranja'];
+
+    if(!idProjekta || !faktorSkaliranja) {
+        cb({
+            ispravno: false,
+            poruka: 'Body parametri nisu specifirani [idProjekat, faktorSkaliranja]'
+        });
+    }
+    else if(faktorSkaliranja < 0) {
+        cb({
+            ispravno: false,
+            poruka: 'Faktor skaliranja mora biti veci ili jednak nula.'
+        });
+    }
+    else {
+        db.Projekat.findOne({
+            where: {
+                idProjekat: idProjekta
+            }
+        }).then((projekat) => {
+            if(!projekat) {
+                cb({
+                    ispravno: false,
+                    poruka: 'Dati projekat ne postoji.'
+                });
+            }
+            else {
+                let maxBodovaProjekta = projekat.moguciBodovi;
+
+                db.GrupaProjekta.findAll({
+                    where: {
+                        idProjekat: idProjekta
+                    }
+                }).then((grupe) => {
+                    if(grupe) {
+                        let brojOdradjenihGrupa = 0;
+                        for(let i = 0; i < grupe.length; i++) {
+                            new function() {
+                                let idGrupe = grupe[i].idGrupaProjekta;
+
+                                db.ClanGrupe.findAll({
+                                    where: {
+                                        idGrupaProjekta: idGrupe
+                                    }
+                                }).then((clanovi) => {
+                                    if(clanovi.length == 0) brojOdradjenihGrupa++;
+                                    let brojOdradjenihClanova = 0;
+                                    for(let j = 0; j < clanovi.length; j++) {
+                                        new function() {
+                                            let idClanaGrupe = clanovi[j].idClanGrupe;
+                                            let noviBodovi = clanovi[j].ostvareniBodovi * faktorSkaliranja;
+                                            noviBodovi = Math.floor((noviBodovi + 0.005) * 100) / 100;
+
+                                            if(noviBodovi > maxBodovaProjekta) noviBodovi = maxBodovaProjekta;
+                                            db.ClanGrupe.update({
+                                                ostvareniBodovi: noviBodovi
+                                            }, 
+                                            {
+                                                where: {
+                                                    idClanGrupe: idClanaGrupe
+                                                }
+                                            }).then(() => {
+                                                brojOdradjenihClanova++;
+                                                if(brojOdradjenihClanova >= clanovi.length) {
+                                                    brojOdradjenihGrupa++;
+                                                }
+                                                if(brojOdradjenihGrupa >= grupe.length) {
+                                                    cb({
+                                                        ispravno: true
+                                                    });
+                                                }
+                                            })
+                                        }();
+                                    }
+                                });
+                            }();
+                        }
+                    }
+                })        
+            }
+        })
+    }
+}
 
 module.exports = {
     provjeraParametaraBodovanjeProjektneGrupe,
     upisBodovaProjektneGrupe,
     provjeraBodySpecified,
-    upisBodovaProjektaPoClanu
+    upisBodovaProjektaPoClanu,
+    provjeraSvakogProjektnog,
+    bodovanjeProjektnogZadatka,
+    skaliranjeBodovaProjekta
 }
