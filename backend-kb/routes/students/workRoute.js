@@ -88,27 +88,12 @@ workRouter.post('/addfile', workUtils.upload.array('fajlovi'), (req, res) => {
                 }
 
                 Promise.all(promisi).then((values) => {
-                    let ispravno = true;
-                    for(let i = 0; i < values.length; i++) {
-                        if(values[i] == null) {
-                            ispravno = false;
-                            break;
-                        }
-                    }
-
-                    if(ispravno) {
-                        res.send(JSON.stringify({
-                            message: 'Uspjesno dodani fajlovi u projektni zadatak.'
-                        }));
-                    }
-                    else {
-                        res.send(JSON.stringify({
-                            message: "Doslo je do greske. Fajlovi ne smiju biti veci od 64KB."
-                        }));
-                    }
-                }).catch(() => {
                     res.send(JSON.stringify({
-                        message: "Doslo je do greske."
+                        message: 'Uspjesno dodani fajlovi u projektni zadatak.'
+                    }));
+                }).catch((err) => {
+                    res.send(JSON.stringify({
+                        message: `Doslo je do greske. ${err}`
                     }));
                 });
             }

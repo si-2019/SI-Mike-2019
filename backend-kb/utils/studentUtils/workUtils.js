@@ -128,7 +128,6 @@ const provjeraParametaraUploadFajla = (postBody, cb) => {
 
 const duzinaID = 10;
 const noviID = () => {
-    // duzi ID ?
     return Math.random().toString(36).substr(2, duzinaID);
 }
 
@@ -173,25 +172,20 @@ const spremiFajlUBazu = (fajl, idProjektniZadatak) => {
                 nazivFile: fajl.originalname
             };
 
-            if(fajl.size > 65000) {
-                console.log(`fajl size: ${fajl.size}`)
-                return new Promise((resolve, reject) => {
-                    resolve(null);
-                });
-            }
-
             obrisiTempFajl(fajl, (err) => {
                 if(err) {
                     console.log("Doslo je do greske prilikom brisanja temp fajla.");
                 }
             });
 
+            if(fajl.size > 16777000) {
+                throw "Fajlovi ne smiju biti veci od 16MB.";
+            }
+
             return db.ProjektniFile.create(noviProjektniFajl);
         }
         else {
-            return new Promise((resolve, reject) => {
-                resolve(null);
-            });
+            throw "Greska pri citanju temp fajla.";
         }
     });   
 }
