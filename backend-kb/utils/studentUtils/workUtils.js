@@ -1,10 +1,11 @@
 const db = require('../../models/db');
+const multer  = require('multer');
+const fs = require('fs');
 
 const provjeraParametaraPostPZ = (postBody) => {
     if (!postBody['id_projekta'] || !postBody['od_kad'] || !postBody['do_kad']) return false;
     else return true;
 }
-
 
 const upisNovogPZuBazu = (postBody, opis, zavrsen, komentar_a, callback) => {
     let novi = {
@@ -90,10 +91,140 @@ const odradiPostavljanjeZadataka = (niz, callback) => {
         .catch((err) => callback('Greska prilikom referenicranje podataka u bazi!', err));
 }
 
+const provjeraParametaraUploadFajla = (postBody, cb) => {
+    let idZadatka = postBody['idProjektnogZadatka'];
+
+    if(!idZadatka) {
+        cb ({
+            ispravno: false,
+            poruka: 'Body parametri nisu specifirani: idProjektnogZadatka.'
+        });
+    }
+    else {
+        db.ProjektniZadatak.findOne({
+            where: {
+                idProjektnogZadatka: idZadatka
+            }
+        }).then((zad) => {
+            if(!zad) {
+                cb ({
+                    ispravno: false,
+                    poruka: 'Ne postoji dati projektni zadatak.'
+                });
+            }
+            else {
+                cb ({
+                    ispravno: true
+                });
+            }
+        }).catch((err) => {
+            cb({
+                ispravno: false,
+                poruka: 'Doslo je do greske sa bazom'
+            });
+        })
+    }
+}
+
+const duzinaID = 10;
+const noviID = () => {
+    return Math.random().toString(36).substr(2, duzinaID);
+}
+
+const fileFilter = (req, file, callback) => {
+    provjeraParametaraUploadFajla(req.body, (cb) => {
+        callback(null, cb.ispravno);
+    }); 
+}
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) 
+        {
+            let path = __dirname + `../../../temp_files/${noviID()}/`;
+            fs.mkdir(path, (err) => {
+                if(!err) cb(null, path);
+                else console.log(`Error pri kreiranju foldera: ${err}`);
+            });
+        },
+        filename: function (req, file, cb) 
+        {
+            cb(null, file.originalname);
+        }
+    }),
+    fileFilter: fileFilter
+});
+
+const dajIDizDestinacije = (dest) => {
+    return dest.substr(dest.length - duzinaID - 1, duzinaID);
+}
+
+const spremiFajlUBazu = (fajl, idProjektniZadatak) => {
+    let path = __dirname + `../../../temp_files/${dajIDizDestinacije(fajl.destination)}`;
+
+    fs.readFile(path + '/' + fajl.originalname, (err, data) => {
+        if(!err) {
+            let noviProjektniFajl = {
+                idProjektniZadatak: idProjektniZadatak,
+                file: data,
+                file_size: fajl.size,
+                file_type: fajl.mimetype,
+                nazivFile: fajl.originalname
+            };
+
+            obrisiTempFajl(fajl, (err) => {
+                if(err) {
+                    console.log("Doslo je do greske prilikom brisanja temp fajla.");
+                }
+            });
+
+            if(fajl.size > 16777000) {
+                throw "Fajlovi ne smiju biti veci od 16MB.";
+            }
+
+            return db.ProjektniFile.create(noviProjektniFajl);
+        }
+        else {
+            throw "Greska pri citanju temp fajla.";
+        }
+    });   
+}
+
+const obrisiTempFajl = (fajl, cb) => {
+    let path = __dirname + `../../../temp_files/${dajIDizDestinacije(fajl.destination)}`;
+    fs.unlink(`${path}/${fajl.originalname}`, (err) => {
+        if(!err) {
+            fs.rmdir(path, (err) => {
+                if(!err) {
+                    cb(null);
+                }
+                else {
+                    cb(true);
+                }
+            });
+        }
+        else {
+            cb(true);
+        }
+    });
+}
+
+const dajFajlIzBaze = (idProjektnogFajla) => {
+    return db.ProjektniFile.findOne({
+        where: {
+            idProjektniFile: idProjektnogFajla
+        }
+    });
+}
+
 module.exports = {
     provjeraParametaraPostPZ,
     upisNovogPZuBazu,
     provjeraParametaraAssignTask,
     provjeraVodjeIClanova,
-    odradiPostavljanjeZadataka
+    odradiPostavljanjeZadataka,
+    upload,
+    provjeraParametaraUploadFajla,
+    spremiFajlUBazu,
+    dajFajlIzBaze
 }

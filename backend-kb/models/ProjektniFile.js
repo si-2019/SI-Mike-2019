@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     file: {
-      type: "BLOB",
+      type: "mediumblob",
       allowNull: true
     },
     file_size: {
@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     file_type: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING(100),
       allowNull: true
     },
     nazivFile: {

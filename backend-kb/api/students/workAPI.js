@@ -62,11 +62,39 @@ workRouter.post('/', (req, res) => res.redirect(307, '/services/work/'));
  * /api/work/addfile:
  *    post:
  *      tags:
-*       - Studenti - Rad na projektu - API
- *      description: Unos novog fajla u projektni zadatak
- */
-workRouter.post('/addfile',(req,res)=>{
-
+ *       - Studenti - Rad na projektu - API
+ *      description: 'Omogucava dodavanje fajlova u postojeci projektni zadatak. 
+ *      Salje se kao multipart/form-data format i prima id projektnog zadatka i niz fajlova. 
+ *      Vraca JSON sa parametrom message koji govori da li je fajl uspješno dodan u projektni zadatak. 
+ *      Upload proizvoljnog broja fajlova nije podrzan u Swagger-u!
+ *      Realizovano od strane: Skopljak Emin'
+ *      consumes:
+ *       - multipart/form-data
+ *      parameters:
+ *        - in: formData
+ *          name: idProjektnogZadatka
+ *          type: number
+ *          description: ID projektnog zadatka za koji se veže fajl.
+ *        - in: formData
+ *          name: fajlovi
+ *          type: file
+ *          description: Uploadani fajlovi.
+ *      required:
+ *        - id_projekta
+ *        - fajlovi
+ *      responses:
+ *       200:
+ *         description: Vraca se JSON objekat sa parametrom message
+ *         content: 
+ *           application/json:
+ *               schema: 
+ *                 type: object
+ *                 properties:
+ *                  message:
+ *                   type: string
+*/
+workRouter.post('/addfile',(req, res)=>{
+    res.redirect(307, '/services/work/addfile')
 });
 
 /**
