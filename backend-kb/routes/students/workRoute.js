@@ -152,6 +152,33 @@ workRouter.get('/downloadProjektniFajl', (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /services/work/deleteAllFiles:
+ *    get:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: 'Brisanje svih fajlova projektnih zadataka clanova grupe. Realizovano od strane: Skopljak Emin.'
+ */ 
+workRouter.post('/deleteAllFiles', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let idGrupe = req.body.idGrupaProjekta;
+
+    if(!idGrupe) {
+        res.send(JSON.stringify({message: 'Body parametri nisu specifirani: idGrupaProjekta.'}));
+    }
+    else {
+        workUtils.obrisiSveFajloveGrupe(idGrupe, (cb) => {
+            if(cb.ispravno) {
+                res.send(JSON.stringify({message: 'Uspjesno obrisani fajlovi.'}));
+            }
+            else {
+                res.send(JSON.stringify({message: cb.poruka}));
+            }
+        });
+    }
+});
+
 // POST base/api/work/deletefile
 // [idFajla] obavezni parametar u bodiju posta
 /**

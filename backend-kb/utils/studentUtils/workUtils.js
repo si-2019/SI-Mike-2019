@@ -1,3 +1,4 @@
+const sequelize = require('sequelize');
 const db = require('../../models/db');
 const multer  = require('multer');
 const fs = require('fs');
@@ -217,6 +218,35 @@ const dajFajlIzBaze = (idProjektnogFajla) => {
     });
 }
 
+const obrisiSveFajloveGrupe = (idGrupaProjekta, cb) => {
+    db.GrupaProjekta.findOne({
+        where: {
+            idGrupaProjekta: idGrupaProjekta
+        }
+    }).then((grupa) => {
+        if(!grupa) {
+            cb({
+                ispravno: false,
+                poruka: "Grupa sa datim ID ne postoji."
+            });
+        }
+        else {
+            //podupit => svi projektni zadaci clanova date grupe
+            db.sequelize.query(`DELETE FROM ProjektniFile WHERE idProjektniZadatak IN (
+                                    SELECT pzadatak.idProjektnogZadatka
+                                    FROM ProjektniZadatak pzadatak, projektniZadatak_clanGrupe vezaClanZad, ClanGrupe clan
+                                    WHERE vezaClanZad.idProjektniZadatak=pzadatak.idProjektnogZadatka
+                                    AND vezaClanZad.idClanGrupe=clan.idClanGrupe AND clan.idGrupaProjekta=${idGrupaProjekta}
+                                )`, {type:sequelize.QueryTypes.DELETE}).then(() => { cb({ispravno: true}) }).catch(() => {
+                                    cb({
+                                        ispravno: false,
+                                        poruka: "Doslo je do greske."
+                                    });
+                                });
+        }
+    });
+}
+
 module.exports = {
     provjeraParametaraPostPZ,
     upisNovogPZuBazu,
@@ -226,5 +256,6 @@ module.exports = {
     upload,
     provjeraParametaraUploadFajla,
     spremiFajlUBazu,
-    dajFajlIzBaze
+    dajFajlIzBaze,
+    obrisiSveFajloveGrupe
 }
