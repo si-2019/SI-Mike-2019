@@ -1,0 +1,380 @@
+/api/bodovanjeprojekata/unified:
+  post:
+    tags:
+      - Asistenti - Bodovanje projekata - API
+    description: 'Omogucava bodovanje projekata, tako da se definisu bodovi jednaki za svakog clana. 
+    Salje se kao url encoded format i prima id projektne grupe i broj bodova, 
+    te vraca poruku u skladu s tim da li su bodovi uspjesno postavljeni ili je doslo do greske. 
+    Realizovano od strane: Skopljak Emin'
+    consumes:
+    - application/x-www-form-urlencoded
+    parameters:
+    - in: formData
+      name: idGrupaProjekta
+      type: integer
+      description: ID projektne grupe ciji clanovi se boduju.
+    - in: formData
+      name: bodovi
+      type: integer
+      description: Broj bodova koji su ostvarili clanovi grupe.
+    required:
+      - idGrupaProjekta
+      - bodovi
+    responses:
+    200:
+      description: Vraca se JSON objekat sa parametrom message
+      content: 
+        application/json:
+            schema: 
+              type: object
+              properties:
+                message:
+                type: string       
+
+/api/bodovanjeprojekata/specified:
+  post:
+    tags:
+      - Asistenti - Bodovanje projekata - API
+    description: 'Omogucava dodavanje novih osoba u već postojeće grupe za definisanje projekte.
+    Realizovano od strane: Mašović Haris'
+    consumes:
+      - application/json
+    parameters:
+        - in: body
+          name: payload
+          description: The user to create.
+          schema:
+            type: object
+            properties:
+            projekat:
+              type: integer
+            payload: 
+              type: array
+              items:
+              type: object
+              properties:
+                idStudent:
+                  type: integer
+                idGrupaProjekta:
+                  type: integer
+                ostvareniBodovi:
+                  type: number
+              required:
+              - idStudent
+              - idGrupaProjekta
+              - ostvareniBodovi
+    responses:
+      200:
+        description: Vraca se JSON objekat sa parametrom message
+        content: 
+          application/json:
+              schema: 
+                type: object
+                properties:
+                message:
+                  type: string
+
+/api/generate/genOrdered:
+  post:
+    tags:
+      - Asistenti - Generisanje projektnih grupa - API
+    description: 'Omogucava kreiranje projektnih grupa abecednim redoslijedom
+    za zadani projekat i za trenutnu akademsku godinu.
+    Salje se kao url encoded format i prima id projekta i broj grupa, 
+    te vraca poruku u skladu s tim da li su grupe uspjesno kreirane ili je doslo do greske.
+    Realizovano od strane: Skopljak Emin'
+    consumes:
+      - application/x-www-form-urlencoded
+    parameters:
+      - in: formData
+        name: idProjekat
+        type: integer
+        description: ID projekta za koji kreiramo grupe.
+      - in: formData
+        name: brojGrupa
+        type: integer
+        description: Zeljeni broj grupa.
+    required:
+      - idProjekat
+      - brojGrupa
+    responses:
+      200:
+        description: Vraca se JSON objekat sa parametrom message
+        content: 
+          application/json:
+              schema: 
+                type: object
+                properties:
+                message:
+                  type: string
+
+/api/viewA/generategroups:
+  post:
+    tags:
+    - Asistenti - Generisanje projektnih grupa - API
+    description: Generisanje projektnih grupa na projektu
+
+/api/projects/newp:
+  post:
+    tags:
+      - Asistenti - Kreiranje projekata na nivou predmeta - API
+    description: 'Omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
+    Salje se kao url encoded format i prima i kao rezultat vraca json projekta ukoliko je uspješno dodan projekat,
+    a ako nije json sa parametrom message koji govori da nije uspješno dodan projekat.
+    Realizovano od strane: Mašović Haris'
+    consumes:
+      - application/x-www-form-urlencoded
+    parameters:
+      - in: formData
+        name: naziv_projekta
+        type: string
+        description: naziv projekta.
+      - in: formData
+        name: id_predmeta
+        type: integer
+        description: ID predmeta npr ~ [4].
+      - in: formData
+        name: id_asistenta
+        type: integer
+        description: ID nekog asistenta ~ [2]
+      - in: formData
+        name: opis_projekta
+        type: string
+        description: opis projekta, sta se radi.
+      - in: formData
+        name: moguci_bodovi
+        type: number
+        description: moguci ostvarivi bodovi na projektu.
+      - in: formData
+        name: progress
+        type: number
+        description: progress projekta.
+      - in: formData
+        name: rok_projekta
+        type: string
+        description: rok projekta završetak.
+    required:
+      - id_predmeta
+      - id_asistenta
+      - opis_projekta
+      - moguci_bodovi
+    responses:
+      200:
+        description: Vraca se JSON objekat sa parametrom message
+        content: 
+          application/json:
+              schema: 
+                type: object
+                properties:
+                message:
+                  type: string
+
+/api/projects/setdeadline:
+  post:
+    tags:
+      - Asistenti - Kreiranje projekata na nivou predmeta - API
+    description: 'Omogucava postavljanje roka za projekat.
+    Salje se kao url encoded format i prima id projekta i rok izrade, 
+    te vraca poruku u skladu s tim da li je rok uspjesno postavljen ili je doslo do greske.
+    Realizovano od strane: Skopljak Emin'
+    consumes:
+      - application/x-www-form-urlencoded
+    parameters:
+      - in: formData
+        name: idProjekat
+        type: integer
+        description: ID projekta za koji se postavlja rok.
+      - in: formData
+        name: rokProjekta
+        type: string
+        description: Rok projekta.
+    required:
+      - idProjekat
+      - rokProjekta
+    responses:
+      200:
+        description: Vraca se JSON objekat sa parametrom message
+        content: 
+          application/json:
+              schema: 
+                type: object
+                properties:
+                message:
+                  type: string                  
+
+/api/viewA/acourses:
+  post:
+    tags:
+      - Asistenti - Pregled projekata - API
+    description: Dohvatanje svih predmeta asistenta na kojim je aktivan projekat
+
+/api/viewA/projectgroups:
+  post:
+    tags:
+      - Asistenti - Pregled projekata - API
+    description: Dohvatanje svih projektnih grupa na projektu
+
+/api/viewA/commenttask:
+  post:
+    tags:
+      - Asistenti - Pregled projekata - API
+    description: Unos komentara na projektni zadatak
+
+/api/viewA/commentproject:
+  post:
+    tags:
+      - Asistenti - Pregled projekata - API
+    description: Unos komentara na projekat
+
+/api/group/:
+  post:
+    tags:
+    - Studenti - Kreiranje projektne grupe - API
+    description: Omogucava kreiranje novih projektnih grupa
+
+/api/group/addmembers:
+  post:
+    tags:
+      - Studenti - Kreiranje projektne grupe - API
+    description: 'Omogucava dodavanje novih osoba u već postojeće grupe za definisanje projekte.
+    Realizovano od strane: Mašović Haris'
+    consumes:
+      - application/json
+    parameters:
+        - in: body
+          name: payload
+          description: The user to create.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                idStudent:
+                  type: integer
+                idGrupaProjekta:
+                  type: integer
+                kreator:
+                  type: boolean
+              required:
+              - idStudent
+              - idGrupaProjekta
+    responses:
+      200:
+        description: Vraca se JSON objekat sa parametrom message
+        content: 
+          application/json:
+              schema: 
+                type: object
+                properties:
+                message:
+                  type: string
+
+/api/group/selectleader:
+  post:
+    tags:
+      - Studenti - Kreiranje projektne grupe - API
+    description: Izbor vođe generisane grupe
+
+/api/group/projectcourses:
+  post:
+    tags:
+      - Studenti - Kreiranje projektne grupe - API
+    description: Dohvatanje predmeta studenta na kojima je moguce kreiranje projekta
+
+/api/group/deletemember:
+  post:
+    tags:
+      - Studenti - Kreiranje projektne grupe - API
+    description: Brisanje clana predmetne grupe
+
+/api/progress/endtask:
+  post:
+    tags:
+      - Studenti - Pracenje progresa projekta - API
+    description: Oznacavanje projektnog zadatka zavrsenim
+
+/api/progress/endproject:
+  post:
+    tags:
+      - Studenti - Pracenje progresa projekta - API
+    description: Oznacavanje projekta zavrsenim
+
+/api/viewS/projects:
+  post:
+    tags:
+      - Studenti - Pregled projekata - API
+    description: Dohvatanje svih projekata studenta
+
+/api/viewS/tasks:
+  post:
+    tags:
+    - Studenti - Pregled projekata - API
+    description: Dohvatanje svih zadataka na projektu
+
+/api/work/:
+  post:
+    tags:
+      - Studenti - Rad na projektu - API
+    description: 'Omogucava dodavanje projektnih zadataka za vec postojeci projekat. 
+    Salje se kao url encoded format i prima i kao rezultat vraca json projektnog zadatka ukoliko je uspješno dodana 
+    ako nije json sa parametrom message koji govori da nije uspješno dodan projektni zadatak za projekat. 
+    Realizovano od strane: Mašović Haris'
+    consumes:
+      - application/x-www-form-urlencoded
+    parameters:
+      - in: formData
+        name: id_projekta
+        type: number
+        description: ID projekta npr ~ [29].
+      - in: formData
+        name: od_kad
+        type: string
+        description: datum od kada npr ~ [2019-11-03 23:00:00].
+      - in: formData
+        name: do_kad
+        type: string
+        description: datum do kada npr ~ [2019-11-03 23:00:00].
+      - in: formData
+        name: opis
+        type: string
+        description: opis projektnog zadatka.
+      - in: formData
+        name: zavrsen
+        type: boolean
+        description: zavrsen projektni zadatak?.
+      - in: formData
+        name: komentar_asistenta
+        type: string
+        description: komentar asistenta.
+    required:
+      - id_projekta
+      - od_kad
+      - do_kad
+    responses:
+      200:
+        description: Vraca se JSON objekat sa parametrom message
+        content: 
+          application/json:
+              schema: 
+                type: object
+                properties:
+                message:
+                  type: string
+
+/api/work/addfile:
+  post:
+    tags:
+    - Studenti - Rad na projektu - API
+    description: Unos novog fajla u projektni zadatak
+
+/api/work/assigntask:
+  post:
+    tags:
+      - Studenti - Rad na projektu - API
+    description: Dodjela projektnog zadatka clanu grupe
+
+/api/work/deletefile:
+  post:
+    tags:
+      - Studenti - Rad na projektu - API
+    description: Brisanje fajla iz projektnog zadatka
