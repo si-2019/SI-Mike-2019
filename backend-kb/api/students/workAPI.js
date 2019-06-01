@@ -99,6 +99,67 @@ workRouter.post('/addfile',(req, res)=>{
 
 /**
  * @swagger
+ * /api/work/downloadProjektniFajl:
+ *    get:
+ *      tags:
+ *       - Studenti - Rad na projektu - API
+ *      description: 'Omogucava download fajla iz projektnog zadatka. 
+ *      Salje se kao url encoded format i prima id projektnog fajla. 
+ *      Vraca binarni fajl u slucaju ispravnog zahtjeva, ili JSON sa parametrom message u slucaju greske.
+ *      Realizovano od strane: Skopljak Emin'
+ *      consumes:
+ *       - application/x-www-form-urlencoded
+ *      parameters:
+ *        - in: formData
+ *          name: idProjektnogFajla
+ *          type: number
+ *          description: ID projektnog fajla.
+ *      required:
+ *        - idProjektnogFajla
+ *      responses:
+ *       200:
+ *         description: Binarni fajl
+*/
+workRouter.get('/downloadProjektniFajl',(req, res)=>{
+    res.redirect(307, '/services/work/downloadProjektniFajl')
+});
+
+/**
+ * @swagger
+ * /api/work/deleteAllFiles:
+ *    get:
+ *      tags:
+ *       - Studenti - Rad na projektu - API
+ *      description: 'Omogucava vodji grupe brisanje svih fajlova projektnih zadataka clanova grupe. 
+ *      Salje se kao url encoded format i prima id grupe. 
+ *      Vraca JSON sa parametrom message koji govori da li je operacija uspjesno obavljena.
+ *      Realizovano od strane: Skopljak Emin'
+ *      consumes:
+ *       - application/x-www-form-urlencoded
+ *      parameters:
+ *        - in: formData
+ *          name: idGrupaProjekta
+ *          type: number
+ *          description: ID projektne grupe.
+ *      required:
+ *        - idGrupaProjekta
+ *      responses:
+ *       200:
+ *         description: Vraca se JSON objekat sa parametrom message
+ *         content: 
+ *           application/json:
+ *               schema: 
+ *                 type: object
+ *                 properties:
+ *                  message:
+ *                   type: string
+*/
+workRouter.post('/deleteAllFiles',(req, res)=>{
+    res.redirect(307, '/services/work/deleteAllFiles')
+});
+
+/**
+ * @swagger
  * /api/work/assigntask:
  *    post:
  *      tags:
