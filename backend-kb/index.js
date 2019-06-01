@@ -34,7 +34,7 @@ const viewSRouter = require('./routes/students/viewSRoute');
 const progressRouter = require('./routes/students/progressRoute');
 
 //servisi drugih grupa
-const servisiRouter=require('./routes/outsourced');
+const servisiRouter=require('./routes/outsourced/servisiRoute');
 
 // definisanje REST API calls / ruta
 // asistenti rute za api
@@ -79,7 +79,7 @@ app.use('/services/bodovanjeprojekata', bodovanjeRouter);
 app.use('/services/viewA', viewARouter);
 
 //servisi drugih grupa
-app.use('./routes/outsourced',servisiRouter);
+app.use('/services/outsourced',servisiRouter);
 
 // -------------------------------------------------------------------------------------------------------------
 
