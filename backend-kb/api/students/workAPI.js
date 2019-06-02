@@ -62,11 +62,100 @@ workRouter.post('/', (req, res) => res.redirect(307, '/services/work/'));
  * /api/work/addfile:
  *    post:
  *      tags:
-*       - Studenti - Rad na projektu - API
- *      description: Unos novog fajla u projektni zadatak
- */
-workRouter.post('/addfile',(req,res)=>{
+ *       - Studenti - Rad na projektu - API
+ *      description: 'Omogucava dodavanje fajlova u postojeci projektni zadatak. 
+ *      Salje se kao multipart/form-data format i prima id projektnog zadatka i niz fajlova. 
+ *      Vraca JSON sa parametrom message koji govori da li je fajl uspješno dodan u projektni zadatak. 
+ *      Upload proizvoljnog broja fajlova nije podrzan u Swagger-u!
+ *      Realizovano od strane: Skopljak Emin'
+ *      consumes:
+ *       - multipart/form-data
+ *      parameters:
+ *        - in: formData
+ *          name: idProjektnogZadatka
+ *          type: number
+ *          description: ID projektnog zadatka za koji se veže fajl.
+ *        - in: formData
+ *          name: fajlovi
+ *          type: file
+ *          description: Uploadani fajlovi.
+ *      required:
+ *        - id_projekta
+ *        - fajlovi
+ *      responses:
+ *       200:
+ *         description: Vraca se JSON objekat sa parametrom message
+ *         content: 
+ *           application/json:
+ *               schema: 
+ *                 type: object
+ *                 properties:
+ *                  message:
+ *                   type: string
+*/
+workRouter.post('/addfile',(req, res)=>{
+    res.redirect(307, '/services/work/addfile')
+});
 
+/**
+ * @swagger
+ * /api/work/downloadProjektniFajl:
+ *    get:
+ *      tags:
+ *       - Studenti - Rad na projektu - API
+ *      description: 'Omogucava download fajla iz projektnog zadatka. 
+ *      Salje se kao url encoded format i prima id projektnog fajla. 
+ *      Vraca binarni fajl u slucaju ispravnog zahtjeva, ili JSON sa parametrom message u slucaju greske.
+ *      Realizovano od strane: Skopljak Emin'
+ *      consumes:
+ *       - application/x-www-form-urlencoded
+ *      parameters:
+ *        - in: formData
+ *          name: idProjektnogFajla
+ *          type: number
+ *          description: ID projektnog fajla.
+ *      required:
+ *        - idProjektnogFajla
+ *      responses:
+ *       200:
+ *         description: Binarni fajl
+*/
+workRouter.get('/downloadProjektniFajl',(req, res)=>{
+    res.redirect(307, '/services/work/downloadProjektniFajl')
+});
+
+/**
+ * @swagger
+ * /api/work/deleteAllFiles:
+ *    get:
+ *      tags:
+ *       - Studenti - Rad na projektu - API
+ *      description: 'Omogucava vodji grupe brisanje svih fajlova projektnih zadataka clanova grupe. 
+ *      Salje se kao url encoded format i prima id grupe. 
+ *      Vraca JSON sa parametrom message koji govori da li je operacija uspjesno obavljena.
+ *      Realizovano od strane: Skopljak Emin'
+ *      consumes:
+ *       - application/x-www-form-urlencoded
+ *      parameters:
+ *        - in: formData
+ *          name: idGrupaProjekta
+ *          type: number
+ *          description: ID projektne grupe.
+ *      required:
+ *        - idGrupaProjekta
+ *      responses:
+ *       200:
+ *         description: Vraca se JSON objekat sa parametrom message
+ *         content: 
+ *           application/json:
+ *               schema: 
+ *                 type: object
+ *                 properties:
+ *                  message:
+ *                   type: string
+*/
+workRouter.post('/deleteAllFiles',(req, res)=>{
+    res.redirect(307, '/services/work/deleteAllFiles')
 });
 
 /**

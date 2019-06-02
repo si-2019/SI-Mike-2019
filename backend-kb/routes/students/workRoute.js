@@ -41,20 +41,6 @@ workRouter.post('/', (req, res) => {
     }
 });
 
-// POST base/api/work/addfile
-// [idProjektnogZadatka] obavezni parametar u bodiju posta
-/**
- * @swagger
- * /services/work/addfile:
- *    post:
- *      tags:
-*       - Studenti - Rad na projektu - Service
- *      description: Unos novog fajla u projektni zadatak
- */
-workRouter.post('/addfile',(req,res)=>{
-
-});
-
 /**
  * @swagger
  * /services/work/assigntask:
@@ -77,6 +63,120 @@ workRouter.post('/assigntask', (req, res) => {
             else res.send(JSON.stringify({ message: 'Uspiješno dodijeljeni zadaci svim članovima.' }));
         })
     }); 
+});
+
+/**
+ * @swagger
+ * /services/work/addfile:
+ *    post:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: 'Unos novog fajla u projektni zadatak. Realizovano od strane: Skopljak Emin.'
+ */ 
+workRouter.post('/addfile', workUtils.upload.array('fajlovi'), (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    workUtils.provjeraParametaraUploadFajla(req.body, (cb) => {
+        if(cb.ispravno) {
+            if(req.files) {
+                let idProjektnogZadatka = req.body.idProjektnogZadatka;
+
+                let promisi = []
+                for(let i = 0; i < req.files.length; i++) {
+                    promisi.push(
+                        workUtils.spremiFajlUBazu(req.files[i], idProjektnogZadatka)
+                    );
+                }
+
+                Promise.all(promisi).then((values) => {
+                    res.send(JSON.stringify({
+                        message: 'Uspjesno dodani fajlovi u projektni zadatak.'
+                    }));
+                }).catch((err) => {
+                    res.send(JSON.stringify({
+                        message: `Doslo je do greske. ${err}`
+                    }));
+                });
+            }
+            else {
+                res.send(JSON.stringify({
+                    message: "Doslo je do greske. Da li su fajlovi poslani?"
+                }));
+            }
+        }
+        else {
+            res.send(JSON.stringify({
+                message: cb.poruka
+            }));
+        }
+    }); 
+});
+
+/**
+ * @swagger
+ * /services/work/downloadProjektniFajl:
+ *    get:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: 'Download fajla projektnog zadatka. Realizovano od strane: Skopljak Emin.'
+ */ 
+workRouter.get('/downloadProjektniFajl', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let idFajla = req.body.idProjektnogFajla;
+    //let idFajla = req.query.idProjektnogFajla; //za testiranje u browseru
+
+    if(!idFajla) {
+        res.send(JSON.stringify({message: 'Body parametri nisu specifirani: idProjektnogFajla.'}));
+    }
+    else {
+        workUtils.dajFajlIzBaze(idFajla).then((fajl) => {
+            if(!fajl) {
+                res.send(JSON.stringify({message: 'Dati fajl ne postoji.'}));
+            }
+            else {
+                res.writeHead(200, {
+                    'Content-Type': fajl.file_type,
+                    'Content-Length': fajl.file_size,
+                    'Content-Disposition': `attachment; filename=${fajl.nazivFile}`
+                });
+
+                res.write(fajl.file, 'binary');
+                res.end();
+            }
+        }).catch((err) => {
+            console.log(`ERROR: ${err}`);
+            try {
+                res.send(JSON.stringify({message: 'Doslo je do greske.'}));
+            }
+            catch(err) {}
+        });
+    }
+});
+
+/**
+ * @swagger
+ * /services/work/deleteAllFiles:
+ *    get:
+ *      tags:
+*       - Studenti - Rad na projektu - Service
+ *      description: 'Brisanje svih fajlova projektnih zadataka clanova grupe. Realizovano od strane: Skopljak Emin.'
+ */ 
+workRouter.post('/deleteAllFiles', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let idGrupe = req.body.idGrupaProjekta;
+
+    if(!idGrupe) {
+        res.send(JSON.stringify({message: 'Body parametri nisu specifirani: idGrupaProjekta.'}));
+    }
+    else {
+        workUtils.obrisiSveFajloveGrupe(idGrupe, (cb) => {
+            if(cb.ispravno) {
+                res.send(JSON.stringify({message: 'Uspjesno obrisani fajlovi.'}));
+            }
+            else {
+                res.send(JSON.stringify({message: cb.poruka}));
+            }
+        });
+    }
 });
 
 // POST base/api/work/deletefile
