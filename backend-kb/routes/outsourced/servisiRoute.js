@@ -12,13 +12,13 @@ servisiRouter.post('/getPredmetiKorisnik',(req,res)=>{
     }).then(rez=>{
         var predmeti=[];
         for(var i=0;i<rez.count;i++){
-            predmeti.push(rez[i].idPredmet);
+            predmeti.push({id:rez.rows[i].idPredmet});
         }
         db.Predmet.findAndCountAll().then(rez2=>{
             for(var j=0;j<rez2.count;j++){
-                for(var k=0;k<predmeti.count;k++){
-                    if(predmeti[i]==rez2[j].id){
-                        json.push({idPredmet:rez2[j].id,naziv:rez2[j].naziv});
+                for(var k=0;k<predmeti.length;k++){
+                    if(predmeti[k].id==rez2.rows[j].id){
+                        json.push({idPredmet:rez2.rows[j].id,naziv:rez2.rows[j].naziv});
                     }
                 }
             }
@@ -40,7 +40,7 @@ servisiRouter.post('/getKorisniciPredmet',(req,res)=>{
     }).then(rez=>{
         var korisnici=[];
         for(var i=0;i<rez.count;i++){
-            korisnici.push(rez[i].idStudent);
+            korisnici.push({id:rez.rows[i].idStudent});
         }
         db.Korisnik.findAndCountAll({
             where:{
@@ -48,9 +48,9 @@ servisiRouter.post('/getKorisniciPredmet',(req,res)=>{
             }
         }).then(rez2=>{
             for(var j=0;j<rez2.count;j++){
-                for(var k=0;k<korisnici.count;k++){
-                    if(korisnici[i]==rez2[j].id){
-                        json.push({idKorisnik:rez2[j].id,ime:rez2[j].ime,prezime:rez2[j].prezime});
+                for(var k=0;k<korisnici.length;k++){
+                    if(korisnici[i].id==rez2.rows[j].id){
+                        json.push({idKorisnik:rez2.rows[j].id,ime:rez2.rows[j].ime,prezime:rez2.rows[j].prezime});
                     }
                 }
             }
