@@ -14,6 +14,7 @@ pipeline {
         }
 	stage('Run') {
 	    steps {
+		sh 'cd backend-kb'
 		sh 'npm start'
 	    }
 	}
