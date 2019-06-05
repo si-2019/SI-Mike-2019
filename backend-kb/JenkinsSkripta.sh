@@ -1,3 +1,16 @@
-forever start index.js
+set -x
+npm run build
+set +x
+
+set -x
+npm start &
+sleep 1
+echo $! > .pidfile
+set +x
+
 echo 'Aplikacija je pokrenuta'
-forever stopall
+
+set -x
+kill $(cat .pidfile)
+
+exho 'Aplikacija je zatvorena'
