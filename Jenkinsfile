@@ -8,14 +8,16 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-		sh 'cd backend-kb' 
-                sh 'npm install'
+		dir("backend-kb"){ 
+                    sh 'npm install'
+		}
             }
         }
 	stage('Run') {
 	    steps {
-		sh 'cd backend-kb'
-		sh 'npm start'
+		dir("backend-kb"){ 
+                    sh './JenkinsSkripta.sh'
+		}
 	    }
 	}
     }
