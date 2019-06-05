@@ -16,7 +16,7 @@ pipeline {
 	stage('Run') {
 	    steps {
 		dir("backend-kb"){ 
-                    sh './JenkinsSkripta.sh'
+                    sh 'bash ./JenkinsSkripta.sh'
 		}
 	    }
 	}
