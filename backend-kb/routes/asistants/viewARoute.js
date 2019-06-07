@@ -70,4 +70,55 @@ viewARouter.post('/getProject',(req,res)=>{
     });
 });
 
+/**
+ * @swagger
+ * /services/viewA/predmeti-projekti:
+ *    post:
+ *      tags:
+*       - Asistenti - Pregled projekata - Service
+ *      description: Pregled predmeta i projekata
+ */
+viewARouter.get('/predmetiprojekti', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    viewUtils.dohvatiSvePredmeteProjekte((err, podaci) => {
+        if (err) res.send(JSON.stringify({
+            message: 'errr'
+        }));
+        else res.send(JSON.stringify(podaci));
+    });
+});
+
+viewARouter.get('/getProjects/:idStudent',(req,res)=>{
+    res.setHeader('Content-Type', 'application/json');
+    let idStudenta = req.params.idStudent;
+    viewUtils.dajSveProjekteStudenta(idStudenta, (err, projekti) => {
+        if (err) res.send(JSON.stringify({
+            message: 'errr'
+        }));
+        else res.send(JSON.stringify(projekti));
+    });
+});
+
+viewARouter.get('/getZadaci/:projektnaGrupa',(req,res)=>{
+    res.setHeader('Content-Type', 'application/json');
+    let idProjektne = req.params.projektnaGrupa;
+    viewUtils.dajSvePRojektneZadatkeGrupe(idProjektne, (err, projekti) => {
+        if (err) res.send(JSON.stringify({
+            message: 'errr'
+        }));
+        else res.send(JSON.stringify(projekti));
+    });
+});
+
+viewARouter.get('/getClanovi/:projektnaGrupa',(req,res)=>{
+    res.setHeader('Content-Type', 'application/json');
+    let idProjektne = req.params.projektnaGrupa;
+    viewUtils.dajSveClanoveProjektne(idProjektne, (err, projekti) => {
+        if (err) res.send(JSON.stringify({
+            message: 'errr'
+        }));
+        else res.send(JSON.stringify(projekti));
+    });
+});
+
 module.exports = viewARouter;
