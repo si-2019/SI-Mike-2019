@@ -70,14 +70,7 @@ viewARouter.post('/getProject',(req,res)=>{
     });
 });
 
-/**
- * @swagger
- * /services/viewA/predmeti-projekti:
- *    post:
- *      tags:
-*       - Asistenti - Pregled projekata - Service
- *      description: Pregled predmeta i projekata
- */
+// custom servisi - no need 4 swagger
 viewARouter.get('/predmetiprojekti', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     viewUtils.dohvatiSvePredmeteProjekte((err, podaci) => {
