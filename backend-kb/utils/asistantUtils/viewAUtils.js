@@ -1,7 +1,6 @@
 const db = require('../../models/db');
 
 const dohvatiProjekat=(idPredmet)=>{
-    console.log(idPredmet);
     return new Promise((resolve,reject)=>{
         db.Projekat.findOne({
             where:{
