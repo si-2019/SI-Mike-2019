@@ -1,1 +1,1 @@
-web: npm start --prefix backend-kb
+web: node backend-kb/index.js
