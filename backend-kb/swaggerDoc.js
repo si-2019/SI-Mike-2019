@@ -24,7 +24,7 @@ const options = {
 
 const specs = swaggerJsdoc(options);
 
-module.exports = (app) => {
+module.exports = (app) => { 
     app.use('/swagger-json', (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(specs);
