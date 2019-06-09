@@ -10,7 +10,7 @@ const options = {
             version: '1.0.0', 
             description: 'Citav opis potreban za backend dio za tim MIKE koji se tiče opisa i testiranje metoda za API i SERVISE.',
         },
-        host : `${process.env.HOST}:${process.env.PORT}`,
+        host : `${process.env.HOST}`,
         basePath: '/',
         servers : [ {
             url : process.env.FRONTEND,
