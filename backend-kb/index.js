@@ -64,7 +64,7 @@ app.use('/*', (req, res, next) => {
     // taj endpoint će nam dati ili true ili false za naše podatke
 
     // ukoliko je true nextamo ukoliko nije sabotiramo request i vraćamo 404/neki kod 
-    // next();
+    // next(); 
 }); */
 
 
