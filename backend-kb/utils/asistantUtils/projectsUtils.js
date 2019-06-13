@@ -139,6 +139,26 @@ const dobaviProjektneGrupe = (idProjekat, callback) => {
     .catch((err) => callback(err));
 }
 
+const dohvatiPredmete=(idAsistent, callback)=>{
+    db.Predmet.findAll({ where: { idAsistent : idAsistent}})
+    .then((predmeti) => {
+        if(!predmeti.length) callback(true);
+        else {
+            db.Projekat.findAll().then(projekti=>{
+                for(var j=0;j<predmeti.length;j++)
+                for(var i=0;i<projekti.length;i++){
+                    if(projekti[i].idPredmet==predmeti[j].id){ 
+                        predmeti.splice(j,1);
+                        j--;
+                        break;
+                    }
+                }
+                callback(null,predmeti);
+            })
+        }
+    });
+}
+
 
 module.exports = {
     upisNovogProjektaUBazu,
@@ -146,5 +166,6 @@ module.exports = {
     provjeraParametaraRokProjekta,
     upisRokaIzradeProjekta,
     sveProvjereZaPredmeteAsistenta,
-    dobaviProjektneGrupe
+    dobaviProjektneGrupe,
+    dohvatiPredmete
 }
