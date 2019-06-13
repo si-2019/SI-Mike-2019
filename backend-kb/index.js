@@ -48,6 +48,25 @@ const workapi = require('./api/students/workAPI');
 const viewSapi = require('./api/students/viewSAPI');
 const progressapi = require('./api/students/progressAPI');
 
+/*
+app.use('/*', (req, res, next) => {
+    // za svaku metodu se salju neki podaci, mora se napraviti da se provjerava GET sa parametrima, POST kao url encoded i POST kao json format
+    // tu se dobijaju podaci ko je poslao i ko traži i MORA SE prilikom SVAKOG poziva, mozda i jednostavnije kad dobijemo dokumentaciju 
+    // od autorizacije
+
+    // iz gornjih podataka se moraju zakljuciti ko je poslao
+
+    // kad se zakljuci ko je poslao i provjerava se koja se ruta želi i da li on to može pristupiti
+    
+    // zatim ako on to može pristupiti poziva se hanin repozitorij i metoda onako kako je tamo napravljeno
+    // da bi se validiralo sve to
+
+    // taj endpoint će nam dati ili true ili false za naše podatke
+
+    // ukoliko je true nextamo ukoliko nije sabotiramo request i vraćamo 404/neki kod 
+    // next();
+}); */
+
 
 // postavljanje CORS-a za naš drugi server
 // da samo on može kupiti podatke
