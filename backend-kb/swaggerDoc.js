@@ -29,5 +29,8 @@ module.exports = (app) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(specs);
     })
-    app.use('/', swaggerUi.serve, swaggerUi.setup(specs));
+
+    const swaggerJson = require('./fullSwagger.json');
+    app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerJson));
+    app.use('/api-docs-code', swaggerUi.serve, swaggerUi.setup(specs));
 }
