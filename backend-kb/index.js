@@ -59,12 +59,12 @@ app.use('/*', (req, res, next) => {
     next();
 });
 
-
+/*
 app.use('/*', (req, res, next) => {
     // za svaku metodu se salju neki podaci, mora se napraviti da se provjerava GET sa parametrima, POST kao url encoded i POST kao json format
     // tu se dobijaju podaci ko je poslao i ko traži i MORA SE prilikom SVAKOG poziva, mozda i jednostavnije kad dobijemo dokumentaciju 
     // od autorizacije
-    
+
     // iz gornjih podataka se moraju zakljuciti ko je poslao
 
     // kad se zakljuci ko je poslao i provjerava se koja se ruta želi i da li on to može pristupiti
@@ -76,7 +76,7 @@ app.use('/*', (req, res, next) => {
 
     // ukoliko je true nextamo ukoliko nije sabotiramo request i vraćamo 404/neki kod 
     // next();  
-}); 
+}); */
 
 
 
