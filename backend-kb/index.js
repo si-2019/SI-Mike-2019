@@ -54,7 +54,7 @@ const progressapi = require('./api/students/progressAPI');
 // postavljanje CORS-a za naš drugi server
 // da samo on može kupiti podatke
 app.use('/*', (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', process.env.FRONTEND);
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.header('Access-Control-Allow-Headers', 'Authorization');
