@@ -126,9 +126,28 @@ app.use('/api/bodovanjeprojekata', bodovanjeapi);
 app.use('/api/viewA', viewAapi);
 // -------------------------------------------------------------------------------------------------------------
 
-const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./fullSwagger.yaml');
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const options = {
+    swaggerDefinition: {
+        info: {
+            title: 'Dokumentacija tima MIKE za Backend dio kolaboracije.',
+            version: '1.5.0', 
+            description: 'Citav opis potreban za backend dio za tim MIKE koji se tiče opisa i testiranje metoda za API i SERVISE.',
+        },
+        host : process.env.HOST,
+        basePath: '/',
+        servers : [ {
+            url : process.env.FRONTEND,
+            description : "Frontend server koji koristi ovaj rest api."
+        }]
+    },
+    // List of files to be processes. You can also set globs './routes/*.js'
+    apis: ['./index.js', './api/asistants/*.js', './api/students/*.js', './routes/asistants/*.js', './routes/students/*.js'],
+};
+
+const specs = swaggerJsdoc(options);
+// const YAML = require('yamljs');
+// const swaggerDocument = YAML.load('./fullSwagger.yaml');
+app.use('/', swaggerUi.serve, swaggerUi.setup(specs));
 
 // postavljanje swaggera
 swaggerDoc(app);
