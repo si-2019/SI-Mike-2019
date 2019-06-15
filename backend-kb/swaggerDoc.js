@@ -30,7 +30,8 @@ module.exports = (app) => {
         res.send(specs);
     })
 
-    const swaggerJson = require('./fullSwagger.json');
-    app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerJson));
+    const YAML = require('yamljs');
+    const swaggerDocument = YAML.load('./fullSwagger.yaml');
+    app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.use('/api-docs-code', swaggerUi.serve, swaggerUi.setup(specs));
 }
