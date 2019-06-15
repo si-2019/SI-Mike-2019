@@ -114,4 +114,14 @@ viewARouter.get('/getClanovi/:projektnaGrupa',(req,res)=>{
     });
 });
 
+viewARouter.get('/predmetiprojektiasistent/:idAsistent', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let idAsistent=req.params.idAsistent;
+    viewUtils.dajPredmeteAsistenta(idAsistent,(err, podaci) => {
+        if (err) res.send(JSON.stringify({
+            message: 'errr'
+        }));
+        else res.send(JSON.stringify(podaci));
+    });
+});
 module.exports = viewARouter;

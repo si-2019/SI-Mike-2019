@@ -101,7 +101,10 @@ const sveProvjereZaPredmeteAsistenta = (idAsistenta, callback) => {
         if(!predmeti.length) callback(true);
         else {
             // filtriranje svih projekata koji sadrze neki projekat i da je asistent na tim projektima i da nema kreiranih grupa
-            db.sequelize.query(`SELECT DISTINCT p.naziv, pr.idProjekat FROM Predmet p, Projekat pr WHERE pr.idPredmet = p.id and p.idAsistent = ${idAsistenta}`, { type: sequelize.QueryTypes.SELECT })
+            db.sequelize.query(`SELECT DISTINCT p.naziv, pr.idProjekat, Count(ps.id)  as brojStudenata
+            FROM Predmet p, Projekat pr, predmet_student ps 
+            WHERE ps.idPredmet = p.id and pr.idPredmet = p.id and p.idAsistent = ${idAsistenta}
+            GROUP BY p.naziv, pr.idProjekat`, { type: sequelize.QueryTypes.SELECT })
             .then((niz) => {
                 let nizIdProjekata = [];
                 for(let i = 0; i < niz.length; ++i) nizIdProjekata.push(niz[i].idProjekat);  
