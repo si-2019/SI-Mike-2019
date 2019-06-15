@@ -20,12 +20,12 @@ const upisNoveGrupeUBazu = (postBody, callback) => {
             idProjekat: postBody['idProjekat']
         }
     }).then((projekat) => {
-        //ako ne postoji projekat, vrati true
-        if (!projekat) callback(true);
+        //ako ne postoji projekat, vrati null
+        if (!projekat) callback(null);
         else {
             db.GrupaProjekta.create(novi).then((grupa) => {
-                if (!grupa) callback(true);
-                else callback(null, grupa);
+                if (!grupa) callback(null);
+                else callback(grupa.idGrupaProjekta);
             })
         }
     })
@@ -133,11 +133,41 @@ const dohvatiStudenteProjekat=(idGrupa)=>{
     });
 }
 
+const getStudentsProject=(id)=>{
+    return new Promise((resolve,reject)=>{
+        var q1= db.sequelize.query(`SELECT DISTINCT k.ime, k.prezime, k.id 
+        FROM Predmet p, Projekat pr, Korisnik k, predmet_student ps 
+        WHERE pr.idPredmet = p.id AND k.id = ps.idStudent AND ps.idPredmet = p.id AND p.id = ${id}`);
+        
+        var q2=db.sequelize.query(
+            `SELECT cg.idStudent
+            FROM ClanGrupe cg, Projekat pr, GrupaProjekta gp, Predmet p
+            WHERE p.id=${id} and p.id=pr.idPredmet and gp.idProjekat=pr.idProjekat and cg.idGrupaProjekta=gp.idGrupaProjekta`
+        );
+        Promise.all([q1,q2]).then(rez=>{
+            var studenti=rez[0][0];
+            var clanovi=rez[1][0];
+            for(var i=0;i<studenti.length;i++){
+                for(var j=0;j<clanovi.length;j++){
+                    if(clanovi[j].idStudent==studenti[i].id){
+                        studenti.splice(i,1);
+                        i--;
+                        break;
+                    }
+                }
+            }
+            resolve(JSON.stringify(studenti));
+        }).catch((err)=>{
+            console.log(err);
+        })
+    })
+}
 module.exports = {
     provjeraParametaraPostG,
     upisNoveGrupeUBazu,
     provjeraNovihMembera,
     upisNovihMemberaUBazu,
     upisVodjeGrupe,
-    dohvatiStudenteProjekat
+    dohvatiStudenteProjekat,
+    getStudentsProject
 }

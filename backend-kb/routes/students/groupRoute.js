@@ -24,11 +24,11 @@ groupRouter.post('/', (req, res) => {
     // ukoliko je sve zadovoljeno piše se u bazu nova grupa
     else {
         groupUtils.upisNoveGrupeUBazu(postBody, (err) => {
-            if (err) res.send(JSON.stringify({
+            if (err==null) res.send(JSON.stringify({
                 message: 'Poslani id projekta ne postoji u bazi ili je doslo do greske sa bazom!'
             }));
             else res.send(JSON.stringify({
-                message: 'Uspjesno kreirana nova grupa u bazi.'
+                id:err
             }));
         });
     }
@@ -44,7 +44,7 @@ groupRouter.post('/', (req, res) => {
  *      Realizovano od strane: Mašović Haris'
 */
 groupRouter.post('/addmembers', (req, res) => {
-    let nizNovihMembera = req.body.payload;
+    let nizNovihMembera = req.body;
     if(!nizNovihMembera){ res.send(JSON.stringify({ message: 'Nisu poslani memberi unutar payloada!' })); return; }
     if (!groupUtils.provjeraNovihMembera(nizNovihMembera)) res.send(JSON.stringify({
         message: 'Svaki member u JSON body-u ne sadrži [idStudent, idGrupaProjekta]!'
@@ -123,17 +123,14 @@ groupRouter.post('/deletemember',(req,res)=>{
 *       - Studenti - Kreiranje projektne grupe - Service
  *      description: Dohvatanje studenata koji su clanovi projektne grupe
  */
-groupRouter.post('/getProjectStudents',(req,res)=>{
-    var student=req.body.student;
-    var grupa=req.body.grupa;
-    if(student==1){
-    groupUtils.dohvatiStudenteProjekat(grupa).then((jsonString)=>{
+groupRouter.get('/getProjectStudents/:predmet',(req,res)=>{
+    res.setHeader('Content-Type', 'application/json');
+    var predmet=req.params.predmet;
+    groupUtils.getStudentsProject(predmet).then((jsonString)=>{
     res.writeHead(200,{'Content-Type':'application/json'});
     res.write(jsonString);
     res.end();
     });
-    }
-    else res.end();
 });
 
 
