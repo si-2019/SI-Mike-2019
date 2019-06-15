@@ -101,7 +101,10 @@ const sveProvjereZaPredmeteAsistenta = (idAsistenta, callback) => {
         if(!predmeti.length) callback(true);
         else {
             // filtriranje svih projekata koji sadrze neki projekat i da je asistent na tim projektima i da nema kreiranih grupa
-            db.sequelize.query(`SELECT DISTINCT p.naziv, pr.idProjekat FROM Predmet p, Projekat pr WHERE pr.idPredmet = p.id and p.idAsistent = ${idAsistenta}`, { type: sequelize.QueryTypes.SELECT })
+            db.sequelize.query(`SELECT DISTINCT p.naziv, pr.idProjekat, Count(ps.id)  as brojStudenata
+            FROM Predmet p, Projekat pr, predmet_student ps 
+            WHERE ps.idPredmet = p.id and pr.idPredmet = p.id and p.idAsistent = ${idAsistenta}
+            GROUP BY p.naziv, pr.idProjekat`, { type: sequelize.QueryTypes.SELECT })
             .then((niz) => {
                 let nizIdProjekata = [];
                 for(let i = 0; i < niz.length; ++i) nizIdProjekata.push(niz[i].idProjekat);  
@@ -139,6 +142,26 @@ const dobaviProjektneGrupe = (idProjekat, callback) => {
     .catch((err) => callback(err));
 }
 
+const dohvatiPredmete=(idAsistent, callback)=>{
+    db.Predmet.findAll({ where: { idAsistent : idAsistent}})
+    .then((predmeti) => {
+        if(!predmeti.length) callback(true);
+        else {
+            db.Projekat.findAll().then(projekti=>{
+                for(var j=0;j<predmeti.length;j++)
+                for(var i=0;i<projekti.length;i++){
+                    if(projekti[i].idPredmet==predmeti[j].id){ 
+                        predmeti.splice(j,1);
+                        j--;
+                        break;
+                    }
+                }
+                callback(null,predmeti);
+            })
+        }
+    });
+}
+
 
 module.exports = {
     upisNovogProjektaUBazu,
@@ -146,5 +169,6 @@ module.exports = {
     provjeraParametaraRokProjekta,
     upisRokaIzradeProjekta,
     sveProvjereZaPredmeteAsistenta,
-    dobaviProjektneGrupe
+    dobaviProjektneGrupe,
+    dohvatiPredmete
 }

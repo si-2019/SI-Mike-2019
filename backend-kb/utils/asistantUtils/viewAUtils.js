@@ -38,7 +38,7 @@ const dohvatiSvePredmeteProjekte = (callback) => {
 }
 
 const dajSveProjekteStudenta = (id, callback) => {
-    db.sequelize.query(`SELECT DISTINCT p.id as idPredmet, pr.idProjekat, pr.nazivProjekta as naziv, pr.opisProjekta as opis, gp.idGrupaProjekta as idProjektnaGrupa
+    db.sequelize.query(`SELECT DISTINCT p.id as idPredmet, p.naziv, pr.idProjekat, pr.nazivProjekta, pr.opisProjekta as opis, gp.idGrupaProjekta as idProjektnaGrupa
                         FROM Predmet p, Projekat pr, ClanGrupe clan, GrupaProjekta gp
                         WHERE pr.idPredmet = p.id AND gp.idGrupaProjekta = clan.idGrupaProjekta AND gp.idProjekat = pr.idProjekat AND clan.idStudent=${id}`)
     .then((niz) => {
@@ -80,6 +80,18 @@ const dajSveClanoveProjektne = (id, callback) => {
         })
         .catch(err => callback(err));
 }
+const dajPredmeteAsistenta=(id,callback)=>{
+    db.sequelize.query(`SELECT DISTINCT p.id as idPredmet, p.naziv, pr.idProjekat, pr.nazivProjekta, pr.opisProjekta as opis, pr.moguciBodovi
+                        FROM Predmet p, Projekat pr, Korisnik k
+                        WHERE p.idAsistent=${id} and pr.idPredmet = p.id`)
+    .then((niz) => {
+        if(!niz || !niz[0]) callback(true);
+        let array = [];
+        for (let i = 0; i < niz[0].length; ++i) array.push({ ...niz[0][i] });
+        callback(null, array);
+    })
+    .catch(err => callback(err));
+}
 
 
 
@@ -88,5 +100,6 @@ module.exports = {
     dohvatiSvePredmeteProjekte,
     dajSveProjekteStudenta,
     dajSvePRojektneZadatkeGrupe,
-    dajSveClanoveProjektne
+    dajSveClanoveProjektne,
+    dajPredmeteAsistenta
 }

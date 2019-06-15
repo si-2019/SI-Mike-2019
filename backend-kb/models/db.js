@@ -15,7 +15,7 @@ db.sequelize = sequelize;
 // importovanje modela
 db.ClanGrupe = sequelize.import(__dirname + '/ClanGrupe.js');
 db.GrupaProjekta = sequelize.import(__dirname + '/GrupaProjekta.js');
-db.Korisnik = sequelize.import(__dirname + '/Korisnik.js');
+db.Korisnik = sequelize.import(__dirname + '/Korisnik2.js');
 db.Predmet = sequelize.import(__dirname + '/Predmet.js');
 db.Projekat = sequelize.import(__dirname + '/Projekat.js');
 db.ProjektniFile = sequelize.import(__dirname + '/ProjektniFile.js');
