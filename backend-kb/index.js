@@ -147,7 +147,7 @@ const options = {
 const specs = swaggerJsdoc(options);
 // const YAML = require('yamljs');
 // const swaggerDocument = YAML.load('./fullSwagger.yaml');
-app.use('/', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/', swaggerUi.serve, swaggerUi.setup(require('./fullSwagger.json')));
 
 // postavljanje swaggera
 swaggerDoc(app);
