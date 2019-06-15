@@ -65,7 +65,7 @@ viewARouter.post('/getProject',(req,res)=>{
     var predmet=req.body.idPredmet;
     viewUtils.dohvatiProjekat(predmet).then((jsonString)=>{
         res.writeHead(200,{'Content-Type':'application/json'});
-        res.write(jsonString);
+        if(jsonString) res.write(jsonString);
         res.end();
     });
 });

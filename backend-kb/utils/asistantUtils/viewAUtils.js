@@ -7,9 +7,12 @@ const dohvatiProjekat=(idPredmet)=>{
                 idPredmet:idPredmet
             }
         }).then(rez=>{
-            var json={naziv:rez.get('nazivProjekta'),opis:rez.get('opisProjekta'),bodovi:rez.get('moguciBodovi')};
-            var jsonString=JSON.stringify(json);
-            resolve(jsonString);
+            if(rez) {
+                var json={naziv:rez.get('nazivProjekta'),opis:rez.get('opisProjekta'),bodovi:rez.get('moguciBodovi')};
+                var jsonString=JSON.stringify(json);
+                resolve(jsonString);
+            }
+            else resolve(null);
         })
     })
 }
