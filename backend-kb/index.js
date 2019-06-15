@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');  // definisanje env varijabli
 dotenv.config();                   // postavljanje configa 
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const db = require ('./models/db.js');
@@ -123,6 +125,10 @@ app.use('/api/bodovanjeprojekata', bodovanjeapi);
 // definisanje ruta za dio "Pregled projekata"
 app.use('/api/viewA', viewAapi);
 // -------------------------------------------------------------------------------------------------------------
+
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./fullSwagger.yaml');
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // postavljanje swaggera
 swaggerDoc(app);

@@ -1,4 +1,3 @@
----
 info:
   title: Dokumentacija tima MIKE za Backend dio kolaboracije.
   version: 1.2.0
@@ -13,7 +12,7 @@ swagger: '2.0'
 paths:
   "/api/bodovanjeprojekata/unified":
     post:
-      tags:
+      tags: 
       - Asistenti - Bodovanje projekata - API
       description: 'Omogucava bodovanje projekata, tako da se definisu bodovi jednaki
         za svakog clana. Salje se kao url encoded format i prima id projektne grupe

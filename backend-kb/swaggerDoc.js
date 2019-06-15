@@ -29,9 +29,5 @@ module.exports = (app) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(specs);
     })
-
-    const YAML = require('yamljs');
-    const swaggerDocument = YAML.load('./fullSwagger.yaml');
-    app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    app.use('/api-docs-code', swaggerUi.serve, swaggerUi.setup(specs));
+    // app.use('/api-docs-code', swaggerUi.serve, swaggerUi.setup(specs));
 }
