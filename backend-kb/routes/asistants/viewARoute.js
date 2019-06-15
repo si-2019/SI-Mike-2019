@@ -65,7 +65,7 @@ viewARouter.post('/getProject',(req,res)=>{
     var predmet=req.body.idPredmet;
     viewUtils.dohvatiProjekat(predmet).then((jsonString)=>{
         res.writeHead(200,{'Content-Type':'application/json'});
-        res.write(jsonString);
+        if(jsonString) res.write(jsonString);
         res.end();
     });
 });
@@ -114,4 +114,14 @@ viewARouter.get('/getClanovi/:projektnaGrupa',(req,res)=>{
     });
 });
 
+viewARouter.get('/predmetiprojektiasistent/:idAsistent', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let idAsistent=req.params.idAsistent;
+    viewUtils.dajPredmeteAsistenta(idAsistent,(err, podaci) => {
+        if (err) res.send(JSON.stringify({
+            message: 'errr'
+        }));
+        else res.send(JSON.stringify(podaci));
+    });
+});
 module.exports = viewARouter;

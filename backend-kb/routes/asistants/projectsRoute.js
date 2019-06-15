@@ -17,22 +17,24 @@ projectsRouter.post('/newp', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
 
     let bool = projectUtils.provjeraParametaraPostPZ(postBody);
-    if (!bool) res.send(JSON.stringify({
+    if (!bool){ res.send(JSON.stringify({
         message: 'Body parametri nisu specifirani [naziv_projekta, id_predmeta, id_asistenta, opis_projekta, moguci_bodovi]'
-    }));
+        }));
+    }
     // ukoliko je sve zadovoljeno piše se u bazu novi projekat
     else {
         let progress = postBody['progress'];
         let rokProjekta = postBody['rok_projekta'];
-        if (rokProjekta) {
+        /*if (rokProjekta) {
             let regexDatumFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])) ((0[0-9]|1[0-9]|2[0-3])\:([0-5][0-9])\:(([0-5][0-9])))/;
             if (!rokProjekta.match(regexDatumFormat)) {
+                console.log("greska2");
                 res.send(JSON.stringify({
                     message: 'Neobavezni parametar roka projekta nije u formatu [yyyy-mm-dd hh:mm:ss]!'
                 }));
                 return;
             }
-        }
+        }*/
         projectUtils.upisNovogProjektaUBazu(postBody, progress, rokProjekta)
             .then((objekat) => res.send(JSON.stringify(objekat)))
             .catch(err => res.send(JSON.stringify({ message: 'Poslani [id_predmeta || id_asistenta] ne postoji u bazi ili je doslo do greske sa bazom!'})))
@@ -102,6 +104,16 @@ projectsRouter.get('/getProjectGroups/:idProjekat', (req, res) => {
     projectUtils.dobaviProjektneGrupe(idProjekat, (err, grupe) => {
         if(err) res.send(JSON.stringify({ message: 'Greska sa bazom!' }));
         else res.send(JSON.stringify(grupe));
+    });
+});
+//Dohvati predmete na kojima nema kreiran projekat
+projectsRouter.get('/getPredmeti/:idAsistenta', (req, res) => {
+    const idAsistenta = req.params.idAsistenta;
+    res.setHeader('Content-Type', 'application/json');
+
+    projectUtils.dohvatiPredmete(idAsistenta, (err, predmeti) => {
+        if(err) res.send(JSON.stringify({ message: 'Za poslani predmet ili asistent nije asistent za taj predmet ili je vec kreiran projekt na tom projektu' }));
+        else res.send(JSON.stringify(predmeti));
     });
 });
 
