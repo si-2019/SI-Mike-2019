@@ -7,7 +7,7 @@ const options = {
     swaggerDefinition: {
         info: {
             title: 'Dokumentacija tima MIKE za Backend dio kolaboracije.',
-            version: '1.0.0', 
+            version: '1.1.0', 
             description: 'Citav opis potreban za backend dio za tim MIKE koji se tiče opisa i testiranje metoda za API i SERVISE.',
         },
         host : process.env.HOST,
