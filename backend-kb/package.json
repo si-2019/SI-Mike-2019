@@ -12,6 +12,7 @@
   "author": "Team Mike",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.0",
     "body-parser": "^1.18.3",
     "curl": "^0.1.4",
     "dotenv": "^7.0.0",

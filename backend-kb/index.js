@@ -8,6 +8,7 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const db = require ('./models/db.js');
+const axios = require('axios');
 
 const swaggerDoc = require('./swaggerDoc.js');
 
@@ -56,30 +57,78 @@ app.use('/*', (req, res, next) => {
     res.header('Access-Control-Allow-Origin', process.env.FRONTEND);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Headers', 'Authorization');
     next();
 });
 
-/*
+// AUTORIZACIJA ZA SVE METODE
+// UKOLIKO SERVISI NE RADE SAMO ZAKOMENTARISATI !!!
 app.use('/*', (req, res, next) => {
-    // za svaku metodu se salju neki podaci, mora se napraviti da se provjerava GET sa parametrima, POST kao url encoded i POST kao json format
-    // tu se dobijaju podaci ko je poslao i ko traži i MORA SE prilikom SVAKOG poziva, mozda i jednostavnije kad dobijemo dokumentaciju 
-    // od autorizacije
-
-    // iz gornjih podataka se moraju zakljuciti ko je poslao
-
-    // kad se zakljuci ko je poslao i provjerava se koja se ruta želi i da li on to može pristupiti
-    
-    // zatim ako on to može pristupiti poziva se hanin repozitorij i metoda onako kako je tamo napravljeno
-    // da bi se validiralo sve to
-
-    // taj endpoint će nam dati ili true ili false za naše podatke
-
-    // ukoliko je true nextamo ukoliko nije sabotiramo request i vraćamo 404/neki kod 
-    // next();  
-}); */
-
-
-
+    if(req.originalUrl == '/' || req.originalUrl == '/swagger-ui.css' ||
+       req.originalUrl == '/swagger-ui-bundle.js' || req.originalUrl == '/swagger-ui-standalone-preset.js' ||
+       req.originalUrl == '/swagger-ui-init.js') { next(); return; }
+    let username = null;
+    // kupljenje token i username
+    let token = req.get('Authorization');
+    if(req.query.username) {
+        // GET
+        // console.log('GET ZAHTJEV');
+        username = req.query.username;
+    } else if(req.body.username) {
+        // POST url-encoded
+        // console.log('POST URL ENCODED ZAHTJEV');
+        username = req.body.username;
+    } else if(req.body['username']){
+        // POST json
+        // console.log('POST JSON ZAHTJEV');
+        username = req.body['username'];
+    }
+    if(token && username){
+        // ukoliko imamo token i username zovemo kolege koje kasne pofino sa autorizacijom i autentifikacijom !!!!
+        axios.get(`https://si2019oscar.herokuapp.com/pretragaUsername/${username}/dajUlogu`)
+        .then(
+            (odgovor)=>{
+                if(!odgovor || !odgovor.data) res.status(403).send('Username nije autorizovan!');
+                else {
+                    const config = {
+                        method: 'get',
+                        url: `https://si2019romeo.herokuapp.com/users/validate?username=${username}`,
+                        headers: { 'Authorization': token }
+                    };                        
+                    axios(config)
+                    .then((odgovorToken) => {
+                        if(odgovorToken.status == 403) res.status(403).send('Token i username nisu ispravni!');
+                        else {
+                            // logika za studente i asistente 
+                            if(odgovor.data == 'STUDENT'){
+                                let studentiRute = ['group', 'viewS', 'work', 'progress'];
+                                let URL = req.originalUrl; 
+                                // ako je asistent mora mu zahtjev biti medju ovih gore 4
+                                // isto vazi i za studenta!!
+                                let bool = false;
+                                for(let i = 0; i < studentiRute.length; ++i) if(URL.includes(studentiRute[i])) {
+                                    bool = true; break;
+                                }
+                                if(bool) next();
+                                else res.status(403).send('Ovoj ruti moze samo asistent pristupiti!!!');
+                            } else if (odgovor.data == 'ASISTENT'){
+                                let URL = req.originalUrl;
+                                let asistentiRute = ['projects', 'generate', 'bodovanjeprojekata', 'viewA'];
+                                let bool = false;
+                                for(let i = 0; i < asistentiRute.length; ++i) if(URL.includes(asistentiRute[i])) {
+                                    bool = true; break;
+                                }
+                                if(bool) next();
+                                else res.status(403).send('Ovoj ruti moze samo student pristupiti!!!');
+                            } else res.status(403).send('Kolaboraciji mogu prisupiti samo asistenti ili studenti!!!');
+                        }
+                    })
+                    .catch(err => res.status(403).send('AUTENTIFIKACIJA SERVIS NE RADI [možda je i status 403, ne treba ih odmah ružiti, ali treba ih naružiti]!'))
+                } 
+            })
+            .catch(err => res.status(403).send('AUTORIZACIJA SERVIS NE RADI!!'));
+    } else res.status(403).send('Nisu poslani token i username!');
+}); 
 
 // ----------------------------------------------------- SERVISI ----------------------------------------------
 // definisanje ruta za dio "Kreiranje projektne grupe"
