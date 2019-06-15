@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');  // definisanje env varijabli
 dotenv.config();                   // postavljanje configa 
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const db = require ('./models/db.js');
@@ -48,6 +50,15 @@ const workapi = require('./api/students/workAPI');
 const viewSapi = require('./api/students/viewSAPI');
 const progressapi = require('./api/students/progressAPI');
 
+// postavljanje CORS-a za naš drugi server
+// da samo on može kupiti podatke
+app.use('/*', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', process.env.FRONTEND);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+
 /*
 app.use('/*', (req, res, next) => {
     // za svaku metodu se salju neki podaci, mora se napraviti da se provjerava GET sa parametrima, POST kao url encoded i POST kao json format
@@ -68,14 +79,7 @@ app.use('/*', (req, res, next) => {
 }); */
 
 
-// postavljanje CORS-a za naš drugi server
-// da samo on može kupiti podatke
-app.use('/*', (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', process.env.FRONTEND);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-});
+
 
 // ----------------------------------------------------- SERVISI ----------------------------------------------
 // definisanje ruta za dio "Kreiranje projektne grupe"
@@ -124,6 +128,7 @@ app.use('/api/bodovanjeprojekata', bodovanjeapi);
 app.use('/api/viewA', viewAapi);
 // -------------------------------------------------------------------------------------------------------------
 
+app.use('/', swaggerUi.serve, swaggerUi.setup(require('./fullSwagger.json')));
 // postavljanje swaggera
 swaggerDoc(app);
 
