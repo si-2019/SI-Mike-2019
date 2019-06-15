@@ -11,6 +11,7 @@ const db = require ('./models/db.js');
 const axios = require('axios');
 
 const swaggerDoc = require('./swaggerDoc.js');
+const cors = require('cors');
 
 // povezivanje sa bazom
 db.sequelize.sync()
@@ -53,13 +54,15 @@ const progressapi = require('./api/students/progressAPI');
 
 // postavljanje CORS-a za naš drugi server
 // da samo on može kupiti podatke
-app.use('/*', (req, res, next) => {
+/* app.use('/*', (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
-    // res.header('Access-Control-Allow-Headers', 'Authorization');
+    res.header('Access-Control-Allow-Headers', 'Authorization');
     next();
-});
+}); */
+
+app.use(cors())
 
 // AUTORIZACIJA ZA SVE METODE
 // UKOLIKO SERVISI NE RADE SAMO ZAKOMENTARISATI !!!

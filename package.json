@@ -1,7 +1,10 @@
 {
-    "name": "foobar-app",
-    "version": "0.1.0",
-    "scripts": {
-      "postinstall": "npm install --prefix backend-kb"
-    }
+  "name": "foobar-app",
+  "version": "0.1.0",
+  "scripts": {
+    "postinstall": "npm install --prefix backend-kb"
+  },
+  "dependencies": {
+    "cors": "^2.8.5"
   }
+}
