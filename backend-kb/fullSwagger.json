@@ -2,7 +2,7 @@
   "info": {
     "title": "Dokumentacija tima MIKE za Backend dio kolaboracije.",
     "version": "2.5.0",
-    "description": "Citav opis potreban za backend dio za tim MIKE koji se tiče opisa i testiranje metoda za API i SERVISE."
+    "description": "Citav opis potreban za backend dio za tim MIKE koji se tiče opisa i testiranje metoda za API i SERVISE. Uz svaki zahtjev se salje Authorization token i username kao parametar zavisno od metode."
   },
   "host": "si-mike-2019.herokuapp.com",
   "basePath": "/",
