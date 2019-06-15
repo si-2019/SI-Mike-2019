@@ -1,10 +1,10 @@
 ﻿{
   "info": {
     "title": "Dokumentacija tima MIKE za Backend dio kolaboracije.",
-    "version": "1.7.0",
+    "version": "2.5.0",
     "description": "Citav opis potreban za backend dio za tim MIKE koji se tiče opisa i testiranje metoda za API i SERVISE."
   },
-  "host": "localhost",
+  "host": "si-mike-2019.herokuapp.com",
   "basePath": "/",
   "servers": [
     {
