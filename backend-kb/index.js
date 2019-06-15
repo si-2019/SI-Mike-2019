@@ -123,10 +123,10 @@ app.use('/*', (req, res, next) => {
                             } else res.status(403).send('Kolaboraciji mogu prisupiti samo asistenti ili studenti!!!');
                         }
                     })
-                    .catch(err => res.status(403).send('AUTENTIFIKACIJA SERVIS NE RADI [možda je i status 403, ne treba ih odmah ružiti, ali treba ih naružiti]!'))
+                    .catch(err => res.status(403).send('AUTENTIFIKACIJA SERVIS ne radi ili je forbidden!'))
                 } 
             })
-            .catch(err => res.status(403).send('AUTORIZACIJA SERVIS NE RADI!!'));
+            .catch(err => res.status(403).send('AUTORIZACIJA SERVIS ne radi!!'));
     } else res.status(403).send('Nisu poslani token i username!');
 }); 
 
