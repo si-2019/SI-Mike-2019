@@ -158,7 +158,7 @@ const getStudentsProject=(id)=>{
             }
             resolve(JSON.stringify(studenti));
         }).catch((err)=>{
-            console.log(err);
+            reject(err);
         })
     })
 }
