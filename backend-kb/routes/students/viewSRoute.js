@@ -130,7 +130,8 @@ viewSRouter.get('/predmeti-za-generisanje-grupa/:id', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     if (!req.params.id) res.send(JSON.stringify({ message: 'ID nije poslan u url.' }));
     else {
-        viewSUtils.dajSvePredmete().then((predmeti) => {
+        viewSUtils.dajSvePredmete()
+        .then((predmeti) => {
             if(!predmeti) {
                 res.send(JSON.stringify({ message: 'Doslo je do greske.' }));
             }
@@ -165,7 +166,8 @@ viewSRouter.get('/predmeti-za-generisanje-grupa/:id', (req, res) => {
                     }();
                 }
             }
-        });
+        })
+        .catch(err => res.send(JSON.stringify({ message: 'Doslo je do greske catch blok.' })));
     }
 });
 
