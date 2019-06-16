@@ -19,7 +19,7 @@ db.sequelize.sync()
     .catch((err) => console.log("MIKE REST API: Nije uspjesno povezano sa peca bazom!", err));
 
 // cors
-app.use(cors());
+// app.use(cors());
 
 // default parametars za rad sa slanjem podataka
 app.use(bodyParser.json());
