@@ -38,9 +38,9 @@ const upisNovogProjektaUBazu = (postBody, prog, rokProjekta) => {
                             .then((projekat) => {
                                 if (!projekat) reject(true);
                                 else resolve(projekat);
-                            });
-                    })
-            })
+                            }).catch((err) => reject(true));;
+                    }).catch((err) => reject(true));
+            }).catch((err) => reject(true));
     })
 }
 
@@ -91,7 +91,7 @@ const upisRokaIzradeProjekta = (postBody, callback) => {
                         else callback(null);
                     })
             }
-        });
+        }).catch((err) => callback(err));;
 }
 
 const sveProvjereZaPredmeteAsistenta = (idAsistenta, callback) => {
@@ -130,7 +130,7 @@ const sveProvjereZaPredmeteAsistenta = (idAsistenta, callback) => {
             })
             .catch((err) => {console.log(err); callback(err)});
         }
-    })
+    }).catch((err) => callback(err));
 }
 
 const dobaviProjektneGrupe = (idProjekat, callback) => {
@@ -159,7 +159,7 @@ const dohvatiPredmete=(idAsistent, callback)=>{
                 callback(null,predmeti);
             })
         }
-    });
+    }).catch((err) => callback(err));;
 }
 
 
