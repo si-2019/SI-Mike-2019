@@ -65,7 +65,7 @@ const progressapi = require('./api/students/progressAPI');
 app.use(cors())
 
 // AUTORIZACIJA ZA SVE METODE
-// UKOLIKO SERVISI NE RADE SAMO ZAKOMENTARISATI !!! 
+// UKOLIKO SERVISI NE RADE SAMO ZAKOMENTARISATI !!!  
 /*
 app.use('/*', (req, res, next) => {
     if(req.originalUrl == '/' || req.originalUrl == '/swagger-ui.css' ||
