@@ -18,6 +18,8 @@ db.sequelize.sync()
     .then(() => console.log("MIKE REST API: Uspjesno povezano sa peca bazom!"))
     .catch((err) => console.log("MIKE REST API: Nije uspjesno povezano sa peca bazom!", err));
 
+// cors
+app.use(cors());
 
 // default parametars za rad sa slanjem podataka
 app.use(bodyParser.json());
@@ -61,8 +63,6 @@ const progressapi = require('./api/students/progressAPI');
     res.header('Access-Control-Allow-Headers', 'Authorization');
     next();
 }); */
-
-app.use(cors())
 
 // AUTORIZACIJA ZA SVE METODE
 // UKOLIKO SERVISI NE RADE SAMO ZAKOMENTARISATI !!!  
