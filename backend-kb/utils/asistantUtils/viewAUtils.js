@@ -81,7 +81,7 @@ const dajSveClanoveProjektne = (id, callback) => {
         .catch(err => callback(err));
 }
 const dajPredmeteAsistenta=(id,callback)=>{
-    db.sequelize.query(`SELECT DISTINCT p.id as idPredmet, p.naziv, pr.idProjekat, pr.nazivProjekta, pr.opisProjekta as opis, pr.moguciBodovi
+    db.sequelize.query(`SELECT DISTINCT p.id as idPredmet, p.naziv, pr.idProjekat, pr.nazivProjekta, pr.opisProjekta as opis, pr.moguciBodovi, pr.progress, pr.rokProjekta
                         FROM Predmet p, Projekat pr, Korisnik k
                         WHERE p.idAsistent=${id} and pr.idPredmet = p.id`)
     .then((niz) => {
