@@ -28,6 +28,7 @@ servisiRouter.post('/getPredmetiKorisnik',(req,res)=>{
             res.end();
         })
     })
+    .catch(err => res.send(JSON.stringify({ message: 'Doslo je do greske catch blok.' })));
 });
 servisiRouter.post('/getKorisniciPredmet',(req,res)=>{
     var predmet=req.body.idPredmet;
@@ -60,6 +61,7 @@ servisiRouter.post('/getKorisniciPredmet',(req,res)=>{
             res.end();
         })
     })
+    .catch(err => res.send(JSON.stringify({ message: 'Doslo je do greske catch blok.' })));
 });
 
 module.exports = servisiRouter;

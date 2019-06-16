@@ -112,7 +112,8 @@ viewSRouter.get('/user-projects/:id', (req, res) => {
                     }();
                 }
             }
-        });
+        })
+        .catch(err => res.send(JSON.stringify({ message: 'Doslo je do greske catch blok.' })));;
     }
 });
 

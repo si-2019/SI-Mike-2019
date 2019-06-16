@@ -67,7 +67,8 @@ viewARouter.post('/getProject',(req,res)=>{
         res.writeHead(200,{'Content-Type':'application/json'});
         if(jsonString) res.write(jsonString);
         res.end();
-    });
+    })
+    .catch(err => res.send(JSON.stringify({ message: 'Doslo je do greske catch blok.' })));;
 });
 
 // custom servisi - no need 4 swagger

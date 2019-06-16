@@ -130,7 +130,8 @@ groupRouter.get('/getProjectStudents/:predmet',(req,res)=>{
     res.writeHead(200,{'Content-Type':'application/json'});
     res.write(jsonString);
     res.end();
-    });
+    })
+    .catch(err => res.send(JSON.stringify({ message: 'Doslo je do greske catch blok.' })));;
 });
 
 
