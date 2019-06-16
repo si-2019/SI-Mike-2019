@@ -44,7 +44,7 @@ groupRouter.post('/', (req, res) => {
  *      Realizovano od strane: Mašović Haris'
 */
 groupRouter.post('/addmembers', (req, res) => {
-    let nizNovihMembera = req.body;
+    let nizNovihMembera = req.body.clanovi;
     if(!nizNovihMembera){ res.send(JSON.stringify({ message: 'Nisu poslani memberi unutar payloada!' })); return; }
     if (!groupUtils.provjeraNovihMembera(nizNovihMembera)) res.send(JSON.stringify({
         message: 'Svaki member u JSON body-u ne sadrži [idStudent, idGrupaProjekta]!'
