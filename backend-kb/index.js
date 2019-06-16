@@ -65,7 +65,8 @@ const progressapi = require('./api/students/progressAPI');
 app.use(cors())
 
 // AUTORIZACIJA ZA SVE METODE
-// UKOLIKO SERVISI NE RADE SAMO ZAKOMENTARISATI !!!
+// UKOLIKO SERVISI NE RADE SAMO ZAKOMENTARISATI !!! 
+/*
 app.use('/*', (req, res, next) => {
     if(req.originalUrl == '/' || req.originalUrl == '/swagger-ui.css' ||
        req.originalUrl == '/swagger-ui-bundle.js' || req.originalUrl == '/swagger-ui-standalone-preset.js' ||
@@ -98,10 +99,10 @@ app.use('/*', (req, res, next) => {
                         url: `https://si2019romeo.herokuapp.com/users/validate?username=${username}`,
                         headers: { 'Authorization': token }
                     };                        
-                    //axios(config)
-                    //.then((odgovorToken) => {
-                        //if(odgovorToken.status == 403) res.status(403).send('Token i username nisu ispravni!');
-                        //else {
+                    axios(config)
+                    .then((odgovorToken) => {
+                        if(odgovorToken.status == 403) res.status(403).send('Token i username nisu ispravni!');
+                        else {
                             // logika za studente i asistente 
                             if(odgovor.data == 'STUDENT'){
                                 let studentiRute = ['group', 'viewS', 'work', 'progress'];
@@ -124,14 +125,14 @@ app.use('/*', (req, res, next) => {
                                 if(bool) next();
                                 else res.status(403).send('Ovoj ruti moze samo student pristupiti!!!');
                             } else res.status(403).send('Kolaboraciji mogu prisupiti samo asistenti ili studenti!!!');
-                        //}
-                    //})
-                    //.catch(err => res.status(403).send('AUTENTIFIKACIJA SERVIS ne radi ili je forbidden!'))
+                        }
+                    })
+                    .catch(err => res.status(403).send('AUTENTIFIKACIJA SERVIS ne radi ili je forbidden!'))
                 } 
             })
             .catch(err => res.status(403).send('AUTORIZACIJA SERVIS ne radi!!'));
     } else res.status(403).send('Nisu poslani token i username!');
-}); 
+}); */
 
 // ----------------------------------------------------- SERVISI ----------------------------------------------
 // definisanje ruta za dio "Kreiranje projektne grupe"
