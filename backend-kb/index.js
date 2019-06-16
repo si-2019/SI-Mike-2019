@@ -134,7 +134,7 @@ app.use('/*', (req, res, next) => {
 }); */
 
 // ----------------------------------------------------- SERVISI ----------------------------------------------
-// definisanje ruta za dio "Kreiranje projektne grupe"
+// definisanje ruta za dio "Kreiranje projektne grupe" 
 app.use('/services/group', groupRouter); 
 // definisanje ruta za dio "Pregled projekata"
 app.use('/services/viewS', viewSRouter);
