@@ -26,9 +26,9 @@ const upisNoveGrupeUBazu = (postBody, callback) => {
             db.GrupaProjekta.create(novi).then((grupa) => {
                 if (!grupa) callback(null);
                 else callback(grupa.idGrupaProjekta);
-            })
+            }).catch(err=>callback(null));
         }
-    })
+    }).catch(err=>callback(null));
 }
 
 const provjeraNovihMembera = (niz) => {
