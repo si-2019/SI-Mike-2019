@@ -145,7 +145,8 @@ viewSRouter.get('/predmeti-za-generisanje-grupa/:id', (req, res) => {
                     new function() {
                         var i_closure = i;
 
-                        viewSUtils.dajProjekteKreiranjeGrupe(req.params.id, predmeti[i_closure].id).then((projekti) => {
+                        viewSUtils.dajProjekteKreiranjeGrupe(req.params.id, predmeti[i_closure].id)
+                        .then((projekti) => {
                             if(!projekti) {
                                 if(!greska) res.send(JSON.stringify({ message: 'Doslo je do greske.' }));
                                 greska = true;
@@ -163,7 +164,8 @@ viewSRouter.get('/predmeti-za-generisanje-grupa/:id', (req, res) => {
                                     res.send(JSON.stringify({predmeti: finalanNiz.filter(predmet => predmet.projekti.length > 0)}));
                                 }
                             }
-                        });
+                        })
+                        .catch(err => res.send(JSON.stringify({ message: 'Doslo je do greske catch blok2.' })));
                     }();
                 }
             }
