@@ -54,7 +54,7 @@ const workapi = require('./api/students/workAPI');
 const viewSapi = require('./api/students/viewSAPI');
 const progressapi = require('./api/students/progressAPI');
 
-// postavljanje CORS-a za naš drugi server
+// postavljanje CORS-a za naš drugi server 
 // da samo on može kupiti podatke
 app.use('/*', (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
