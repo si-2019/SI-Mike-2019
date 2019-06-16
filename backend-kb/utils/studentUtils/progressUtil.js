@@ -1,2 +1,19 @@
+const db = require('../../models/db');
 
-module.exports = "novi";
+const oznaciZavrsen = (id, cb) => {
+    db.ProjektniZadatak.update({
+        zavrsen: 1
+    }), {
+        where: {
+            idProjektnogZadatka: id
+        }
+    }.then((rez) => {
+        cb();
+    }).catch(err => {
+        cb();
+    });     
+}
+
+module.exports = {
+    oznaciZavrsen
+}
