@@ -13,8 +13,11 @@ const progressUtils = require('../../utils/studentUtils/progressUtil');
 *       - Studenti - Pracenje progresa projekta - Service
  *      description: Oznacavanje projektnog zadatka zavrsenim
  */
-progressRouter.post('/endtask',(req,res)=>{
-
+progressRouter.post('/endtask/:id',(req,res)=>{
+    progressUtils.oznaciZavrsen(req.params.id, (err) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.end();
+    });
 });
 
 // POST base/api/progress/endproject

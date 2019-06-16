@@ -134,10 +134,52 @@ const sveProvjereZaPredmeteAsistenta = (idAsistenta, callback) => {
 }
 
 const dobaviProjektneGrupe = (idProjekat, callback) => {
-    db.GrupaProjekta.findAll({ where: { idProjekat }})
+    db.GrupaProjekta.findAll({ where: { idProjekat: idProjekat }})
     .then((grupeProjekta) => { 
-        callback(null, grupeProjekta);
-        return null;
+        if(!grupeProjekta) {
+            callback(true, '');
+        }
+        else {
+            let ret = [];
+            let greska = false;
+            let brojPopunjenih = 0;
+
+            if(grupeProjekta.length == 0) {
+                callback(null, [])
+                return null;
+            }
+
+            for(let i = 0; i < grupeProjekta.length; i++) {
+                new function() {
+                    var i_closure = i;
+                    var id_grupe = grupeProjekta[i].idGrupaProjekta;
+
+                    ret[i_closure] = {
+                        id: id_grupe,
+                        nazivGrupe: grupeProjekta[i].nazivGrupe
+                    }
+
+                    // svi studenti u datoj grupi
+                    db.sequelize.query(`SELECT DISTINCT student.id, clan.idClanGrupe, student.ime, student.prezime, student.indeks, clan.ostvareniBodovi as brojBodova
+                                        FROM Korisnik student, ClanGrupe clan, GrupaProjekta grupa
+                                        WHERE student.id=clan.idStudent AND clan.idGrupaProjekta=grupa.idGrupaProjekta AND grupa.idGrupaProjekta=${id_grupe}`, 
+                                        {type: sequelize.QueryTypes.SELECT}).then((clanovi) => {
+                                            if(clanovi) ret[i_closure].studenti = clanovi;
+                                            else {
+                                                if(!greska) callback(true, '');
+                                                greska = true
+                                            }
+
+                                            brojPopunjenih++;
+                                            if(brojPopunjenih >= grupeProjekta.length) {
+                                                if(!greska) callback(null, ret);
+                                            }
+                                        });
+                }();
+            }
+
+            return null;
+        }
     })
     .catch((err) => callback(err));
 }
